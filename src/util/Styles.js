@@ -3,9 +3,11 @@ export const Styles = {
         purple: '#9999ff',
         darkPurple: '#8080ff',
         darkerPurple: '#6666ff',
-        grey: '#f5f5f5',
+        lightGrey: '#f5f5f5',
+        grey: '#e6e6e6',
         white: 'white',
         blue: 'blue',
-        darkGrey: '#d9d9d9',
+        darkGrey: '#979797',
+        black: '#262626'
     }
 }

@@ -21,17 +21,17 @@ const HandGrid = Styled.div`
 
 const PlayerDisplay = (props) => {
 
-  const renderedHand = props.player.hand.map((fv) => {
+  const renderedHand = props.player.hand.map((fv, index) => {
     if (props.showDice) {
-      return <Dice fv={fv}></Dice>
+      return <Dice key={`dice${index}`} fv={fv}></Dice>
     } else {
-      return <Dice fv={0}></Dice>
+      return <Dice key={`dice${index}`} fv={0}></Dice>
     }
   })
 
   return (
     <StyledDiv className="PlayerDisplay">
-      <NameText>{props.player.name}</NameText>
+      <NameText>{props.player.id}: {props.player.name}</NameText>
       <HandGrid>{renderedHand}</HandGrid>
     </StyledDiv>
   );

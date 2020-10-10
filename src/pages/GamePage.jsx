@@ -31,29 +31,43 @@ const Cell = Styled.div`
   transition: background-color 50ms ease-out;
 
   &:hover {
-    background-color: ${Styles.colors.grey};
+    background-color: ${Styles.colors.lightGrey};
   }
+
+  ${props => props.isActive && `
+    border-color: ${Styles.colors.purple};
+    background-color: ${Styles.colors.darkGrey};
+  `}
 `
 
 
 const initialPlayers = [
-  {name: 'Jorg', id: 1, hand: [1, 2]},
+  {name: 'YOU', id: 1, hand: [1, 2, 3, 4, 5], isYou: true},
   {name: 'Jenkins', id: 2, hand: [1, 2, 3, 4, 5]},
   {name: 'Rich', id: 3, hand: [1, 2]},
   {name: 'Bri', id: 4, hand: [1]},
   {name: 'Joseph', id: 5, hand: [1]},
   {name: 'Mr. Bob', id: 6, hand: [1, 2, 3]},
-  {name: 'YOU', id: 7, hand: [1, 2, 3, 4, 5], isYou: true},
-  {name: 'Dice Expert', id: 8, hand: [1, 2, 6, 6]},
+  {name: 'Dice Expert', id: 7, hand: [1, 2, 6, 6]},
+  {name: 'Jorg 8', id: 8, hand: [1, 2]},
 ]
+
+const initialTurn = {
+  number: 0,
+  amount: 0,
+  fv: 0,
+  playerName: "YOU",
+  playerId: 1,
+}
 
 const GamePage = (props) => {
   const [isStarted, setIsStarted] = useState(true);
   const [players, setPlayers] = useState(initialPlayers);
   const [isShowingAllDice, setIsShowingAllDice] = useState(false);
-  const [turns, setTurns] = useState([]);
+  const [turns, setTurns] = useState([initialTurn]);
   
   const handleClickStartButton = () => {
+    setTurns([initialTurn]);
     setIsStarted(true);
   }
 
@@ -63,24 +77,35 @@ const GamePage = (props) => {
     )
   }
 
+  const renderPlayerCell = (playerNumber) => {
+    return (
+      <Cell key={`cell${playerNumber}`}>
+        <PlayerDisplay 
+          player={players[playerNumber-1]}
+          showDice={isShowingAllDice}>
+        </PlayerDisplay>
+      </Cell>
+    )};
+
   const renderGame = () => {
-    const numberOfCells = 8;
-    const middleCell = 4;
     const renderedCells = [];
 
-    for (let i = 0; i < numberOfCells; i++) {
+    const currentTurn = turns[turns.length - 1];
+    renderedCells.push(renderPlayerCell(4));
+    renderedCells.push(renderPlayerCell(5));
+    renderedCells.push(renderPlayerCell(6));
 
-      if (i === middleCell) {
-        renderedCells.push(<Cell><CenterDisplay></CenterDisplay></Cell>);
-      } 
+    renderedCells.push(renderPlayerCell(7));
+    renderedCells.push(<Cell key={`cellCenter`}><CenterDisplay turn={currentTurn}></CenterDisplay></Cell>);
+    renderedCells.push(renderPlayerCell(3));
 
-      const showDice = isShowingAllDice | players[i].isYou;
-      renderedCells.push(<Cell><PlayerDisplay player={players[i]} showDice={showDice}></PlayerDisplay></Cell>);
-    }
+    renderedCells.push(renderPlayerCell(2));
+    renderedCells.push(renderPlayerCell(1));
+    renderedCells.push(renderPlayerCell(8));
 
     return (
       <GameGrid>
-        {renderedCells};
+        {renderedCells}
       </GameGrid>
     )
   }

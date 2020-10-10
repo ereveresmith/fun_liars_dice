@@ -5,16 +5,21 @@ import { Styles } from '../util/Styles'
 const Wrapper = Styled.div`
     align-self: center;
     display: flex;
-    border: 2px solid #979797;
+    border: 2px solid ${Styles.colors.darkGrey};
     border-radius: 4px;
     max-width: 38px;
     height: 38px;
     width: 100%;
-    background-color: rgb(255, 255, 255, 0.85);
 
     &:hover {
-      background-color: ${Styles.colors.darkGrey};
+      background-color: ${Styles.colors.grey};
     }
+
+
+    ${props => props.isBig && `
+      max-width: 70px;
+      height: 70px;
+    `}
 `
 
 const Grid = Styled.div`
@@ -86,7 +91,7 @@ const renderedDots = (value) => {
 
 const Dice = (props) => {
   return ( 
-      <Wrapper fv={props.fv}>
+      <Wrapper fv={props.fv} isBig={props.isBig}>
           {renderedDots(props.fv)}
       </Wrapper>   
   )
