@@ -31,7 +31,7 @@ const StyledDiv = Styled.div`
   font-size: 1em;
 `;
 
-const NameText = Styled.h2`
+const NameText = Styled.h3`
   color: ${Styles.colors.purple};
 
   ${props => props.isActive && `

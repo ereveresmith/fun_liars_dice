@@ -26,11 +26,12 @@ const GridWrapper = Styled.div`
 
 `
 
-const Text = Styled.h3`
-  font-size: 1.3em;
+const Text = Styled.h2`
+  font-size: 1.5em;
   color: ${Styles.colors.purple};
   text-align: center;
   width: 200px;
+  font-weight: 700;
   justify-self: center;
 `
 
@@ -39,7 +40,7 @@ const TurnArrow = Styled.div`
   height: 0; 
   border-left: 2em solid transparent;
   border-right: 2em solid transparent;
-  align-self: center;
+  align-self: end;
   justify-self: center;
   border-bottom: 4em solid ${Styles.colors.purple};
   transform-origin: center;

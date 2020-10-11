@@ -9,9 +9,10 @@ import BetSubmitter from '../components/BetSubmitter'
 const LogContainer = Styled.div`
   overflow: scroll;
   display: grid;
-  grid-template-rows: repeat(auto-fill, 24px);
   padding: 24px;
   border: 1px solid blue;
+  grid-auto-flow: row;
+  grid-template-rows: min-content;
 `
 
 const EmptyCell = Styled.div`
@@ -24,12 +25,15 @@ const EmptyCell = Styled.div`
 `
 
 const StyledMessage = Styled.span`
+  font-size: 16px;
   height: 20px;
-  color: ${Styles.colors.purple};
+  max-width: 160px;
+  overflow: hidden;
+  font-weight: 500;
+  color: ${Styles.colors.darkPurple};
 `
 
 const GameContainer = Styled.div`
-  
   display: grid;
   justify-items: center;
   align-items: center;
