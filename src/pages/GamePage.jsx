@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '../components/Button';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
@@ -11,8 +11,7 @@ const GameContainer = Styled.div`
   align-items: center;
   margin: 0 15%;
   width: 70%;
-  height: 100vh;
-`
+  `
 
 const GameGrid = Styled.div`
   width: 100%;
@@ -43,21 +42,24 @@ const Cell = Styled.div`
 
 const initialPlayers = [
   {name: 'YOU', id: 1, hand: [1, 2, 3, 4, 5], isYou: true},
-  {name: 'Jenkins', id: 2, hand: [1, 2, 3, 4, 5]},
-  {name: 'Rich', id: 3, hand: [1, 2]},
-  {name: 'Bri', id: 4, hand: [1]},
+  {name: 'Jenkins', id: 2, hand: []},
+  {name: 'Rich', id: 3, hand: []},
+  {name: 'Bri', id: 4, hand: []},
   {name: 'Joseph', id: 5, hand: [1]},
-  {name: 'Mr. Bob', id: 6, hand: [1, 2, 3]},
+  {name: 'Mr. Bob', id: 6, hand: []},
   {name: 'Dice Expert', id: 7, hand: [1, 2, 6, 6]},
-  {name: 'Jorg 8', id: 8, hand: [1, 2]},
+  {name: 'Jorg 8', id: 8, hand: []},
 ]
 
 const initialTurn = {
-  number: 0,
+  number: 1,
   amount: 0,
   fv: 0,
-  playerName: "YOU",
-  playerId: 1,
+  player: undefined,
+  nextPlayer: {
+    name: "YOU",
+    id: 1,
+  }
 }
 
 const GamePage = (props) => {
@@ -65,6 +67,44 @@ const GamePage = (props) => {
   const [players, setPlayers] = useState(initialPlayers);
   const [isShowingAllDice, setIsShowingAllDice] = useState(false);
   const [turns, setTurns] = useState([initialTurn]);
+
+
+
+  const nextTurn = (amount, fv, currentPlayer) => {
+    const number = turns.length + 1;
+
+    let playerIndex = currentPlayer.id;
+    if (playerIndex >= players.length) {
+      playerIndex = 0;
+    }
+    let nextPlayer = players[playerIndex];
+
+    while (nextPlayer.hand.length === 0) {
+      playerIndex = playerIndex + 1;
+      if (playerIndex >= players.length) {
+        playerIndex = 0;
+      }
+      nextPlayer = players[playerIndex];
+    }
+
+    const nextTurn = {
+      number: number,
+      amount: amount,
+      fv: fv,
+      player: currentPlayer,
+      nextPlayer: nextPlayer,
+    }
+
+    const currentTurns = [...turns];
+    currentTurns.push(nextTurn);
+    console.log(nextTurn)
+    setTurns(currentTurns);
+  }
+
+  const handleSubmitBet = () => {
+    const nextPlayer = turns[turns.length - 1].nextPlayer;
+    nextTurn(5, 5, nextPlayer);
+  }
   
   const handleClickStartButton = () => {
     setTurns([initialTurn]);
@@ -95,9 +135,11 @@ const GamePage = (props) => {
     renderedCells.push(renderPlayerCell(5));
     renderedCells.push(renderPlayerCell(6));
 
-    renderedCells.push(renderPlayerCell(7));
-    renderedCells.push(<Cell key={`cellCenter`}><CenterDisplay turn={currentTurn}></CenterDisplay></Cell>);
     renderedCells.push(renderPlayerCell(3));
+    renderedCells.push(<Cell key={`cellCenter`}>
+      <CenterDisplay turn={currentTurn}></CenterDisplay>
+    </Cell>);
+    renderedCells.push(renderPlayerCell(7));
 
     renderedCells.push(renderPlayerCell(2));
     renderedCells.push(renderPlayerCell(1));
@@ -111,9 +153,12 @@ const GamePage = (props) => {
   }
 
   return (
-    <GameContainer>
-      {isStarted ? renderGame() : renderStartScreen()}
-    </GameContainer>
+    <div>
+      <GameContainer>
+        {isStarted ? renderGame() : renderStartScreen()}
+      </GameContainer>
+      <Button label={"Submit"} onClick={handleSubmitBet}></Button>
+    </div>
   );
 }
 

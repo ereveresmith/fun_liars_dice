@@ -49,18 +49,18 @@ const TurnArrow = Styled.div`
   margin-bottom: 8px;
 `
 
-const CenterDisplay = ({ turn, nextPlayer }) => {
+const CenterDisplay = ({ turn }) => {
   const isActive = (turn.amount > -1);
 
 
   const calcAngle = () => {
     const offset = 135;
-    return (turn.playerId * 45) + offset;
+    return (turn.nextPlayer.id * 45) + offset;
   }
 
-  let turnText = `${turn.playerName}'s turn...`;
+  let turnText = `${turn.nextPlayer.name}'s turn...`;
 
-  if (turn.playerId === 1) {
+  if (turn.nextPlayer.id === 1) {
     turnText = 'Your Turn';
   }
 
