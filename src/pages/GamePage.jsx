@@ -59,30 +59,45 @@ const GamePage = (props) => {
   const [turns, setTurns] = useState([initialTurn]);
 
   const nextRound = (currentPlayer) => {
+    let nextPlayer = currentPlayer;
+
     if (currentPlayer.hand.length === 0) {
+      nextPlayer = calcNextPlayer(currentPlayer);
+    } 
 
+    if (checkWin()) {
+      console.log("You won the game!")
     } else {
+      const number = turns.length + 1;
 
+      const newTurn = {
+        number: number,
+        amount: 0,
+        fv: 0,
+        player: {id: 0},
+        nextPlayer: nextPlayer,
+      }
+  
+      const currentTurns = [...turns];
+      currentTurns.push(newTurn);
+      console.log(newTurn)
+      setTurns(currentTurns);
     }
-    const number = turns.length + 1;
-
-    const nextTurn = {
-      number: number,
-      amount: 0,
-      fv: 0,
-      player: {id: 0},
-      nextPlayer: currentPlayer,
-    }
-
-    const currentTurns = [...turns];
-    currentTurns.push(nextTurn);
-    console.log(nextTurn)
-    setTurns(currentTurns);
   }
 
-  const nextTurn = (amount, fv, currentPlayer) => {
-    const number = turns.length + 1;
+  const checkWin = () => {
+    let amountOfPlayersLeft = 0;
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
+      if (player.hand.length) {
+        amountOfPlayersLeft++;
+      }
+    }
 
+    return amountOfPlayersLeft === 1;
+  }
+
+  const calcNextPlayer = (currentPlayer) => {
     let playerIndex = currentPlayer.id;
     if (playerIndex >= players.length) {
       playerIndex = 0;
@@ -96,8 +111,15 @@ const GamePage = (props) => {
       }
       nextPlayer = players[playerIndex];
     }
+    return nextPlayer;
+  }
 
-    const nextTurn = {
+
+  const nextTurn = (amount, fv, currentPlayer) => {
+    const number = turns.length + 1;
+    const nextPlayer = calcNextPlayer(currentPlayer);
+
+    const newTurn = {
       number: number,
       amount: amount,
       fv: fv,
@@ -106,8 +128,8 @@ const GamePage = (props) => {
     }
 
     const currentTurns = [...turns];
-    currentTurns.push(nextTurn);
-    console.log(nextTurn)
+    currentTurns.push(newTurn);
+    console.log(newTurn)
     setTurns(currentTurns);
   }
 
@@ -153,18 +175,22 @@ const GamePage = (props) => {
     }
   }
 
+  const randomInt = (max) => {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
   const rerollDice = () => {
     const playersArray = [...players];
 
     playersArray.forEach((player) => {
-      
       const newHand = player.hand.map((dice) => {
-        return 1;
+        return randomInt(5) + 1;
       })
 
       player.hand = newHand;
     })
     setPlayers(playersArray);
+    setIsShowingAllDice(false);
   }
 
   const handleSubmitBet = (amount, fv) => {
