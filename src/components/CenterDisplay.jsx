@@ -8,6 +8,7 @@ const Cell = Styled.div`
   width: 100%;
   border: 2px solid ${Styles.colors.darkGrey  };
   height: 240px;
+  min-width: 200px;
 
   ${props => props.isActive && `
     border-color: ${Styles.colors.purple};
@@ -54,8 +55,12 @@ const CenterDisplay = ({ turn }) => {
 
 
   const calcAngle = () => {
-    const offset = 135;
-    return (turn.nextPlayer.id * 45) + offset;
+    const offset = 180;
+    if (turn.nextPlayer.id === 1) {
+      return offset;
+    } else {
+      return (turn.nextPlayer.id * 45) + offset;
+    }
   }
 
   let turnText = `${turn.nextPlayer.name}'s turn...`;

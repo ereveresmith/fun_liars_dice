@@ -13,17 +13,17 @@ const HugeText = Styled.h1`
 
 const Grid = Styled.div`
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
   align-items: center;
-    justify-items: center;
+  justify-items: center;
+  width: 200px;
 `
 
 const VerticalGrid = Styled.div`
   display: grid;
   grid-template-rows: auto auto auto;
   align-items: center;
-  width: 120px;
-    justify-items: center;
+  justify-items: center;
 `
 
 const BetSubmitter = (props) => {
@@ -74,10 +74,8 @@ const BetSubmitter = (props) => {
         <Dice fv={fv} isBig></Dice>
         <Button onClick={handleLowerFv}></Button>
       </VerticalGrid>
-      <VerticalGrid>
-        <Button label="Submit" onClick={handleSubmit}></Button>
-        <Button label="Liar!" onClick={handleCall}></Button>
-      </VerticalGrid>
+      <Button label="Liar!" onClick={handleCall}></Button>
+      <Button label="Submit" onClick={handleSubmit}></Button>
     </Grid>
   );
 }

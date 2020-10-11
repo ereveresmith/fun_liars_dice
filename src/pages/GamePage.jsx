@@ -6,12 +6,34 @@ import CenterDisplay from '../components/CenterDisplay';
 import PlayerDisplay from '../components/PlayerDisplay'
 import BetSubmitter from '../components/BetSubmitter'
 
-const GameContainer = Styled.div`
+const LogContainer = Styled.div`
+  overflow: scroll;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 24px);
+  padding: 24px;
+  border: 1px solid blue;
+`
 
+const EmptyCell = Styled.div`
+  display: grid;
+  width: 100%;
+  border: 2px solid ${Styles.colors.darkGrey  };
+  background-color: ${Styles.colors.lightGrey  };
+  height: 240px;
+  min-width: 200px;
+`
+
+const StyledMessage = Styled.span`
+  height: 20px;
+  color: ${Styles.colors.purple};
+`
+
+const GameContainer = Styled.div`
+  
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: 5% 15% 0 15%;
+  margin: 10% 15% 0 15%;
   width: 70%;
   `
 
@@ -30,15 +52,19 @@ const ToolsGrid = Styled.div`
   align-items: center;
 `
 
+const generatePlayers = () => {
+  const NUM_PLAYERS = 6;
+
+  // const you = 
+}
+
 const initialPlayers = [
-  {name: 'YOU', id: 1, hand: [1, 2, 3, 4, 5], isYou: true},
-  {name: 'Jenkins', id: 2, hand: []},
+  {name: 'YOU', id: 1, hand: [1, 2, 3, 4, 5]},
+  {name: 'Jenkins', id: 2, hand: [5]},
   {name: 'Rich', id: 3, hand: [6, 6]},
-  {name: 'Bri', id: 4, hand: []},
-  {name: 'Joseph', id: 5, hand: [1]},
-  {name: 'Mr. Bob', id: 6, hand: []},
-  {name: 'Dice Expert', id: 7, hand: [1, 2, 6, 6]},
-  {name: 'Jorg 8', id: 8, hand: []},
+  {name: 'Joseph', id: 4, hand: [1]},
+  {name: 'Dice Expert', id: 5, hand: [1, 2, 6, 6]},
+  {name: 'Jorg 8', id: 6, hand: [2]},
 ]
 
 const initialTurn = {
@@ -57,6 +83,12 @@ const GamePage = (props) => {
   const [players, setPlayers] = useState(initialPlayers);
   const [isShowingAllDice, setIsShowingAllDice] = useState(false);
   const [turns, setTurns] = useState([initialTurn]);
+  const [log, setLog] = useState(['Starting Game', 'Your Turn']);
+
+  const printLog = (message) => {
+    console.log("LOG: " + message);
+    setLog(log => [...log, message]);
+  }
 
   const nextRound = (currentPlayer) => {
     let nextPlayer = currentPlayer;
@@ -66,7 +98,7 @@ const GamePage = (props) => {
     } 
 
     if (checkWin()) {
-      console.log("You won the game!")
+      setIsStarted(false);
     } else {
       const number = turns.length + 1;
 
@@ -77,11 +109,7 @@ const GamePage = (props) => {
         player: {id: 0},
         nextPlayer: nextPlayer,
       }
-  
-      const currentTurns = [...turns];
-      currentTurns.push(newTurn);
-      console.log(newTurn)
-      setTurns(currentTurns);
+      setTurns(turns => [...turns, newTurn]);
     }
   }
 
@@ -127,14 +155,13 @@ const GamePage = (props) => {
       nextPlayer: nextPlayer,
     }
 
-    const currentTurns = [...turns];
-    currentTurns.push(newTurn);
-    console.log(newTurn)
-    setTurns(currentTurns);
+    printLog(`${nextPlayer.name}'s Turn`)
+    setTurns(turns => [...turns, newTurn]);
   }
 
   const isValidBet = (amount, fv) => {
     const currentTurn = turns[turns.length - 1];
+    return true;
     if (amount < currentTurn.amount) {
       return false;
     }
@@ -153,7 +180,6 @@ const GamePage = (props) => {
     const currentTurn = turns[turns.length - 1];
     const fv = currentTurn.fv;
     const amount = currentTurn.amount;
-    console.log("Evaluating bet of " + amount + " " + fv);
 
     let amountFound = 0;
 
@@ -166,7 +192,7 @@ const GamePage = (props) => {
       })
     }
 
-    console.log(`${amountFound} ${fv}'s found`)
+    printLog(`${amountFound} ${fv}'s found`)
 
     if (amountFound >= amount) {
       return false;
@@ -194,19 +220,26 @@ const GamePage = (props) => {
   }
 
   const handleSubmitBet = (amount, fv) => {
-    if (amount === -1 && fv === -1) {
+    const isCall = (amount === -1 && fv === -1);
+
+    if (isCall) {
       const currentTurn = turns[turns.length - 1];
-      const playerId = currentTurn.player.id;
-      const nextPlayerId = currentTurn.nextPlayer.id;
+      const player = currentTurn.player;
+      const nextplayer = currentTurn.nextPlayer;
       const playersArray = [...players];
-      let lyingPlayer = playersArray[nextPlayerId-1];
+      let lyingPlayer = playersArray[nextplayer.id-1];
+
+      printLog(`${nextplayer.name} challenged ${player.name}`);
 
       if (isLiar()) {
-        lyingPlayer = playersArray[playerId-1];
+        lyingPlayer = playersArray[player.id-1];
       } 
 
       lyingPlayer.hand.pop();
-      console.log(`${lyingPlayer.name} is lying!`)
+      printLog(`${lyingPlayer.name} lost a dice!`);
+      if (lyingPlayer.hand.length === 0) {
+        printLog(`${lyingPlayer.name} is out of the game!`);
+      }
       setPlayers(playersArray);
       rerollDice();
       nextRound(lyingPlayer);
@@ -218,27 +251,31 @@ const GamePage = (props) => {
     }
   }
   
-  const handleClickStartButton = () => {
+  const startGame = () => {
     setTurns([initialTurn]);
+    setPlayers(initialPlayers)
     setIsStarted(true);
   }
 
   const renderStartScreen = () => {
     return (
-        <Button onClick={handleClickStartButton} label="Start New Game"></Button>
+        <Button onClick={startGame} label="Start New Game"></Button>
     )
   }
 
   const renderPlayerCell = (playerNumber) => {
     const currentTurn = turns[turns.length - 1];
+
     const player = players[playerNumber - 1];
-    const isShowingDice = (isShowingAllDice | player.id === 1);
-
-    const isActive = (player.id === currentTurn.nextPlayer.id)
-    const isSecondary = (player.id === currentTurn.player.id)
-
-    return (
-        <PlayerDisplay 
+    if (player === undefined) {
+      return <EmptyCell ></EmptyCell>
+    } else {
+      const isShowingDice = (isShowingAllDice | player.id === 1);
+      const isActive = (player.id === currentTurn.nextPlayer.id);
+      const isSecondary = (player.id === currentTurn.player.id);
+      return (
+        <PlayerDisplay
+          key={`playerDisplay${playerNumber}`}
           turn={currentTurn}
           isActive={isActive}
           isSecondary={isSecondary}
@@ -246,22 +283,39 @@ const GamePage = (props) => {
           showDice={isShowingDice}>
         </PlayerDisplay>
     )};
+    }
+
+
+
+  const renderedLog = () => {
+    const logItems = log.map((message, index) => {
+      return <StyledMessage key={`message${index}`}>{message}</StyledMessage>
+    })
+
+    return <LogContainer>{logItems}</LogContainer>
+
+
+  }
 
   const renderGame = () => {
     const renderedCells = [];
 
     const currentTurn = turns[turns.length - 1];
+    renderedCells.push(renderPlayerCell(3));
     renderedCells.push(renderPlayerCell(4));
     renderedCells.push(renderPlayerCell(5));
-    renderedCells.push(renderPlayerCell(6));
-
-    renderedCells.push(renderPlayerCell(3));
-    renderedCells.push(<CenterDisplay turn={currentTurn}></CenterDisplay>);
-    renderedCells.push(renderPlayerCell(7));
 
     renderedCells.push(renderPlayerCell(2));
+    renderedCells.push(<CenterDisplay key="centerDisplay" turn={currentTurn}></CenterDisplay>);
+    renderedCells.push(renderPlayerCell(6));
+
+    renderedCells.push(<EmptyCell key="logDisplay">
+      {renderedLog()}
+    </EmptyCell>);
     renderedCells.push(renderPlayerCell(1));
-    renderedCells.push(renderPlayerCell(8));
+    renderedCells.push(<EmptyCell key="betDisplay">
+      <BetSubmitter onSubmit={handleSubmitBet}></BetSubmitter>
+    </EmptyCell>);
 
     return (
       <GameGrid>
@@ -275,9 +329,6 @@ const GamePage = (props) => {
       <GameContainer>
         {isStarted ? renderGame() : renderStartScreen()}
       </GameContainer>
-      <ToolsGrid>
-        <BetSubmitter onSubmit={handleSubmitBet}></BetSubmitter>
-      </ToolsGrid>
     </div>
   );
 }
