@@ -58,7 +58,27 @@ const GamePage = (props) => {
   const [isShowingAllDice, setIsShowingAllDice] = useState(false);
   const [turns, setTurns] = useState([initialTurn]);
 
+  const nextRound = (currentPlayer) => {
+    if (currentPlayer.hand.length === 0) {
 
+    } else {
+
+    }
+    const number = turns.length + 1;
+
+    const nextTurn = {
+      number: number,
+      amount: 0,
+      fv: 0,
+      player: {id: 0},
+      nextPlayer: currentPlayer,
+    }
+
+    const currentTurns = [...turns];
+    currentTurns.push(nextTurn);
+    console.log(nextTurn)
+    setTurns(currentTurns);
+  }
 
   const nextTurn = (amount, fv, currentPlayer) => {
     const number = turns.length + 1;
@@ -91,9 +111,85 @@ const GamePage = (props) => {
     setTurns(currentTurns);
   }
 
+  const isValidBet = (amount, fv) => {
+    const currentTurn = turns[turns.length - 1];
+    if (amount < currentTurn.amount) {
+      return false;
+    }
+
+    if (amount === currentTurn.amount) {
+      if (fv <= currentTurn.fv) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  const isLiar = () => {
+    setIsShowingAllDice(true);
+    const currentTurn = turns[turns.length - 1];
+    const fv = currentTurn.fv;
+    const amount = currentTurn.amount;
+    console.log("Evaluating bet of " + amount + " " + fv);
+
+    let amountFound = 0;
+
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
+      player.hand.forEach((dice) => {
+        if (dice === fv) {
+          amountFound++;
+        }
+      })
+    }
+
+    console.log(`${amountFound} ${fv}'s found`)
+
+    if (amountFound >= amount) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  const rerollDice = () => {
+    const playersArray = [...players];
+
+    playersArray.forEach((player) => {
+      
+      const newHand = player.hand.map((dice) => {
+        return 1;
+      })
+
+      player.hand = newHand;
+    })
+    setPlayers(playersArray);
+  }
+
   const handleSubmitBet = (amount, fv) => {
-    const nextPlayer = turns[turns.length - 1].nextPlayer;
-    nextTurn(amount, fv, nextPlayer);
+    if (amount === -1 && fv === -1) {
+      const currentTurn = turns[turns.length - 1];
+      const playerId = currentTurn.player.id;
+      const nextPlayerId = currentTurn.nextPlayer.id;
+      const playersArray = [...players];
+      let lyingPlayer = playersArray[nextPlayerId-1];
+
+      if (isLiar()) {
+        lyingPlayer = playersArray[playerId-1];
+      } 
+
+      lyingPlayer.hand.pop();
+      console.log(`${lyingPlayer.name} is lying!`)
+      setPlayers(playersArray);
+      rerollDice();
+      nextRound(lyingPlayer);
+    } else if (isValidBet(amount, fv)) {
+      const nextPlayer = turns[turns.length - 1].nextPlayer;
+      nextTurn(amount, fv, nextPlayer);
+    } else {
+      console.log("Invalid turn!")
+    }
   }
   
   const handleClickStartButton = () => {

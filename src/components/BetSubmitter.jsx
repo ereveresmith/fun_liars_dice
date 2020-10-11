@@ -4,14 +4,26 @@ import { Styles } from '../util/Styles';
 import Button from './Button';
 import Dice from './Dice';
 
+const HugeText = Styled.h1`
+  font-size: 3em;
+  color: ${Styles.colors.black};
+  opacity: 0.8;
+  text-align: center;
+`
+
 const Grid = Styled.div`
   display: grid;
   grid-template-columns: auto auto auto;
+  align-items: center;
+    justify-items: center;
 `
 
 const VerticalGrid = Styled.div`
   display: grid;
   grid-template-rows: auto auto auto;
+  align-items: center;
+  width: 120px;
+    justify-items: center;
 `
 
 const BetSubmitter = (props) => {
@@ -46,18 +58,25 @@ const BetSubmitter = (props) => {
     props.onSubmit(amount, fv);
   }
 
+  const handleCall = () => {
+    props.onSubmit(-1, -1);
+  }
+
   return (
     <Grid>
       <VerticalGrid>
-        <Button label="Raise" onClick={handleRaiseAmount}></Button>
-        {amount}
-        <Button label="Lower" onClick={handleLowerAmount}></Button>
+        <Button onClick={handleRaiseAmount}></Button>
+        <HugeText>{amount}</HugeText>
+        <Button onClick={handleLowerAmount}></Button>
       </VerticalGrid>
-      <Button label="Submit" onClick={handleSubmit}></Button>
       <VerticalGrid>
-        <Button label="Raise" onClick={handleRaiseFv}></Button>
-        <Dice fv={fv}></Dice>
-        <Button label="Lower" onClick={handleLowerFv}></Button>
+        <Button onClick={handleRaiseFv}></Button>
+        <Dice fv={fv} isBig></Dice>
+        <Button onClick={handleLowerFv}></Button>
+      </VerticalGrid>
+      <VerticalGrid>
+        <Button label="Submit" onClick={handleSubmit}></Button>
+        <Button label="Liar!" onClick={handleCall}></Button>
       </VerticalGrid>
     </Grid>
   );

@@ -6,6 +6,7 @@ const StyledButton = Styled.button`
   padding: 8px 16px;
   border-radius: 24px;
   margin: 8px;
+  min-width: 100px;
   border-radius: 24px;
   color: white;
   text-transform: uppercase;
