@@ -20,7 +20,7 @@ const Cell = Styled.div`
   `}
 
   ${props => props.isSecondary && `
-    background-color: ${Styles.colors.lightGrey};
+    border-color: ${Styles.colors.purple};
   `}
 `
 

@@ -7,8 +7,8 @@ const Wrapper = Styled.div`
     display: flex;
     border: 2px solid ${Styles.colors.darkGrey};
     border-radius: 4px;
-    max-width: 38px;
-    height: 38px;
+    max-width: 34px;
+    height: 34px;
     width: 100%;
 
     background-color: ${Styles.colors.white};
@@ -19,8 +19,8 @@ const Wrapper = Styled.div`
 
 
     ${props => props.isBig && `
-      max-width: 70px;
-      height: 70px;
+      max-width: 60px;
+      height: 60px;
     `}
 `
 

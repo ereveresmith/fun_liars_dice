@@ -4,12 +4,14 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import CenterDisplay from '../components/CenterDisplay';
 import PlayerDisplay from '../components/PlayerDisplay'
+import BetSubmitter from '../components/BetSubmitter'
 
 const GameContainer = Styled.div`
+
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: 0 15%;
+  margin: 5% 15% 0 15%;
   width: 70%;
   `
 
@@ -19,6 +21,13 @@ const GameGrid = Styled.div`
   justify-items: center;
   align-items: center;
   grid-template-columns: auto auto auto;
+`
+
+const ToolsGrid = Styled.div`
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
 `
 
 const initialPlayers = [
@@ -82,9 +91,9 @@ const GamePage = (props) => {
     setTurns(currentTurns);
   }
 
-  const handleSubmitBet = () => {
+  const handleSubmitBet = (amount, fv) => {
     const nextPlayer = turns[turns.length - 1].nextPlayer;
-    nextTurn(5, 5, nextPlayer);
+    nextTurn(amount, fv, nextPlayer);
   }
   
   const handleClickStartButton = () => {
@@ -144,7 +153,9 @@ const GamePage = (props) => {
       <GameContainer>
         {isStarted ? renderGame() : renderStartScreen()}
       </GameContainer>
-      <Button label={"Submit"} onClick={handleSubmitBet}></Button>
+      <ToolsGrid>
+        <BetSubmitter onSubmit={handleSubmitBet}></BetSubmitter>
+      </ToolsGrid>
     </div>
   );
 }

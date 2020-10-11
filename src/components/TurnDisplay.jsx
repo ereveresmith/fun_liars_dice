@@ -12,7 +12,7 @@ const FlexWrapper = Styled.div`
 `
 
 const HugeText = Styled.h1`
-  font-size: 4em;
+  font-size: 3em;
   color: ${Styles.colors.black};
   opacity: 0.8;
   padding-right: 16px;
