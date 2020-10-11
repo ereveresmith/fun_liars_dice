@@ -11,6 +11,8 @@ const Wrapper = Styled.div`
     height: 38px;
     width: 100%;
 
+    background-color: ${Styles.colors.white};
+
     &:hover {
       background-color: ${Styles.colors.grey};
     }

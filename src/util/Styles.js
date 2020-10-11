@@ -6,7 +6,7 @@ export const Styles = {
         lightGrey: '#f5f5f5',
         grey: '#e6e6e6',
         white: 'white',
-        blue: 'blue',
+        blue: '#3399ff',
         darkGrey: '#979797',
         black: '#262626'
     }

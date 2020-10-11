@@ -21,29 +21,10 @@ const GameGrid = Styled.div`
   grid-template-columns: auto auto auto;
 `
 
-const Cell = Styled.div`
-  display: grid;
-  width: 100%;
-  grid-template-rows: 1fr 2fr;
-  border: 2px solid ${Styles.colors.darkGrey  };
-  height: 240px;
-  transition: background-color 50ms ease-out;
-
-  &:hover {
-    background-color: ${Styles.colors.lightGrey};
-  }
-
-  ${props => props.isActive && `
-    border-color: ${Styles.colors.purple};
-    background-color: ${Styles.colors.darkGrey};
-  `}
-`
-
-
 const initialPlayers = [
   {name: 'YOU', id: 1, hand: [1, 2, 3, 4, 5], isYou: true},
   {name: 'Jenkins', id: 2, hand: []},
-  {name: 'Rich', id: 3, hand: []},
+  {name: 'Rich', id: 3, hand: [6, 6]},
   {name: 'Bri', id: 4, hand: []},
   {name: 'Joseph', id: 5, hand: [1]},
   {name: 'Mr. Bob', id: 6, hand: []},
@@ -55,7 +36,7 @@ const initialTurn = {
   number: 1,
   amount: 0,
   fv: 0,
-  player: undefined,
+  player: {id: 0},
   nextPlayer: {
     name: "YOU",
     id: 1,
@@ -118,13 +99,21 @@ const GamePage = (props) => {
   }
 
   const renderPlayerCell = (playerNumber) => {
+    const currentTurn = turns[turns.length - 1];
+    const player = players[playerNumber - 1];
+    const isShowingDice = (isShowingAllDice | player.id === 1);
+
+    const isActive = (player.id === currentTurn.nextPlayer.id)
+    const isSecondary = (player.id === currentTurn.player.id)
+
     return (
-      <Cell key={`cell${playerNumber}`}>
         <PlayerDisplay 
+          turn={currentTurn}
+          isActive={isActive}
+          isSecondary={isSecondary}
           player={players[playerNumber-1]}
-          showDice={isShowingAllDice}>
+          showDice={isShowingDice}>
         </PlayerDisplay>
-      </Cell>
     )};
 
   const renderGame = () => {
@@ -136,9 +125,7 @@ const GamePage = (props) => {
     renderedCells.push(renderPlayerCell(6));
 
     renderedCells.push(renderPlayerCell(3));
-    renderedCells.push(<Cell key={`cellCenter`}>
-      <CenterDisplay turn={currentTurn}></CenterDisplay>
-    </Cell>);
+    renderedCells.push(<CenterDisplay turn={currentTurn}></CenterDisplay>);
     renderedCells.push(renderPlayerCell(7));
 
     renderedCells.push(renderPlayerCell(2));

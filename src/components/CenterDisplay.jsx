@@ -3,34 +3,34 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
 
+const Cell = Styled.div`
+  display: grid;
+  width: 100%;
+  border: 2px solid ${Styles.colors.darkGrey  };
+  height: 240px;
+
+  ${props => props.isActive && `
+    border-color: ${Styles.colors.purple};
+    background-color: ${Styles.colors.purple};
+    color: white;
+  `}
+`
+
 const GridWrapper = Styled.div`
   display: grid;
   grid-template-rows: auto auto auto;
   height: 100%;
   margin: 8px 0;
-`
-
-const FlexWrapper = Styled.div`
-  text-align: center;
   align-items: center;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 28px;
-`
 
-
-const HugeText = Styled.h1`
-  font-size: 4em;
-  color: ${Styles.colors.black};
-  opacity: 0.8;
-  padding-right: 16px;
-  text-align: center;
 `
 
 const Text = Styled.h3`
-  font-size: 1.5em;
+  font-size: 1.3em;
   color: ${Styles.colors.purple};
   text-align: center;
+  width: 200px;
+  justify-self: center;
 `
 
 const TurnArrow = Styled.div`
@@ -65,17 +65,12 @@ const CenterDisplay = ({ turn }) => {
   }
 
   return (
-    <GridWrapper>
-      {isActive && (
-        <FlexWrapper>
-              <HugeText>{turn.amount}</HugeText>
-              <Dice fv={turn.fv} isBig></Dice>
-        </FlexWrapper>
-      )}
-      <TurnArrow angle={calcAngle()}></TurnArrow>
-      <Text>{turnText}</Text>
-    </GridWrapper>
-
+    <Cell>
+      <GridWrapper>
+        <TurnArrow angle={calcAngle()}></TurnArrow>
+        <Text>{turnText}</Text>
+      </GridWrapper>
+    </Cell>
   );
 }
 
