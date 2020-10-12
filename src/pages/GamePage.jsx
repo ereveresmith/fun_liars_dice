@@ -3,17 +3,10 @@ import Button from '../components/Button';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import CenterDisplay from '../components/CenterDisplay';
-import PlayerDisplay from '../components/PlayerDisplay'
-import BetSubmitter from '../components/BetSubmitter'
-
-const LogContainer = Styled.div`
-  overflow: scroll;
-  display: grid;
-  padding: 24px;
-  border: 1px solid blue;
-  grid-auto-flow: row;
-  grid-template-rows: min-content;
-`
+import PlayerDisplay from '../components/PlayerDisplay';
+import BetSubmitter from '../components/BetSubmitter';
+import LogContainer from '../components/LogContainer';
+import { mockPlayers, YOU } from '../util/Constants';
 
 const EmptyCell = Styled.div`
   display: grid;
@@ -22,15 +15,6 @@ const EmptyCell = Styled.div`
   background-color: ${Styles.colors.lightGrey  };
   height: 240px;
   min-width: 200px;
-`
-
-const StyledMessage = Styled.span`
-  font-size: 16px;
-  height: 20px;
-  max-width: 160px;
-  overflow: hidden;
-  font-weight: 500;
-  color: ${Styles.colors.darkPurple};
 `
 
 const GameContainer = Styled.div`
@@ -49,37 +33,14 @@ const GameGrid = Styled.div`
   grid-template-columns: auto auto auto;
 `
 
-const ToolsGrid = Styled.div`
-  width: 100%;
-  display: grid;
-  justify-items: center;
-  align-items: center;
-`
-
-const generatePlayers = () => {
-  const NUM_PLAYERS = 6;
-
-  // const you = 
-}
-
-const initialPlayers = [
-  {name: 'YOU', id: 1, hand: [1, 2, 3, 4, 5]},
-  {name: 'Jenkins', id: 2, hand: [5]},
-  {name: 'Rich', id: 3, hand: [6, 6]},
-  {name: 'Joseph', id: 4, hand: [1]},
-  {name: 'Dice Expert', id: 5, hand: [1, 2, 6, 6]},
-  {name: 'Jorg 8', id: 6, hand: [2]},
-]
+const initialPlayers = [YOU, ...mockPlayers];
 
 const initialTurn = {
   number: 1,
   amount: 0,
   fv: 0,
   player: {id: 0},
-  nextPlayer: {
-    name: "YOU",
-    id: 1,
-  }
+  nextPlayer: YOU,
 }
 
 const GamePage = (props) => {
@@ -280,25 +241,12 @@ const GamePage = (props) => {
       return (
         <PlayerDisplay
           key={`playerDisplay${playerNumber}`}
-          turn={currentTurn}
+          turns={turns}
           isActive={isActive}
-          isSecondary={isSecondary}
           player={players[playerNumber-1]}
           showDice={isShowingDice}>
         </PlayerDisplay>
     )};
-    }
-
-
-
-  const renderedLog = () => {
-    const logItems = log.map((message, index) => {
-      return <StyledMessage key={`message${index}`}>{message}</StyledMessage>
-    })
-
-    return <LogContainer>{logItems}</LogContainer>
-
-
   }
 
   const renderGame = () => {
@@ -314,7 +262,7 @@ const GamePage = (props) => {
     renderedCells.push(renderPlayerCell(6));
 
     renderedCells.push(<EmptyCell key="logDisplay">
-      {renderedLog()}
+      <LogContainer log={log}></LogContainer>
     </EmptyCell>);
     renderedCells.push(renderPlayerCell(1));
     renderedCells.push(<EmptyCell key="betDisplay">

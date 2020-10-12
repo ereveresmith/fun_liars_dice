@@ -14,9 +14,10 @@ const HugeText = Styled.h1`
 const Grid = Styled.div`
   display: grid;
   grid-template-columns: auto auto;
+  align-self: center;
+  justify-self: center;
   align-items: center;
   justify-items: center;
-  width: 200px;
 `
 
 const VerticalGrid = Styled.div`
@@ -74,7 +75,7 @@ const BetSubmitter = (props) => {
         <Dice fv={fv} isBig></Dice>
         <Button onClick={handleLowerFv}></Button>
       </VerticalGrid>
-      <Button label="Liar!" onClick={handleCall}></Button>
+      <Button isGrey label="Liar!" onClick={handleCall}></Button>
       <Button label="Submit" onClick={handleSubmit}></Button>
     </Grid>
   );

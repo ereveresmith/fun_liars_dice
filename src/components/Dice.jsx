@@ -7,27 +7,21 @@ const Wrapper = Styled.div`
     display: flex;
     border: 2px solid ${Styles.colors.darkGrey};
     border-radius: 4px;
-    max-width: 34px;
-    height: 34px;
-    width: 100%;
+    width: 40px;
+    height: 40px;
 
     background-color: ${Styles.colors.white};
 
     &:hover {
       background-color: ${Styles.colors.grey};
     }
-
-
-    ${props => props.isBig && `
-      max-width: 60px;
-      height: 60px;
-    `}
 `
 
 const Grid = Styled.div`
     display: grid;
     grid-template-rows: auto auto auto;
     grid-template-columns: auto auto auto;
+    grid-gap: 4px;  
     padding: 4px;
     width: 100%;
 `

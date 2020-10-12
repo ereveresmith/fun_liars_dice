@@ -3,11 +3,12 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
-  padding: 8px 16px;
+  padding: 12px 12px;
   border-radius: 24px;
   margin: 8px;
   min-width: 100px;
-  border-radius: 24px;
+  border-radius: 4px;
+  min-height: 30px;
   color: white;
   text-transform: uppercase;
   font-weight: 800;
@@ -21,6 +22,7 @@ const StyledButton = Styled.button`
   ${props => props.isGrey && `
     background: 0;
     color: ${Styles.colors.darkGrey};
+    border: 2px solid ${Styles.colors.darkGrey};
   `}
 
   &:hover {

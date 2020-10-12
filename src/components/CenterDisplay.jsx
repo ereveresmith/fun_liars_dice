@@ -44,6 +44,7 @@ const TurnArrow = Styled.div`
   justify-self: center;
   border-bottom: 4em solid ${Styles.colors.purple};
   transform-origin: center;
+  transition: all 200ms ease;
 
   ${props => props.angle && `
     transform: rotate(${props.angle}deg);
