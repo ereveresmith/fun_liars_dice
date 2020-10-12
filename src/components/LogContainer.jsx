@@ -1,12 +1,10 @@
 import React, {useState} from 'react';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
-import Dice from './Dice';
 
 const StyledMessage = Styled.span`
   font-size: 16px;
   height: 20px;
-  max-width: 160px;
   overflow: hidden;
   font-weight: 500;
   color: ${Styles.colors.darkGrey};

@@ -55,12 +55,12 @@ const initialTurn = {
 const GamePage = (props) => {
   const [isStarted, setIsStarted] = useState(true);
   const [players, setPlayers] = useState(initialPlayers);
-  const [isShowingAllDice, setIsShowingAllDice] = useState(false);
   const [turns, setTurns] = useState([initialTurn]);
   const [log, setLog] = useState([]);
   const [defaultAmount, setDefaultAmount] = useState(1);
   const [defaultFv, setDefaultFv] = useState(1);
   const [yourTurn, setYourTurn] = useState(true);
+  const [isChallenge, setIsChallenge] = useState(false);
 
   const printLog = (message) => {
     setLog(log => [...log, message]);
@@ -133,35 +133,16 @@ const GamePage = (props) => {
       newAmount++;
       newFv = 1;
     }
-    nextTurn(newAmount, newFv, player);
-  }
-
-
-  const nextTurn = (amount, fv, currentPlayer) => {
-    const number = turns.length + 1;
-    const nextPlayer = calcNextPlayer(currentPlayer);
-    const newTurn = {
-      number: number,
-      amount: amount,
-      fv: fv,
-      player: currentPlayer,
-      nextPlayer: nextPlayer,
-    }
-
-    printLog(`${currentPlayer.name}: ${newTurn.amount} ${newTurn.fv}`)
-
-    setTurns(turns => [...turns, newTurn]);
-
-    if (nextPlayer.id === 1) {
-      setYourTurn(true);
-    } else {
-      setYourTurn(false);
-      calcBotTurn(nextPlayer, newTurn);
-    }
+    // submitBet(newAmount, newFv, player);
+    nextTurn(newAmount, newFv, player)
   }
 
   const isValidBet = (amount, fv) => {
     const currentTurn = turns[turns.length - 1];
+    if (amount === -1 && fv === -1) {
+      return true;
+    }
+
     if (amount < currentTurn.amount) {
       return false;
     }
@@ -215,22 +196,55 @@ const GamePage = (props) => {
       player.hand = newHand;
     })
     setPlayers(playersArray);
-    setIsShowingAllDice(false);
+    setIsChallenge(false);
   }
 
-  const handleSubmitBet = async (amount, fv) => {
+  const nextTurn = (amount, fv, currentPlayer) => {
+    const number = turns.length + 1;
+    const nextPlayer = calcNextPlayer(currentPlayer);
+    const newTurn = {
+      number: number,
+      amount: amount,
+      fv: fv,
+      player: currentPlayer,
+      nextPlayer: nextPlayer,
+    }
+
+    printLog(`${currentPlayer.name}: ${newTurn.amount} ${newTurn.fv}`)
+
+    setTurns(turns => [...turns, newTurn]);
+
+    if (nextPlayer.id === 1) {
+      setYourTurn(true);
+    } else {
+      setYourTurn(false);
+      calcBotTurn(nextPlayer, newTurn);
+    }
+  }
+
+  const handleClickSubmit = async (amount, fv) => {
+    if (isValidBet(amount, fv)) {
+      submitBet(amount, fv, players[0]);
+    } else {
+      console.log("INVALID BET!");
+    }
+  }
+
+  const submitBet = async (amount, fv, otherplayer) => {
     const isCall = (amount === -1 && fv === -1);
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
-    const nextplayer = currentTurn.nextPlayer;
+    const nextPlayer = currentTurn.nextPlayer;
+
+    console.log(currentTurn)
 
     if (isCall) {
       const playersArray = [...players];
-      let lyingPlayer = playersArray[nextplayer.id-1];
+      let lyingPlayer = playersArray[nextPlayer.id-1];
 
-      printLog(`${nextplayer.name} challenged ${player.name}`);
-      setIsShowingAllDice(true);
-      await timeout(4000);
+      printLog(`${nextPlayer.name} challenged ${player.name}`);
+      setIsChallenge(true);
+      await timeout(2000);
 
       if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];
@@ -244,10 +258,11 @@ const GamePage = (props) => {
       setPlayers(playersArray);
       rerollDice();
       nextRound(lyingPlayer);
-      setDefaultAmount(1);
+      setDefaultAmount(1); 
       setDefaultFv(1);
-    } else if (isValidBet(amount, fv)) {
+    } else {
       const nextPlayer = turns[turns.length - 1].nextPlayer;
+      console.log("HIT NEXT TURN WITH: " + nextPlayer.name)
       nextTurn(amount, fv, nextPlayer);
 
       let newDefaultFv = defaultFv + 1;
@@ -256,11 +271,8 @@ const GamePage = (props) => {
         newDefaultFv = 1;
         newDefaultAmount++;
       }
-
       setDefaultFv(newDefaultFv);
       setDefaultAmount(newDefaultAmount);
-    } else {
-      console.log("Invalid turn!")
     }
   }
   
@@ -284,7 +296,7 @@ const GamePage = (props) => {
     if (player === undefined) {
       return <EmptyCell ></EmptyCell>
     } else {
-      const isShowingDice = (isShowingAllDice | player.id === 1);
+      const isShowingDice = (isChallenge | player.id === 1);
       let opacity = 1;
       const isActive = (player.id === currentTurn.nextPlayer.id);
       let isSecondary = false;
@@ -307,15 +319,17 @@ const GamePage = (props) => {
       }
 
       const isShowingTurn = (isTertiary | isSecondary);
+      const isShowingChallenge = (isChallenge && (player.id === currentTurn.player.id | player.id === currentTurn.nextPlayer.id))
       
       return (
         <PlayerDisplay
+          isChallenge={isShowingChallenge}
           key={`playerDisplay${playerNumber}`}
           turn={turnToShow}
           turnOpacity={opacity}
           showTurn={isShowingTurn}
           isActive={isActive}
-          player={players[playerNumber-1]}
+          player={player}
           showDice={isShowingDice}>
         </PlayerDisplay>
     )};
@@ -325,12 +339,13 @@ const GamePage = (props) => {
     const renderedCells = [];
 
     const currentTurn = turns[turns.length - 1];
+
     renderedCells.push(renderPlayerCell(3));
     renderedCells.push(renderPlayerCell(4));
     renderedCells.push(renderPlayerCell(5));
 
     renderedCells.push(renderPlayerCell(2));
-    renderedCells.push(<CenterDisplay key="centerDisplay" turn={currentTurn}></CenterDisplay>);
+    renderedCells.push(<CenterDisplay key="centerDisplay" isChallenge={isChallenge} turn={currentTurn}></CenterDisplay>);
     renderedCells.push(renderPlayerCell(6));
 
     renderedCells.push(<ToolsCell key="logDisplay">
@@ -338,7 +353,7 @@ const GamePage = (props) => {
     </ToolsCell>);
     renderedCells.push(renderPlayerCell(1));
     renderedCells.push(<ToolsCell key="betDisplay">
-      <BetSubmitter disabled={!yourTurn} defaultFv={defaultFv} defaultAmount={defaultAmount} onSubmit={handleSubmitBet}></BetSubmitter>
+      <BetSubmitter canCall={currentTurn.fv > 0} disabled={!yourTurn} defaultFv={defaultFv} defaultAmount={defaultAmount} onSubmit={handleClickSubmit}></BetSubmitter>
     </ToolsCell>);
 
     return (

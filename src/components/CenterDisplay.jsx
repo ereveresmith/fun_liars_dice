@@ -45,10 +45,7 @@ const TurnArrow = Styled.div`
   margin-bottom: 8px;
 `
 
-const CenterDisplay = ({ turn }) => {
-  const isActive = (turn.amount > -1);
-
-
+const CenterDisplay = ({ turn, isChallenge }) => {
   const calcAngle = () => {
     const offset = 180;
     if (turn.nextPlayer.id === 1) {
@@ -59,6 +56,7 @@ const CenterDisplay = ({ turn }) => {
   }
 
   let turnText = `${turn.nextPlayer.name}'s turn...`;
+  let challengeText = `${turn.nextPlayer.name} challenged ${turn.player.name}`;
 
   if (turn.nextPlayer.id === 1) {
     turnText = 'Your Turn';
@@ -67,8 +65,8 @@ const CenterDisplay = ({ turn }) => {
   return (
     <Cell>
       <GridWrapper>
-        <TurnArrow angle={calcAngle()}></TurnArrow>
-        <Text>{turnText}</Text>
+        {!isChallenge && <TurnArrow angle={calcAngle()}></TurnArrow> }
+        <Text>{isChallenge ? challengeText : turnText}</Text>
       </GridWrapper>
     </Cell>
   );

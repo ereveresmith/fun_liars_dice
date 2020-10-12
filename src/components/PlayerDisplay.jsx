@@ -25,7 +25,12 @@ const Cell = Styled.div`
   `}
 
   ${props => props.isOut && `
-    opacity: 0;
+    opacity: 0.2;
+  `}
+
+  ${props => props.isChallenge && `
+    background-color: ${Styles.colors.red};
+    color: white;
   `}
 `
 
@@ -73,7 +78,7 @@ const PlayerDisplay = (props) => {
   })
 
   return (
-    <Cell isActive={props.isActive} isOut={!props.player.hand.length}>
+    <Cell isActive={props.isActive} isOut={!props.player.hand.length} isChallenge={props.isChallenge}>
       <StyledDiv className="PlayerDisplay">
         <NameText isActive={props.isActive}>{props.player.id}: {props.player.name}</NameText>
         <HandGrid>{renderedHand}</HandGrid>

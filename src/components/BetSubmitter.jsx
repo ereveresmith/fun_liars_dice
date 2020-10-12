@@ -67,7 +67,7 @@ const BetSubmitter = (props) => {
   }
 
   const handleCall = () => {
-    if (!props.disabled) {
+    if (!props.disabled && props.canCall) {
       props.onSubmit(-1, -1);
     }
   }

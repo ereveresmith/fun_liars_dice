@@ -8,6 +8,7 @@ export const Styles = {
         white: 'white',
         blue: '#3399ff',
         darkGrey: '#666666  ',
-        black: '#262626'
+        black: '#262626',
+        red: '#ff8080',
     }
 }
