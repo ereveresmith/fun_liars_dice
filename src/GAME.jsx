@@ -62,6 +62,12 @@ const GamePage = (props) => {
   const [yourTurn, setYourTurn] = useState(true);
   const [isChallenge, setIsChallenge] = useState(false);
 
+  useEffect(() => {
+    if (turns[turns.length-1].nextPlayer.id !== 1) {
+      calcBotTurn();
+    }
+  }, [turns])
+
   const printLog = (message) => {
     setLog(log => [...log, message]);
   }
@@ -123,18 +129,18 @@ const GamePage = (props) => {
   function timeout(delay) {
     return new Promise( res => setTimeout(res, delay) );}
 
-  const calcBotTurn = async (player, newTurn) => {
-    await timeout(500);
-    const currentFv = newTurn.fv;
-    const currentAmount = newTurn.amount;
+  const calcBotTurn = async () => {
+    await timeout(600);
+    const currentTurn = turns[turns.length - 1];
+    const currentFv = currentTurn.fv;
+    const currentAmount = currentTurn.amount;
     let newFv = currentFv + 1;
     let newAmount = currentAmount;
     if (newFv > 6) {
       newAmount++;
       newFv = 1;
     }
-    // submitBet(newAmount, newFv, player);
-    nextTurn(newAmount, newFv, player)
+    submitBet(newAmount, newFv, currentTurn.nextPlayer);
   }
 
   const isValidBet = (amount, fv) => {
@@ -199,7 +205,9 @@ const GamePage = (props) => {
     setIsChallenge(false);
   }
 
-  const nextTurn = (amount, fv, currentPlayer) => {
+  const nextTurn = async (amount, fv, currentPlayer) => {
+    console.log(turns)
+
     const number = turns.length + 1;
     const nextPlayer = calcNextPlayer(currentPlayer);
     const newTurn = {
@@ -211,6 +219,7 @@ const GamePage = (props) => {
     }
 
     printLog(`${currentPlayer.name}: ${newTurn.amount} ${newTurn.fv}`)
+    await timeout(300);
 
     setTurns(turns => [...turns, newTurn]);
 
@@ -218,38 +227,37 @@ const GamePage = (props) => {
       setYourTurn(true);
     } else {
       setYourTurn(false);
-      calcBotTurn(nextPlayer, newTurn);
     }
   }
 
   const handleClickSubmit = async (amount, fv) => {
     if (isValidBet(amount, fv)) {
       submitBet(amount, fv, players[0]);
-    } else {
-      console.log("INVALID BET!");
     }
   }
 
-  const submitBet = async (amount, fv, otherplayer) => {
+  const submitBet = async (amount, fv) => {
     const isCall = (amount === -1 && fv === -1);
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
 
-    console.log(currentTurn)
+    // console.log(currentTurn)
 
     if (isCall) {
       const playersArray = [...players];
       let lyingPlayer = playersArray[nextPlayer.id-1];
-
+  
+      //TODO: do this mutably
+  
       printLog(`${nextPlayer.name} challenged ${player.name}`);
       setIsChallenge(true);
       await timeout(2000);
-
+  
       if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];
       } 
-
+  
       lyingPlayer.hand.pop();
       printLog(`${lyingPlayer.name} lost a dice!`);
       if (lyingPlayer.hand.length === 0) {
@@ -258,22 +266,27 @@ const GamePage = (props) => {
       setPlayers(playersArray);
       rerollDice();
       nextRound(lyingPlayer);
-      setDefaultAmount(1); 
-      setDefaultFv(1);
+      resetDefaults();  
     } else {
-      const nextPlayer = turns[turns.length - 1].nextPlayer;
-      console.log("HIT NEXT TURN WITH: " + nextPlayer.name)
       nextTurn(amount, fv, nextPlayer);
-
-      let newDefaultFv = defaultFv + 1;
-      let newDefaultAmount = defaultAmount;
-      if (newDefaultFv > 6) {
-        newDefaultFv = 1;
-        newDefaultAmount++;
-      }
-      setDefaultFv(newDefaultFv);
-      setDefaultAmount(newDefaultAmount);
+      upDefaults();
     }
+  }
+
+  const resetDefaults = () => {
+    setDefaultAmount(1); 
+    setDefaultFv(1);
+  }
+
+  const upDefaults = () => {
+    let newDefaultFv = defaultFv + 1;
+    let newDefaultAmount = defaultAmount;
+    if (newDefaultFv > 6) {
+      newDefaultFv = 1;
+      newDefaultAmount++;
+    }
+    setDefaultFv(newDefaultFv);
+    setDefaultAmount(newDefaultAmount);
   }
   
   const startGame = () => {
