@@ -1,18 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import Button from '../components/Button';
+import Button from './components/Button';
 import Styled from 'styled-components';
-import { Styles } from '../util/Styles';
-import CenterDisplay from '../components/CenterDisplay';
-import PlayerDisplay from '../components/PlayerDisplay';
-import BetSubmitter from '../components/BetSubmitter';
-import LogContainer from '../components/LogContainer';
-import { mockPlayers, YOU } from '../util/Constants';
+import { Styles } from './util/Styles';
+import CenterDisplay from './components/CenterDisplay';
+import PlayerDisplay from './components/PlayerDisplay';
+import BetSubmitter from './components/BetSubmitter';
+import LogContainer from './components/LogContainer';
+import { mockPlayers, YOU } from './util/Constants';
 
 const EmptyCell = Styled.div`
   display: grid;
   width: 100%;
   border: 2px solid ${Styles.colors.darkGrey  };
   background-color: ${Styles.colors.lightGrey  };
+  opacity: 0;
+  height: 240px;
+  min-width: 200px;
+`
+
+const ToolsCell = Styled.div`
+  display: grid;
+  width: 100%;
   height: 240px;
   min-width: 200px;
 `
@@ -21,8 +29,8 @@ const GameContainer = Styled.div`
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: 10% 15% 0 15%;
-  width: 70%;
+  margin: 10% 12% 0 12%;
+  width: 76%;
   `
 
 const GameGrid = Styled.div`
@@ -31,6 +39,7 @@ const GameGrid = Styled.div`
   justify-items: center;
   align-items: center;
   grid-template-columns: auto auto auto;
+  grid-gap: 48px;
 `
 
 const initialPlayers = [YOU, ...mockPlayers];
@@ -48,10 +57,12 @@ const GamePage = (props) => {
   const [players, setPlayers] = useState(initialPlayers);
   const [isShowingAllDice, setIsShowingAllDice] = useState(false);
   const [turns, setTurns] = useState([initialTurn]);
-  const [log, setLog] = useState(['Starting Game', 'Your Turn']);
+  const [log, setLog] = useState([]);
+  const [defaultAmount, setDefaultAmount] = useState(1);
+  const [defaultFv, setDefaultFv] = useState(1);
+
 
   const printLog = (message) => {
-    console.log("LOG: " + message);
     setLog(log => [...log, message]);
   }
 
@@ -63,7 +74,9 @@ const GamePage = (props) => {
     } 
 
     if (checkWin()) {
+      console.log("You did it!")
       setIsStarted(false);
+
     } else {
       const number = turns.length + 1;
 
@@ -120,7 +133,8 @@ const GamePage = (props) => {
       nextPlayer: nextPlayer,
     }
 
-    printLog(`${nextPlayer.name}'s Turn`)
+    printLog(`${currentPlayer.name}: ${newTurn.amount} ${newTurn.fv}`)
+
     setTurns(turns => [...turns, newTurn]);
   }
 
@@ -186,11 +200,11 @@ const GamePage = (props) => {
 
   const handleSubmitBet = (amount, fv) => {
     const isCall = (amount === -1 && fv === -1);
+    const currentTurn = turns[turns.length - 1];
+    const player = currentTurn.player;
+    const nextplayer = currentTurn.nextPlayer;
 
     if (isCall) {
-      const currentTurn = turns[turns.length - 1];
-      const player = currentTurn.player;
-      const nextplayer = currentTurn.nextPlayer;
       const playersArray = [...players];
       let lyingPlayer = playersArray[nextplayer.id-1];
 
@@ -208,9 +222,21 @@ const GamePage = (props) => {
       setPlayers(playersArray);
       rerollDice();
       nextRound(lyingPlayer);
+      setDefaultAmount(1);
+      setDefaultFv(1);
     } else if (isValidBet(amount, fv)) {
       const nextPlayer = turns[turns.length - 1].nextPlayer;
       nextTurn(amount, fv, nextPlayer);
+
+      let newDefaultFv = defaultFv + 1;
+      let newDefaultAmount = defaultAmount;
+      if (newDefaultFv > 6) {
+        newDefaultFv = 1;
+        newDefaultAmount++;
+      }
+
+      setDefaultFv(newDefaultFv);
+      setDefaultAmount(newDefaultAmount);
     } else {
       console.log("Invalid turn!")
     }
@@ -230,18 +256,42 @@ const GamePage = (props) => {
 
   const renderPlayerCell = (playerNumber) => {
     const currentTurn = turns[turns.length - 1];
+    let turnToShow = currentTurn;
 
     const player = players[playerNumber - 1];
     if (player === undefined) {
       return <EmptyCell ></EmptyCell>
     } else {
       const isShowingDice = (isShowingAllDice | player.id === 1);
+      let opacity = 1;
       const isActive = (player.id === currentTurn.nextPlayer.id);
-      const isSecondary = (player.id === currentTurn.player.id);
+      let isSecondary = false;
+      let isTertiary = false;
+
+      if (turns.length > 1) {
+        const prevTurn = turns[turns.length - 2];
+        isSecondary = (player.id === currentTurn.player.id);
+
+        if (isSecondary) {
+          turnToShow = currentTurn;
+        }
+        if (turns.length > 2) {
+          isTertiary = (player.id === prevTurn.player.id);
+          if (isTertiary) {
+            opacity = 0.5;
+            turnToShow =  prevTurn;
+          }
+        }
+      }
+
+      const isShowingTurn = (isTertiary | isSecondary);
+      
       return (
         <PlayerDisplay
           key={`playerDisplay${playerNumber}`}
-          turns={turns}
+          turn={turnToShow}
+          turnOpacity={opacity}
+          showTurn={isShowingTurn}
           isActive={isActive}
           player={players[playerNumber-1]}
           showDice={isShowingDice}>
@@ -261,13 +311,13 @@ const GamePage = (props) => {
     renderedCells.push(<CenterDisplay key="centerDisplay" turn={currentTurn}></CenterDisplay>);
     renderedCells.push(renderPlayerCell(6));
 
-    renderedCells.push(<EmptyCell key="logDisplay">
+    renderedCells.push(<ToolsCell key="logDisplay">
       <LogContainer log={log}></LogContainer>
-    </EmptyCell>);
+    </ToolsCell>);
     renderedCells.push(renderPlayerCell(1));
-    renderedCells.push(<EmptyCell key="betDisplay">
-      <BetSubmitter onSubmit={handleSubmitBet}></BetSubmitter>
-    </EmptyCell>);
+    renderedCells.push(<ToolsCell key="betDisplay">
+      <BetSubmitter defaultFv={defaultFv} defaultAmount={defaultAmount} onSubmit={handleSubmitBet}></BetSubmitter>
+    </ToolsCell>);
 
     return (
       <GameGrid>

@@ -6,15 +6,8 @@ import Dice from '../components/Dice';
 const Cell = Styled.div`
   display: grid;
   width: 100%;
-  border: 2px solid ${Styles.colors.darkGrey  };
   height: 240px;
   min-width: 200px;
-
-  ${props => props.isActive && `
-    border-color: ${Styles.colors.purple};
-    background-color: ${Styles.colors.purple};
-    color: white;
-  `}
 `
 
 const GridWrapper = Styled.div`

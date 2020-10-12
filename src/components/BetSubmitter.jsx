@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import Button from './Button';
@@ -7,7 +7,7 @@ import Dice from './Dice';
 const HugeText = Styled.h1`
   font-size: 3em;
   color: ${Styles.colors.black};
-  opacity: 0.8;
+  opacity: 0.6;
   text-align: center;
 `
 
@@ -28,8 +28,13 @@ const VerticalGrid = Styled.div`
 `
 
 const BetSubmitter = (props) => {
-  const [fv, setFv] = useState(1);
-  const [amount, setAmount] = useState(1);
+  const [fv, setFv] = useState(props.defaultFv);
+  const [amount, setAmount] = useState(props.defaultAmount);
+
+  useEffect(() => {
+    setFv(props.defaultFv);
+    setAmount(props.defaultAmount);
+  }, [props.defaultAmount, props.defaultFv])
 
   const handleLowerAmount = () => {
     if(amount - 1 > 0) {
@@ -66,17 +71,17 @@ const BetSubmitter = (props) => {
   return (
     <Grid>
       <VerticalGrid>
-        <Button onClick={handleRaiseAmount}></Button>
+        <Button isGrey onClick={handleRaiseAmount}></Button>
         <HugeText>{amount}</HugeText>
-        <Button onClick={handleLowerAmount}></Button>
+        <Button isGrey onClick={handleLowerAmount}></Button>
       </VerticalGrid>
       <VerticalGrid>
-        <Button onClick={handleRaiseFv}></Button>
+        <Button isGrey onClick={handleRaiseFv}></Button>
         <Dice fv={fv} isBig></Dice>
-        <Button onClick={handleLowerFv}></Button>
+        <Button isGrey onClick={handleLowerFv}></Button>
       </VerticalGrid>
       <Button isGrey label="Liar!" onClick={handleCall}></Button>
-      <Button label="Submit" onClick={handleSubmit}></Button>
+      <Button isGrey label="Submit" onClick={handleSubmit}></Button>
     </Grid>
   );
 }

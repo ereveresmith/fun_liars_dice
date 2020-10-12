@@ -11,17 +11,21 @@ const TakingTurnDisplay = Styled.div`
 
 const Cell = Styled.div`
   display: grid;
-  width: 100%;
   grid-template-rows: 1fr 2fr;
   border: 2px solid ${Styles.colors.darkGrey};
+  border-radius: 60px;
   height: 240px;
-  min-width: 230px;
+  width: 330px;
   transition: background-color 180ms ease-out;
 
   ${props => props.isActive && `
     border-color: ${Styles.colors.purple};
-    background-color: ${Styles.colors.purple};
+    background-color: ${Styles.colors.lightPurple};
     color: white;
+  `}
+
+  ${props => props.isOut && `
+    opacity: 0;
   `}
 `
 
@@ -52,7 +56,7 @@ const Divider = Styled.div`
 `
 
 const HandGrid = Styled.div`
-  padding: 0 48px;
+  padding: 0 24px;
   display: grid;
   grid-gap: 8px;
   grid-template-columns: auto auto auto auto auto;
@@ -69,12 +73,14 @@ const PlayerDisplay = (props) => {
   })
 
   return (
-    <Cell isActive={props.isActive}>
+    <Cell isActive={props.isActive} isOut={!props.player.hand.length}>
       <StyledDiv className="PlayerDisplay">
         <NameText isActive={props.isActive}>{props.player.id}: {props.player.name}</NameText>
         <HandGrid>{renderedHand}</HandGrid>
         <Divider isActive={props.isActive}></Divider>
-        {props.isActive ? <TakingTurnDisplay>...</TakingTurnDisplay> : <TurnDisplay amount={1} fv={1}></TurnDisplay>}
+        {props.isActive ? 
+          <TakingTurnDisplay>...</TakingTurnDisplay> 
+        : props.showTurn ? <TurnDisplay opacity={props.turnOpacity} amount={props.turn.amount} fv={props.turn.fv}></TurnDisplay> : null}
       </StyledDiv>
     </Cell>
   );

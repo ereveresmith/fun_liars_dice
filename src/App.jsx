@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Styled from 'styled-components';
-import GamePage from './pages/GamePage';
+import Game from './GAME';
 
 const Portfolio = () => {
   const [page, setPage] = useState('game');
@@ -45,9 +45,9 @@ const Portfolio = () => {
   const renderPage = () => {
     switch(page) {
       case 'game': 
-        return <GamePage></GamePage>;
+        return <Game></Game>;
       default: 
-        return <GamePage></GamePage>;
+        return <Game></Game>;
     }
   }
 

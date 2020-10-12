@@ -9,14 +9,14 @@ const StyledMessage = Styled.span`
   max-width: 160px;
   overflow: hidden;
   font-weight: 500;
-  color: ${Styles.colors.darkPurple};
+  color: ${Styles.colors.darkGrey};
+  opacity: 0.9;
 `
 
 const Wrapper = Styled.div`
   overflow: scroll;
   display: grid;
   padding: 24px;
-  border: 1px solid blue;
   grid-auto-flow: row;
   grid-template-rows: min-content;
 `

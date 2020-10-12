@@ -9,21 +9,25 @@ const FlexWrapper = Styled.div`
   display: flex;
   justify-content: center;
   margin: 28px 0;
+
+  ${props => props.opacity && `
+    opacity: ${props.opacity};
+  `}
 `
 
 const HugeText = Styled.h1`
   font-size: 3em;
   color: ${Styles.colors.black};
-  opacity: 0.8;
+  opacity: 0.6;
   padding-right: 16px;
   text-align: center;
 `
 
-const TurnDisplay = ({ amount, fv }) => {
-  const amountDisplay = amount > 0 ? amount : '?';
+const TurnDisplay = ({ amount, fv, opacity }) => {
+  const amountDisplay = (amount > 0 ? amount : '?');
 
   return (
-    <FlexWrapper>
+    <FlexWrapper opacity={opacity}>
       <HugeText>{amountDisplay}</HugeText>
       <Dice fv={fv} isBig></Dice>
     </FlexWrapper>

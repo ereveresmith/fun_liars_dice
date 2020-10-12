@@ -37,7 +37,6 @@ const StyledButton = Styled.button`
   &:focus {
     outline: 1px ${Styles.colors.darkPurple} solid;
   }
-
 `;
 
 const Button = (props) => {

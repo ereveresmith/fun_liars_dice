@@ -9,7 +9,6 @@ const Wrapper = Styled.div`
     border-radius: 4px;
     width: 40px;
     height: 40px;
-
     background-color: ${Styles.colors.white};
 
     &:hover {
