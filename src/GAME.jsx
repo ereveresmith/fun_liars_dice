@@ -60,7 +60,7 @@ const GamePage = (props) => {
   const [log, setLog] = useState([]);
   const [defaultAmount, setDefaultAmount] = useState(1);
   const [defaultFv, setDefaultFv] = useState(1);
-
+  const [yourTurn, setYourTurn] = useState(true);
 
   const printLog = (message) => {
     setLog(log => [...log, message]);
@@ -120,11 +120,26 @@ const GamePage = (props) => {
     return nextPlayer;
   }
 
+  function timeout(delay) {
+    return new Promise( res => setTimeout(res, delay) );}
+
+  const calcBotTurn = async (player, newTurn) => {
+    await timeout(500);
+    const currentFv = newTurn.fv;
+    const currentAmount = newTurn.amount;
+    let newFv = currentFv + 1;
+    let newAmount = currentAmount;
+    if (newFv > 6) {
+      newAmount++;
+      newFv = 1;
+    }
+    nextTurn(newAmount, newFv, player);
+  }
+
 
   const nextTurn = (amount, fv, currentPlayer) => {
     const number = turns.length + 1;
     const nextPlayer = calcNextPlayer(currentPlayer);
-
     const newTurn = {
       number: number,
       amount: amount,
@@ -136,11 +151,17 @@ const GamePage = (props) => {
     printLog(`${currentPlayer.name}: ${newTurn.amount} ${newTurn.fv}`)
 
     setTurns(turns => [...turns, newTurn]);
+
+    if (nextPlayer.id === 1) {
+      setYourTurn(true);
+    } else {
+      setYourTurn(false);
+      calcBotTurn(nextPlayer, newTurn);
+    }
   }
 
   const isValidBet = (amount, fv) => {
     const currentTurn = turns[turns.length - 1];
-    return true;
     if (amount < currentTurn.amount) {
       return false;
     }
@@ -155,7 +176,6 @@ const GamePage = (props) => {
   }
 
   const isLiar = () => {
-    setIsShowingAllDice(true);
     const currentTurn = turns[turns.length - 1];
     const fv = currentTurn.fv;
     const amount = currentTurn.amount;
@@ -198,7 +218,7 @@ const GamePage = (props) => {
     setIsShowingAllDice(false);
   }
 
-  const handleSubmitBet = (amount, fv) => {
+  const handleSubmitBet = async (amount, fv) => {
     const isCall = (amount === -1 && fv === -1);
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
@@ -209,6 +229,8 @@ const GamePage = (props) => {
       let lyingPlayer = playersArray[nextplayer.id-1];
 
       printLog(`${nextplayer.name} challenged ${player.name}`);
+      setIsShowingAllDice(true);
+      await timeout(4000);
 
       if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];
@@ -278,7 +300,7 @@ const GamePage = (props) => {
         if (turns.length > 2) {
           isTertiary = (player.id === prevTurn.player.id);
           if (isTertiary) {
-            opacity = 0.5;
+            opacity = 0.8;
             turnToShow =  prevTurn;
           }
         }
@@ -316,7 +338,7 @@ const GamePage = (props) => {
     </ToolsCell>);
     renderedCells.push(renderPlayerCell(1));
     renderedCells.push(<ToolsCell key="betDisplay">
-      <BetSubmitter defaultFv={defaultFv} defaultAmount={defaultAmount} onSubmit={handleSubmitBet}></BetSubmitter>
+      <BetSubmitter disabled={!yourTurn} defaultFv={defaultFv} defaultAmount={defaultAmount} onSubmit={handleSubmitBet}></BetSubmitter>
     </ToolsCell>);
 
     return (

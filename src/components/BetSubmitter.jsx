@@ -61,11 +61,15 @@ const BetSubmitter = (props) => {
   }
 
   const handleSubmit = () => {
-    props.onSubmit(amount, fv);
+    if (!props.disabled) {
+      props.onSubmit(amount, fv);
+    }
   }
 
   const handleCall = () => {
-    props.onSubmit(-1, -1);
+    if (!props.disabled) {
+      props.onSubmit(-1, -1);
+    }
   }
 
   return (
