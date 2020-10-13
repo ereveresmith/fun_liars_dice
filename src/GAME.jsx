@@ -268,8 +268,8 @@ const GamePage = (props) => {
       nextRound(lyingPlayer);
       resetDefaults();  
     } else {
-      nextTurn(amount, fv, nextPlayer);
       upDefaults();
+      nextTurn(amount, fv, nextPlayer);
     }
   }
 
@@ -279,9 +279,11 @@ const GamePage = (props) => {
   }
 
   const upDefaults = () => {
-    let newDefaultFv = defaultFv + 1;
-    let newDefaultAmount = defaultAmount;
-    if (newDefaultFv > 6) {
+    const currentTurn = turns[turns.length - 1];
+    let newDefaultFv = currentTurn.fv + 1;
+    let newDefaultAmount = currentTurn.amount;
+    if (newDefaultAmount === 0) {newDefaultAmount++}
+    if (newDefaultFv > 5) {
       newDefaultFv = 1;
       newDefaultAmount++;
     }

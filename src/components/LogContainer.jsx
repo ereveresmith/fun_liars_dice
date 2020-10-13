@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 
@@ -14,12 +14,17 @@ const StyledMessage = Styled.span`
 const Wrapper = Styled.div`
   overflow: scroll;
   display: grid;
-  padding: 24px;
-  grid-auto-flow: row;
-  grid-template-rows: min-content;
+  justify-content: center;
+  grid-gap: 12px;
 `
 
 const LogContainer = (props) => {
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current.scrollIntoView({ behavior: "smooth"})
+  }, [props.log])
+
   const renderedLog = () => {
     const logItems = props.log.map((message, index) => {
       return <StyledMessage key={`message${index}`}>{message}</StyledMessage>
@@ -31,6 +36,7 @@ const LogContainer = (props) => {
   return (
     <Wrapper>
       {renderedLog()}
+      <div ref={bottomRef}></div>
     </Wrapper>
   );
 }

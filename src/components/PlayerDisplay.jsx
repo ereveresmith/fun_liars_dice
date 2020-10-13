@@ -16,7 +16,7 @@ const Cell = Styled.div`
   border-radius: 60px;
   height: 240px;
   width: 330px;
-  transition: background-color 180ms ease-out;
+  transition: background-color 100ms ease-out;
 
   ${props => props.isActive && `
     border-color: ${Styles.colors.purple};
