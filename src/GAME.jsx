@@ -7,6 +7,7 @@ import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
 import LogContainer from './components/LogContainer';
 import { mockPlayers, YOU } from './util/Constants';
+import { calcBotMove } from './util/Bot';
 
 const EmptyCell = Styled.div`
   display: grid;
@@ -81,7 +82,7 @@ const GamePage = (props) => {
 
     if (checkWin()) {
       console.log("You did it!")
-      setIsStarted(false);
+      // setIsStarted(false);
 
     } else {
       const number = turns.length + 1;
@@ -93,7 +94,12 @@ const GamePage = (props) => {
         player: {id: 0},
         nextPlayer: nextPlayer,
       }
-      setTurns(turns => [...turns, newTurn]);
+      setTurns([newTurn]);
+      if (nextPlayer.id === 1) {
+        setYourTurn(true);
+      } else {
+        setYourTurn(false);
+      }
     }
   }
 
@@ -130,17 +136,17 @@ const GamePage = (props) => {
     return new Promise( res => setTimeout(res, delay) );}
 
   const calcBotTurn = async () => {
-    await timeout(600);
-    const currentTurn = turns[turns.length - 1];
-    const currentFv = currentTurn.fv;
-    const currentAmount = currentTurn.amount;
-    let newFv = currentFv + 1;
-    let newAmount = currentAmount;
-    if (newFv > 6) {
-      newAmount++;
-      newFv = 1;
+    await timeout(200);
+    const bet = calcBotMove(turns, amountOfDice());
+    submitBet(bet.amount, bet.fv, turns[turns.length -1].nextPlayer);
+  }
+
+  const amountOfDice = () => {
+    let amountOfDice = 0;
+    for (let i = 0; i < players.length; i++) {
+      amountOfDice = amountOfDice + players[i].hand.length;
     }
-    submitBet(newAmount, newFv, currentTurn.nextPlayer);
+    return amountOfDice;
   }
 
   const isValidBet = (amount, fv) => {
@@ -206,8 +212,6 @@ const GamePage = (props) => {
   }
 
   const nextTurn = async (amount, fv, currentPlayer) => {
-    console.log(turns)
-
     const number = turns.length + 1;
     const nextPlayer = calcNextPlayer(currentPlayer);
     const newTurn = {
@@ -219,7 +223,7 @@ const GamePage = (props) => {
     }
 
     printLog(`${currentPlayer.name}: ${newTurn.amount} ${newTurn.fv}`)
-    await timeout(300);
+    await timeout(200);
 
     setTurns(turns => [...turns, newTurn]);
 
@@ -252,7 +256,7 @@ const GamePage = (props) => {
   
       printLog(`${nextPlayer.name} challenged ${player.name}`);
       setIsChallenge(true);
-      await timeout(2000);
+      await timeout(1500);
   
       if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];
@@ -324,7 +328,7 @@ const GamePage = (props) => {
         if (isSecondary) {
           turnToShow = currentTurn;
         }
-        if (turns.length > 2) {
+        if (turns.length > 2 && !isChallenge) {
           isTertiary = (player.id === prevTurn.player.id);
           if (isTertiary) {
             opacity = 0.8;

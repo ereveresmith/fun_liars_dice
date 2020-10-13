@@ -26,9 +26,11 @@ const Cell = Styled.div`
 
   ${props => props.isOut && `
     opacity: 0.2;
+    color: grey;
   `}
 
   ${props => props.isChallenge && `
+    border-color: ${Styles.colors.darkGrey};
     background-color: ${Styles.colors.red};
     color: white;
   `}
