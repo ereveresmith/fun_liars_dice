@@ -30,8 +30,7 @@ const GameContainer = Styled.div`
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: 10% 12% 0 12%;
-  width: 76%;
+  margin: 4% 12% 0 12%;
   `
 
 const GameGrid = Styled.div`
@@ -81,8 +80,14 @@ const GamePage = (props) => {
     } 
 
     if (checkWin()) {
-      console.log("You did it!")
-      // setIsStarted(false);
+      let winner = undefined;
+      for (let i = 0; i < players.length; i++) {
+        const player = players[i];
+        if (player.hand.length) {
+          winner = player;
+        }
+      }
+      printLog(`${winner.name} has won the game!`)
 
     } else {
       const number = turns.length + 1;
@@ -136,7 +141,8 @@ const GamePage = (props) => {
     return new Promise( res => setTimeout(res, delay) );}
 
   const calcBotTurn = async () => {
-    await timeout(200);
+    const botWait = randomInt(1300) + 800;
+    await timeout(botWait);
     const bet = calcBotMove(turns, amountOfDice());
     submitBet(bet.amount, bet.fv, turns[turns.length -1].nextPlayer);
   }
@@ -223,7 +229,7 @@ const GamePage = (props) => {
     }
 
     printLog(`${currentPlayer.name}: ${newTurn.amount} ${newTurn.fv}`)
-    await timeout(200);
+    await timeout(100);
 
     setTurns(turns => [...turns, newTurn]);
 
@@ -246,14 +252,10 @@ const GamePage = (props) => {
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
 
-    // console.log(currentTurn)
-
     if (isCall) {
       const playersArray = [...players];
       let lyingPlayer = playersArray[nextPlayer.id-1];
-  
-      //TODO: do this mutably
-  
+    
       printLog(`${nextPlayer.name} challenged ${player.name}`);
       setIsChallenge(true);
       await timeout(1500);
@@ -318,6 +320,7 @@ const GamePage = (props) => {
       const isShowingDice = (isChallenge | player.id === 1);
       let opacity = 1;
       const isActive = (player.id === currentTurn.nextPlayer.id);
+      // const isActive = true;
       let isSecondary = false;
       let isTertiary = false;
 

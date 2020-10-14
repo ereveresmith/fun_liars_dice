@@ -21,11 +21,15 @@ const GridWrapper = Styled.div`
 
 const Text = Styled.h2`
   font-size: 1.5em;
-  color: ${Styles.colors.purple};
   text-align: center;
   width: 200px;
   font-weight: 700;
   justify-self: center;
+  transition: color 200ms ease;
+
+  ${props => props.color && `
+    color: ${props.color};
+  `}
 `
 
 const TurnArrow = Styled.div`
@@ -35,9 +39,12 @@ const TurnArrow = Styled.div`
   border-right: 2em solid transparent;
   align-self: end;
   justify-self: center;
-  border-bottom: 4em solid ${Styles.colors.purple};
   transform-origin: center;
   transition: all 200ms ease;
+
+  ${props => props.color && `
+    border-bottom: 4em solid ${props.color};
+  `}
 
   ${props => props.angle && `
     transform: rotate(${props.angle}deg);
@@ -55,6 +62,7 @@ const CenterDisplay = ({ turn, isChallenge }) => {
     }
   }
 
+  let turnColor = turn.nextPlayer.color;
   let turnText = `${turn.nextPlayer.name}'s turn...`;
   let challengeText = `${turn.nextPlayer.name} challenged ${turn.player.name}`;
 
@@ -65,8 +73,8 @@ const CenterDisplay = ({ turn, isChallenge }) => {
   return (
     <Cell>
       <GridWrapper>
-        {!isChallenge && <TurnArrow angle={calcAngle()}></TurnArrow> }
-        <Text>{isChallenge ? challengeText : turnText}</Text>
+        <TurnArrow color={turnColor} angle={calcAngle()}></TurnArrow>
+        <Text color={turnColor}>{isChallenge ? challengeText : turnText}</Text>
       </GridWrapper>
     </Cell>
   );

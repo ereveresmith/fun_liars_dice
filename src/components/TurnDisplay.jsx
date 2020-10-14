@@ -17,18 +17,20 @@ const FlexWrapper = Styled.div`
 
 const HugeText = Styled.h1`
   font-size: 3em;
-  color: ${Styles.colors.black};
+  ${props => props.color && `
+    color: ${props.color};
+  `}
   opacity: 0.6;
   padding-right: 16px;
   text-align: center;
 `
 
-const TurnDisplay = ({ amount, fv, opacity }) => {
+const TurnDisplay = ({ amount, fv, opacity, color }) => {
   const amountDisplay = (amount > 0 ? amount : '?');
 
   return (
     <FlexWrapper opacity={opacity}>
-      <HugeText>{amountDisplay}</HugeText>
+      <HugeText color={color}>{amountDisplay}</HugeText>
       <Dice fv={fv} isBig></Dice>
     </FlexWrapper>
   );

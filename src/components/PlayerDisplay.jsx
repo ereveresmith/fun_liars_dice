@@ -18,21 +18,15 @@ const Cell = Styled.div`
   width: 330px;
   transition: background-color 100ms ease-out;
 
-  ${props => props.isActive && `
-    border-color: ${Styles.colors.purple};
-    background-color: ${Styles.colors.lightPurple};
-    color: white;
+  ${props => (props.isActive && props.color) && `
+    background-color: ${props.color};
+    color: ${Styles.colors.white};
+    border-color: ${props.color};
   `}
 
   ${props => props.isOut && `
     opacity: 0.2;
     color: grey;
-  `}
-
-  ${props => props.isChallenge && `
-    border-color: ${Styles.colors.darkGrey};
-    background-color: ${Styles.colors.red};
-    color: white;
   `}
 `
 
@@ -44,11 +38,17 @@ const StyledDiv = Styled.div`
 `;
 
 const NameText = Styled.h3`
+  font-size: 18px;
+  font-weight: 900;
   color: ${Styles.colors.purple};
   margin: 12px 0;
 
+  ${props => props.color && `
+    color: ${props.color};
+  `}
+
   ${props => props.isActive && `
-    color: white;
+    color: ${Styles.colors.white};
   `}
 `
 
@@ -69,25 +69,29 @@ const HandGrid = Styled.div`
   grid-template-columns: auto auto auto auto auto;
 `;
 
-const PlayerDisplay = (props) => {
+const PlayerDisplay = ({ isActive, isChallenge, player, turn, showDice, showTurn, turnOpacity}) => {
+  const isOut = !player.hand.length;
+  console.log(player.color)
 
-  const renderedHand = props.player.hand.map((fv, index) => {
-    if (props.showDice) {
+  const renderedHand = player.hand.map((fv, index) => {
+    if (showDice) {
       return <Dice key={`dice${index}`} fv={fv}></Dice>
     } else {
       return <Dice key={`dice${index}`} fv={0}></Dice>
     }
   })
 
+  const turnColor = isChallenge ? Styles.colors.white : Styles.colors.black;
+
   return (
-    <Cell isActive={props.isActive} isOut={!props.player.hand.length} isChallenge={props.isChallenge}>
+    <Cell color={player.color} isActive={isActive | isChallenge} isOut={isOut}>
       <StyledDiv className="PlayerDisplay">
-        <NameText isActive={props.isActive}>{props.player.id}: {props.player.name}</NameText>
+        <NameText color={player.color} isActive={isActive}>{player.id}: {player.name}</NameText>
         <HandGrid>{renderedHand}</HandGrid>
-        <Divider isActive={props.isActive}></Divider>
-        {props.isActive ? 
+        <Divider color={player.color} isActive={isActive | isChallenge}></Divider>
+        {isActive ? 
           <TakingTurnDisplay>...</TakingTurnDisplay> 
-        : props.showTurn ? <TurnDisplay opacity={props.turnOpacity} amount={props.turn.amount} fv={props.turn.fv}></TurnDisplay> : null}
+        : (showTurn && !isOut) ? <TurnDisplay color={turnColor} opacity={turnOpacity} amount={turn.amount} fv={turn.fv}></TurnDisplay> : null}
       </StyledDiv>
     </Cell>
   );

@@ -26,16 +26,16 @@ const StyledButton = Styled.button`
   `}
 
   &:hover {
-    background-color: ${Styles.colors.darkPurple};
+    background-color: ${Styles.colors.purple};
     color: ${Styles.colors.white};
   }
 
   &:active {
-    background-color: ${Styles.colors.darkerPurple};
+    background-color: ${Styles.colors.purple};
   }
 
   &:focus {
-    outline: 1px ${Styles.colors.darkPurple} solid;
+    outline: 1px ${Styles.colors.purple} solid;
   }
 `;
 
