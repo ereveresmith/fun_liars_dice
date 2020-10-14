@@ -14,7 +14,6 @@ const StyledMessage = Styled.span`
 const Wrapper = Styled.div`
   overflow: scroll;
   display: grid;
-  justify-content: center;
   grid-gap: 12px;
 `
 

@@ -12,8 +12,8 @@ import { calcBotMove } from './util/Bot';
 const EmptyCell = Styled.div`
   display: grid;
   width: 100%;
-  border: 2px solid ${Styles.colors.darkGrey  };
-  background-color: ${Styles.colors.lightGrey  };
+  border: 1px solid ${Styles.colors.darkGrey};
+  background-color: ${Styles.colors.lightGrey};
   opacity: 0;
   height: 240px;
   min-width: 200px;
@@ -39,7 +39,7 @@ const GameGrid = Styled.div`
   justify-items: center;
   align-items: center;
   grid-template-columns: auto auto auto;
-  grid-gap: 48px;
+  grid-gap: 12px;
 `
 
 const initialPlayers = [YOU, ...mockPlayers];
@@ -258,7 +258,7 @@ const GamePage = (props) => {
     
       printLog(`${nextPlayer.name} challenged ${player.name}`);
       setIsChallenge(true);
-      await timeout(1500);
+      await timeout(5000);
   
       if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];

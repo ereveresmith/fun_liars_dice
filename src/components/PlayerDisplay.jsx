@@ -9,20 +9,24 @@ const TakingTurnDisplay = Styled.div`
   font-size: 4em;
 `
 
-const Cell = Styled.div`
-  display: grid;
-  grid-template-rows: 1fr 2fr;
-  border: 2px solid ${Styles.colors.darkGrey};
-  border-radius: 60px;
-  height: 240px;
-  width: 330px;
-  transition: background-color 100ms ease-out;
+const ColoredDiv = Styled.div`
+    padding: 2px;
 
-  ${props => (props.isActive && props.color) && `
+    ${props => (props.isColored && props.color) && `
     background-color: ${props.color};
     color: ${Styles.colors.white};
     border-color: ${props.color};
   `}
+`
+
+const Cell = Styled.div`
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  border: 1px solid ${Styles.colors.darkGrey};
+  border-radius: 2px;
+  height: 240px;
+  width: 100%;
+  transition: background-color 100ms ease-out;
 
   ${props => props.isOut && `
     opacity: 0.2;
@@ -31,7 +35,6 @@ const Cell = Styled.div`
 `
 
 const StyledDiv = Styled.div`
-  padding: 8px 0;
   text-align: center;
   align-items: center;
   font-size: 1em;
@@ -41,29 +44,24 @@ const NameText = Styled.h3`
   font-size: 18px;
   font-weight: 900;
   color: ${Styles.colors.purple};
-  margin: 12px 0;
+  padding: 12px 0;
 
   ${props => props.color && `
     color: ${props.color};
   `}
 
-  ${props => props.isActive && `
+  ${props => props.isColored && `
     color: ${Styles.colors.white};
   `}
 `
 
 const Divider = Styled.div`
-  border-top: 2px solid ${Styles.colors.darkGrey};
-  margin: 16px 0;
+  border-top: 1px solid ${Styles.colors.darkGrey};
   width: 100%;
-
-  ${props => props.isActive && `
-    border-color: ${Styles.colors.grey};
-  `}
 `
 
 const HandGrid = Styled.div`
-  padding: 0 24px;
+  padding: 8px 24px;
   display: grid;
   grid-gap: 8px;
   grid-template-columns: auto auto auto auto auto;
@@ -71,8 +69,6 @@ const HandGrid = Styled.div`
 
 const PlayerDisplay = ({ isActive, isChallenge, player, turn, showDice, showTurn, turnOpacity}) => {
   const isOut = !player.hand.length;
-  console.log(player.color)
-
   const renderedHand = player.hand.map((fv, index) => {
     if (showDice) {
       return <Dice key={`dice${index}`} fv={fv}></Dice>
@@ -83,15 +79,33 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showDice, showTurn
 
   const turnColor = isChallenge ? Styles.colors.white : Styles.colors.black;
 
+  const renderTopSection = () => {
+    const isColored = isActive | isChallenge;
+
+    return (
+      <ColoredDiv color={player.color} isColored={isColored}>
+        <NameText color={player.color} isColored={isColored}>{player.id}: {player.name}</NameText>
+        <HandGrid>{renderedHand}</HandGrid>
+      </ColoredDiv>
+    )
+  }
+
+  const renderBottomSection = () => {
+    return (
+      <div>
+      {isActive ? 
+        <TakingTurnDisplay>...</TakingTurnDisplay> 
+      : (showTurn && !isOut) ? <TurnDisplay color={turnColor} opacity={turnOpacity} amount={turn.amount} fv={turn.fv}></TurnDisplay> : null}
+      </div>
+    )
+  }
+
   return (
     <Cell color={player.color} isActive={isActive | isChallenge} isOut={isOut}>
       <StyledDiv className="PlayerDisplay">
-        <NameText color={player.color} isActive={isActive}>{player.id}: {player.name}</NameText>
-        <HandGrid>{renderedHand}</HandGrid>
-        <Divider color={player.color} isActive={isActive | isChallenge}></Divider>
-        {isActive ? 
-          <TakingTurnDisplay>...</TakingTurnDisplay> 
-        : (showTurn && !isOut) ? <TurnDisplay color={turnColor} opacity={turnOpacity} amount={turn.amount} fv={turn.fv}></TurnDisplay> : null}
+        {renderTopSection()}
+        <Divider></Divider>
+        {renderBottomSection()}
       </StyledDiv>
     </Cell>
   );

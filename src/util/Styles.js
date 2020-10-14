@@ -4,7 +4,7 @@ export const Styles = {
         black: '#262626',
         lightGrey: '#f5f5f5',
         grey: '#e6e6e6',
-        darkGrey: '#666666',
+        darkGrey: '#808080',
         purple: '#9999ff',
         blue: '#668cff',
         red: ' #ff8566',

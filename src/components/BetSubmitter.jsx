@@ -11,7 +11,11 @@ const HugeText = Styled.h1`
   text-align: center;
 `
 
-const Grid = Styled.div`
+const Wrapper = Styled.div`
+  padding: 16px 4px;
+  background-color: ${Styles.colors.lightGrey};
+  border: 1px solid ${Styles.colors.darkGrey};
+  border-radius: 8px;
   display: grid;
   grid-template-columns: auto auto;
   align-self: center;
@@ -23,6 +27,7 @@ const Grid = Styled.div`
 const VerticalGrid = Styled.div`
   display: grid;
   grid-template-rows: auto auto auto;
+  height: 170px;
   align-items: center;
   justify-items: center;
 `
@@ -30,6 +35,7 @@ const VerticalGrid = Styled.div`
 const BetSubmitter = (props) => {
   const [fv, setFv] = useState(props.defaultFv);
   const [amount, setAmount] = useState(props.defaultAmount);
+  const [position, setPosition] =useState({x: 1, y: 1})
 
   useEffect(() => {
     setFv(props.defaultFv);
@@ -73,7 +79,7 @@ const BetSubmitter = (props) => {
   }
 
   return (
-    <Grid>
+    <Wrapper>
       <VerticalGrid>
         <Button isGrey onClick={handleRaiseAmount}></Button>
         <HugeText>{amount}</HugeText>
@@ -86,7 +92,7 @@ const BetSubmitter = (props) => {
       </VerticalGrid>
       <Button isGrey label="Liar!" onClick={handleCall}></Button>
       <Button isGrey label="Submit" onClick={handleSubmit}></Button>
-    </Grid>
+    </Wrapper>
   );
 }
 

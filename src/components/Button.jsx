@@ -8,7 +8,7 @@ const StyledButton = Styled.button`
   margin: 8px;
   min-width: 100px;
   border-radius: 4px;
-  min-height: 30px;
+  min-height: 40px;
   color: white;
   text-transform: uppercase;
   font-weight: 800;
@@ -22,7 +22,7 @@ const StyledButton = Styled.button`
   ${props => props.isGrey && `
     background: 0;
     color: ${Styles.colors.darkGrey};
-    border: 2px solid ${Styles.colors.darkGrey};
+    border: 1px solid ${Styles.colors.darkGrey};
   `}
 
   &:hover {
