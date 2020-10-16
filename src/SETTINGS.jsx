@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Button from './components/Button';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
-import { mockPlayers, YOU } from './util/Constants';
+import { mockPlayers, YOU } from './util/Helper';
 
 const Wrapper = Styled.div`
   display: grid;

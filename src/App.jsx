@@ -2,14 +2,25 @@ import React, {useState} from 'react';
 import Styled from 'styled-components';
 import Game from './GAME';
 import Settings from './SETTINGS';
+import { randomInt, YOU, mockPlayers, mockNames } from './util/Helper';
+
+const initialPlayers = [YOU, ...mockPlayers];
 
 
 const defaultSettings = {
   amountOfPlayers: 5,
-  name: 'YOU',
+  players: initialPlayers,
 }
 
-const Portfolio = () => {
+const App = () => {
+  const randomName = () => {
+    const int = randomInt(5);
+    return mockNames[int];
+  }
+
+  const generatePlayers = () => {
+    return mockPlayers;
+  }
   const [page, setPage] = useState('settings');
   const [gameSettings, setGameSettings] = useState(defaultSettings)
 
@@ -33,10 +44,10 @@ const Portfolio = () => {
   }
 
   return (
-    <div className="Portfolio">
+    <div className="App">
       {renderPage()}
     </div>
   );
 }
 
-export default Portfolio;
+export default App;

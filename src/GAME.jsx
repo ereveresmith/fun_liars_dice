@@ -6,8 +6,9 @@ import CenterDisplay from './components/CenterDisplay';
 import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
 import LogContainer from './components/LogContainer';
-import { mockPlayers, YOU } from './util/Constants';
 import { calcBotMove } from './util/Bot';
+import { randomInt, YOU } from './util/Helper';
+
 
 const EmptyCell = Styled.div`
   display: grid;
@@ -42,8 +43,6 @@ const GameGrid = Styled.div`
   grid-gap: 12px;
 `
 
-const initialPlayers = [YOU, ...mockPlayers];
-
 const initialTurn = {
   number: 1,
   amount: 0,
@@ -52,8 +51,8 @@ const initialTurn = {
   nextPlayer: YOU,
 }
 
-const GamePage = (props) => {
-  const [players, setPlayers] = useState(initialPlayers);
+const GamePage = ({ settings, onEnd}) => {
+  const [players, setPlayers] = useState(settings.players);
   const [turns, setTurns] = useState([initialTurn]);
   const [log, setLog] = useState([]);
   const [defaultAmount, setDefaultAmount] = useState(1);
@@ -65,7 +64,24 @@ const GamePage = (props) => {
     if (turns[turns.length-1].nextPlayer.id !== 1) {
       calcBotTurn();
     }
-  }, [turns])
+  }, [turns]);
+
+  const restartGame = (settings) => {
+    setPlayers(settings.players);
+    setTurns([initialTurn]);
+    setLog([]);
+    setDefaultAmount(1);
+    setDefaultFv(1);
+    setYourTurn(true);
+    setIsChallenge(false);
+  }
+
+  useEffect(() => {
+    restartGame(settings);
+
+    console.log(settings);
+    console.log("settings were changed")
+  }, [settings])
 
   const printLog = (message) => {
     setLog(log => [...log, message]);
@@ -198,10 +214,6 @@ const GamePage = (props) => {
     }
   }
 
-  const randomInt = (max) => {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
-
   const rerollDice = () => {
     const playersArray = [...players];
 
@@ -254,6 +266,11 @@ const GamePage = (props) => {
     if (isCall) {
       const playersArray = [...players];
       let lyingPlayer = playersArray[nextPlayer.id-1];
+
+      const emptyObj = {};
+
+      const newPlayer = Object.assign(emptyObj, lyingPlayer);
+      lyingPlayer = newPlayer;
     
       printLog(`${nextPlayer.name} challenged ${player.name}`);
       setIsChallenge(true);
@@ -263,6 +280,7 @@ const GamePage = (props) => {
         lyingPlayer = playersArray[player.id-1];
       } 
   
+      
       lyingPlayer.hand.pop();
       printLog(`${lyingPlayer.name} lost a dice!`);
       if (lyingPlayer.hand.length === 0) {
@@ -373,7 +391,7 @@ const GamePage = (props) => {
   }
 
   const handleGotoSettings = () => {
-    props.onEnd();
+    onEnd();
   }
 
   return (

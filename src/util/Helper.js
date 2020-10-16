@@ -11,3 +11,36 @@ export const mockPlayers = [
 export const YOU = {
     name: 'YOU', id: 1, hand: [1, 2, 3, 4, 5], color: Styles.colors.purple
 }
+
+
+export const randomInt = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+export const mockNames = [
+  'Jeff',
+  'John',
+  'Joe',
+  'Bob',
+  'Torb',
+  'Mort',
+  'Short',
+  'Dink',
+  'Ramm',
+  'Jules',
+  'Ace',
+  'Barf',
+  'Chungus',
+  "Daz",
+  'E Dog', 
+  'Rippit',
+  'Q.',
+  'Mr.',
+  'Grumble',
+  'Dirt',
+  'Jock',
+  'Rock',
+  'Tack',
+  'Peter',
+  'Haley',
+]
