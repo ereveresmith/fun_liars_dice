@@ -19,7 +19,7 @@ const Wrapper = Styled.div`
   display: grid;
   grid-template-columns: auto auto;
   align-self: center;
-  justify-self: center;
+  justify-self: end;
   align-items: center;
   justify-items: center;
 `
@@ -31,7 +31,6 @@ const VerticalGrid = Styled.div`
   align-items: center;
   justify-items: center;
 `
-
 const BetSubmitter = (props) => {
   const [fv, setFv] = useState(props.defaultFv);
   const [amount, setAmount] = useState(props.defaultAmount);

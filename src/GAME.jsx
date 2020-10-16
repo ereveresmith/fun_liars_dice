@@ -26,7 +26,7 @@ const ToolsCell = Styled.div`
   min-width: 200px;
 `
 
-const GameContainer = Styled.div`
+const Wrapper = Styled.div`
   display: grid;
   justify-items: center;
   align-items: center;
@@ -53,7 +53,6 @@ const initialTurn = {
 }
 
 const GamePage = (props) => {
-  const [isStarted, setIsStarted] = useState(true);
   const [players, setPlayers] = useState(initialPlayers);
   const [turns, setTurns] = useState([initialTurn]);
   const [log, setLog] = useState([]);
@@ -258,7 +257,7 @@ const GamePage = (props) => {
     
       printLog(`${nextPlayer.name} challenged ${player.name}`);
       setIsChallenge(true);
-      await timeout(5000);
+      await timeout(2000);
   
       if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];
@@ -295,18 +294,6 @@ const GamePage = (props) => {
     }
     setDefaultFv(newDefaultFv);
     setDefaultAmount(newDefaultAmount);
-  }
-  
-  const startGame = () => {
-    setTurns([initialTurn]);
-    setPlayers(initialPlayers)
-    setIsStarted(true);
-  }
-
-  const renderStartScreen = () => {
-    return (
-        <Button onClick={startGame} label="Start New Game"></Button>
-    )
   }
 
   const renderPlayerCell = (playerNumber) => {
@@ -385,11 +372,16 @@ const GamePage = (props) => {
     )
   }
 
+  const handleGotoSettings = () => {
+    props.onEnd();
+  }
+
   return (
     <div>
-      <GameContainer>
-        {isStarted ? renderGame() : renderStartScreen()}
-      </GameContainer>
+      <Button onClick={handleGotoSettings}></Button>
+      <Wrapper>
+        {renderGame()}
+      </Wrapper>
     </div>
   );
 }
