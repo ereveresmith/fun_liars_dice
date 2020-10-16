@@ -4,18 +4,17 @@ import Game from './GAME';
 import Settings from './SETTINGS';
 import { randomInt, YOU, mockPlayers, mockNames } from './util/Helper';
 
-const initialPlayers = [YOU, ...mockPlayers];
-
-
-const defaultSettings = {
-  amountOfPlayers: 5,
-  players: initialPlayers,
-}
-
 const App = () => {
+  const initialPlayers = [YOU, ...mockPlayers];
+
   const randomName = () => {
     const int = randomInt(5);
     return mockNames[int];
+  }
+
+  const defaultSettings = {
+    amountOfPlayers: 5,
+    players: initialPlayers,
   }
 
   const generatePlayers = () => {

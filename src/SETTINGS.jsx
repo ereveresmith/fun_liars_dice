@@ -22,8 +22,6 @@ const StyledInput = Styled.input`
   margin: 4px;
 `
 
-// const initialPlayers = [YOU, ...mockPlayers];
-
 const SettingsPage = (props) => {
   const [amountOfPlayers, setAmountOfPlayers] = useState(5);
   const [name, setName] = useState("E Bro");
