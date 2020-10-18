@@ -8,24 +8,29 @@ const Wrapper = Styled.div`
   display: grid;
   justify-items: center;
   align-items: center;
-  align-content: center;
-  margin: 25%;
+  margin: 24px;
   `
 
+  const Label = Styled.span`
+    font-size: ${Styles.fontSizes.medium};
+    align-self: center;
+    text-align: left;
+  `
 
-const FlexDiv = Styled.div`
-  display: flex;
+const GridDiv = Styled.div`
+  display: grid;
   margin: 24px;
 `
 
 const StyledInput = Styled.input`
-  margin: 4px;
-`
+  margin: 8px;
+  font-size: ${Styles.fontSizes.medium};
+  `
 
 const SettingsPage = (props) => {
   const [amountOfPlayers, setAmountOfPlayers] = useState(4);
   const [name, setName] = useState("Ethan");
-  const [handSize, setHandSize] = useState(2);
+  const [handSize, setHandSize] = useState(5);
 
   const randomName = () => {
     const int = randomInt(mockNames.length);
@@ -85,18 +90,19 @@ const SettingsPage = (props) => {
   return (
     <div>
       <Wrapper>
-        <FlexDiv>
-          Amount of players:
-          <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
-        </FlexDiv>
-        <FlexDiv>
-          Hand Size:
-          <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
-        </FlexDiv>
-        <FlexDiv>
-          Your Name:
+        <h1>Settings</h1>
+        <GridDiv>
+          <Label>Your Name:</Label>
           <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
-        </FlexDiv>
+        </GridDiv>
+        <GridDiv>
+          <Label># of Players</Label>
+          <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
+        </GridDiv>
+        <GridDiv>
+          <Label>Hand Size:</Label>
+          <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
+        </GridDiv>
         <Button label="Start Game" onClick={handleSubmit}></Button>
       </Wrapper>
     </div>

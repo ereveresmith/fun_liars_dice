@@ -3,18 +3,27 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 
 const StyledMessage = Styled.span`
-  font-size: 16px;
-  height: 20px;
+  font-size: ${Styles.fontSizes.medium};
   overflow: hidden;
   font-weight: 500;
-  color: ${Styles.colors.darkGrey};
+  color: ${Styles.colors.white};
   opacity: 0.9;
+  margin-bottom: 8px;
 `
 
 const Wrapper = Styled.div`
-  overflow: scroll;
+  height: 100%;
+  padding: 4px;
+  background-color: ${Styles.colors.darkGrey};
+  opacity: 0.8;
+  border: 2px solid ${Styles.colors.darkGrey};
+  border-radius: 8px;
+  grid-auto-rows: max-content;
   display: grid;
-  grid-gap: 12px;
+  overflow: scroll;
+  align-self: center;
+  padding-left: 12px;
+  align-items: start;
 `
 
 const LogContainer = (props) => {

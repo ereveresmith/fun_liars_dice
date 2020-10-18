@@ -5,21 +5,21 @@ import Button from './Button';
 import Dice from './Dice';
 
 const HugeText = Styled.h1`
-  font-size: 3em;
-  color: ${Styles.colors.black};
-  opacity: 0.6;
+  font-size: ${Styles.fontSizes.huge};
+  color: ${Styles.colors.white};
   text-align: center;
 `
 
 const Wrapper = Styled.div`
-  padding: 16px 4px;
-  background-color: ${Styles.colors.lightGrey};
-  border: 1px solid ${Styles.colors.darkGrey};
+  height: 100%;
+  padding: 4px;
+  background-color: ${Styles.colors.darkGrey};
+  opacity: 0.8;
+  border: 2px solid ${Styles.colors.darkGrey};
   border-radius: 8px;
   display: grid;
   grid-template-columns: auto auto;
   align-self: center;
-  justify-self: end;
   align-items: center;
   justify-items: center;
 `
@@ -80,17 +80,17 @@ const BetSubmitter = (props) => {
   return (
     <Wrapper>
       <VerticalGrid>
-        <Button isGrey onClick={handleRaiseAmount}></Button>
+        <Button isSecondary onClick={handleRaiseAmount}></Button>
         <HugeText>{amount}</HugeText>
-        <Button isGrey onClick={handleLowerAmount}></Button>
+        <Button isSecondary onClick={handleLowerAmount}></Button>
       </VerticalGrid>
       <VerticalGrid>
-        <Button isGrey onClick={handleRaiseFv}></Button>
-        <Dice fv={fv} isBig></Dice>
-        <Button isGrey onClick={handleLowerFv}></Button>
+        <Button isSecondary onClick={handleRaiseFv}></Button>
+        <Dice fv={fv} size={Styles.fontSizes.huge}></Dice>
+        <Button isSecondary onClick={handleLowerFv}></Button>
       </VerticalGrid>
-      <Button isGrey label="Liar!" onClick={handleCall}></Button>
-      <Button isGrey label="Submit" onClick={handleSubmit}></Button>
+      <Button isSecondary label="Liar!" onClick={handleCall}></Button>
+      <Button label="Submit" onClick={handleSubmit}></Button>
     </Wrapper>
   );
 }

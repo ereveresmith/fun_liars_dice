@@ -6,42 +6,47 @@ const StyledButton = Styled.button`
   padding: 12px 12px;
   border-radius: 24px;
   margin: 8px;
-  min-width: 100px;
-  border-radius: 4px;
-  min-height: 40px;
+  min-width: 4  0px;
+  min-height: 10px;
   color: white;
   text-transform: uppercase;
   font-weight: 800;
   background-color: ${Styles.colors.purple};
-  font-size: 14px;
-  border: 0;
+  font-size: ${Styles.fontSizes.small};
+  border: 1px solid ${Styles.colors.grey};
+  opacity: 0.9;
   cursor: pointer;
   outline: 0;
   transition: background-color 80ms ease-out;
 
-  ${props => props.isGrey && `
-    background: 0;
-    color: ${Styles.colors.darkGrey};
-    border: 1px solid ${Styles.colors.darkGrey};
-  `}
-
   &:hover {
-    background-color: ${Styles.colors.purple};
+    background-color: ${Styles.colors.darkPurple};
     color: ${Styles.colors.white};
   }
 
   &:active {
-    background-color: ${Styles.colors.purple};
+    background-color: ${Styles.colors.darkPurple};
   }
 
   &:focus {
     outline: 1px ${Styles.colors.purple} solid;
   }
+
+  ${props => props.isSecondary && `
+    background: 0;
+    color: ${Styles.colors.grey};
+
+    &:hover {
+      background-color: ${Styles.colors.darkPurple};
+      color: ${Styles.colors.white};
+    }
+  `}
+
 `;
 
 const Button = (props) => {
   return (
-    <StyledButton className="Button" onClick={props.onClick} isGrey={props.isGrey}>
+    <StyledButton className="Button" onClick={props.onClick} isSecondary={props.isSecondary}>
       {props.label}
     </StyledButton>
   );

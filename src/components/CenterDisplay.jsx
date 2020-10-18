@@ -20,7 +20,7 @@ const GridWrapper = Styled.div`
 `
 
 const Text = Styled.h2`
-  font-size: 1.5em;
+  font-size: ${Styles.fontSizes.medium};
   text-align: center;
   width: 200px;
   font-weight: 700;
@@ -57,8 +57,18 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers }) => {
     const offset = 180;
 
     switch(amountOfPlayers) {
+      case 2: 
+        return (turn.nextPlayer.id * 180);
+      case 3: 
+        return (turn.nextPlayer.id * 90) + 90;
       case 4: 
         return (turn.nextPlayer.id * 90) + 90;
+      case 5: 
+        if (turn.nextPlayer.id === 1) {
+          return offset;
+        } else {
+          return (turn.nextPlayer.id * 45) + offset;
+        }
       case 6: 
         if (turn.nextPlayer.id === 1) {
           return offset;

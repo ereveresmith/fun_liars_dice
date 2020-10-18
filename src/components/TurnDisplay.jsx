@@ -16,7 +16,7 @@ const FlexWrapper = Styled.div`
 `
 
 const HugeText = Styled.h1`
-  font-size: 3em;
+  font-size: ${Styles.fontSizes.large};
   ${props => props.color && `
     color: ${props.color};
   `}
@@ -31,7 +31,7 @@ const TurnDisplay = ({ amount, fv, opacity, color }) => {
   return (
     <FlexWrapper opacity={opacity}>
       <HugeText color={color}>{amountDisplay}</HugeText>
-      <Dice fv={fv} isBig></Dice>
+      <Dice fv={fv} size={'3em'}></Dice>
     </FlexWrapper>
   );
 }

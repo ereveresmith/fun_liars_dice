@@ -1,11 +1,18 @@
 export const Styles = {
+    fontSizes: {
+        small: "1em",
+        medium: "1.2em",
+        large: "2em",
+        huge: "4em",
+    },
     colors: {
         white: 'white',
         black: '#262626',
         lightGrey: '#f5f5f5',
         grey: '#e6e6e6',
-        darkGrey: '#808080',
+        darkGrey: '#666666',
         purple: '#9999ff',
+        darkPurple: '#6666ff',
         blue: '#668cff',
         red: ' #ff8566',
         orange: '#ff9933',

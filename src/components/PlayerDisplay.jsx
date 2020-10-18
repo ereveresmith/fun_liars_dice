@@ -1,12 +1,24 @@
-import React from 'react';
-import Styled from 'styled-components';
+import React, { useState } from 'react';
+import Styled, { keyframes } from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
 import TurnDisplay from '../components/TurnDisplay';
 
+
+const FadeAnimation = keyframes`
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 0.1;
+  }
+`;
+
 const TakingTurnDisplay = Styled.div`
   font-weight: 900;
-  font-size: 4em;
+  font-size: ${Styles.fontSizes.huge};
+  animation: ${FadeAnimation} 1.3s linear infinite;
 `
 
 const ColoredDiv = Styled.div`
@@ -37,11 +49,11 @@ const Cell = Styled.div`
 const StyledDiv = Styled.div`
   text-align: center;
   align-items: center;
-  font-size: 1em;
+  font-size: ${Styles.fontSizes.small};
 `;
 
 const NameText = Styled.h3`
-  font-size: 18px;
+  font-size: ${Styles.fontSizes.medium};
   font-weight: 900;
   color: ${Styles.colors.purple};
   padding: 12px 0;
@@ -63,17 +75,20 @@ const Divider = Styled.div`
 const HandGrid = Styled.div`
   padding: 8px 24px;
   display: grid;
-  grid-gap: 8px;
+  grid-gap: 6px;
+  width: 280px;
+  jusity-items: center;
   grid-template-columns: auto auto auto auto auto;
 `;
 
 const PlayerDisplay = ({ isActive, isChallenge, player, turn, showDice, showTurn, turnOpacity}) => {
   const isOut = !player.hand.length;
+
   const renderedHand = player.hand.map((fv, index) => {
     if (showDice) {
-      return <Dice key={`dice${index}`} fv={fv}></Dice>
+      return <Dice size={'3em'} key={`dice${index}`} fv={fv}></Dice>
     } else {
-      return <Dice key={`dice${index}`} fv={0}></Dice>
+      return <Dice size={'2em'} key={`dice${index}`} fv={0}></Dice>
     }
   })
 

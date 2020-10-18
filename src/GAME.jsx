@@ -16,14 +16,14 @@ const EmptyCell = Styled.div`
   border: 1px solid ${Styles.colors.darkGrey};
   background-color: ${Styles.colors.lightGrey};
   opacity: 0;
-  height: 240px;
+  height: 248px;
   min-width: 200px;
 `
 
 const ToolsCell = Styled.div`
   display: grid;
   width: 100%;
-  height: 240px;
+  height: 248px;
   min-width: 200px;
 `
 
@@ -69,7 +69,7 @@ const GamePage = ({ settings, onEnd}) => {
   const restartGame = (settings) => {
     setPlayers(settings.players);
     setTurns([initialTurn]);
-    setLog([]);
+    setLog(['Starting a new game']);
     setDefaultAmount(1);
     setDefaultFv(1);
     setYourTurn(true);
@@ -86,6 +86,8 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const nextRound = (currentPlayer) => {
+    printLog("Starting next round");
+    printLog("Rerolling all dice")
     let nextPlayer = currentPlayer;
 
     if (currentPlayer.hand.length === 0) {
@@ -187,7 +189,7 @@ const GamePage = ({ settings, onEnd}) => {
     return true;
   }
 
-  const isLiar = () => {
+  const isLiar = async () => {
     const currentTurn = turns[turns.length - 1];
     const fv = currentTurn.fv;
     const amount = currentTurn.amount;
@@ -203,6 +205,7 @@ const GamePage = ({ settings, onEnd}) => {
       })
     }
 
+    await timeout(500);
     printLog(`${amountFound} ${fv}'s found`)
 
     if (amountFound >= amount) {
@@ -237,7 +240,7 @@ const GamePage = ({ settings, onEnd}) => {
       nextPlayer: nextPlayer,
     }
 
-    printLog(`${currentPlayer.name}: ${newTurn.amount} ${newTurn.fv}`)
+    printLog(`P${currentPlayer.id}: ${newTurn.amount} ${newTurn.fv}`)
     await timeout(100);
 
     setTurns(turns => [...turns, newTurn]);
@@ -274,7 +277,7 @@ const GamePage = ({ settings, onEnd}) => {
       setIsChallenge(true);
       await timeout(2000);
   
-      if (isLiar()) {
+      if (await isLiar()) {
         lyingPlayer = playersArray[player.id-1];
       } 
   
@@ -402,6 +405,28 @@ const GamePage = ({ settings, onEnd}) => {
     }
 
     switch(amountOfPlayers) {
+      case 1: 
+        break;
+      default:
+        break;
+      case 2: 
+        renderedCells.push(emptyCell(1));
+        renderedCells.push(renderedPlayer(2));
+        renderedCells.push(emptyCell(2));
+        renderedCells.push(emptyCell(3));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(emptyCell(4));
+        renderedBottomSection();
+        break;
+      case 3: 
+        renderedCells.push(emptyCell(1));
+        renderedCells.push(renderedPlayer(3));
+        renderedCells.push(emptyCell(2));
+        renderedCells.push(renderedPlayer(2));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(emptyCell(3));
+        renderedBottomSection();
+        break;
       case 4: 
         renderedCells.push(emptyCell(1));
         renderedCells.push(renderedPlayer(3));
@@ -410,16 +435,26 @@ const GamePage = ({ settings, onEnd}) => {
         renderedCells.push(renderedCenterDisplay());
         renderedCells.push(renderedPlayer(4));
         renderedBottomSection();
+        break;
+      case 5: 
+      renderedCells.push(renderedPlayer(3));
+      renderedCells.push(renderedPlayer(4));
+      renderedCells.push(renderedPlayer(5));
+      renderedCells.push(renderedPlayer(2));
+      renderedCells.push(renderedCenterDisplay());
+      renderedCells.push(emptyCell(1));
+      renderedBottomSection();
+        break;
+      case 6: 
+        renderedCells.push(renderedPlayer(3));
+        renderedCells.push(renderedPlayer(4));
+        renderedCells.push(renderedPlayer(5));
+        renderedCells.push(renderedPlayer(2));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(renderedPlayer(6));
+        renderedBottomSection();
+        break;
     }
-
-    // if (amountOfPlayers === 6) {
-    //   renderedCells.push(renderedPlayer(3));
-    //   renderedCells.push(renderedPlayer(4));
-    //   renderedCells.push(renderedPlayer(5));
-    //   renderedCells.push(renderedPlayer(2));
-    //   renderedCells.push(renderedCenterDisplay());
-    //   renderedCells.push(renderedPlayer(6));
-    // }
 
     return (
       <GameGrid>
@@ -434,7 +469,6 @@ const GamePage = ({ settings, onEnd}) => {
 
   return (
     <div>
-      <Button onClick={handleGotoSettings}></Button>
       <Wrapper>
         {renderGame()}
       </Wrapper>
