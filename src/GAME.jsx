@@ -277,11 +277,12 @@ const GamePage = ({ settings, onEnd}) => {
       setIsChallenge(true);
       await timeout(2000);
   
-      if (await isLiar()) {
+      if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];
       } 
-  
-      
+
+      await timeout(2000);
+
       lyingPlayer.hand.pop();
       printLog(`${lyingPlayer.name} lost a dice!`);
       if (lyingPlayer.hand.length === 0) {
@@ -289,30 +290,13 @@ const GamePage = ({ settings, onEnd}) => {
       }
       setPlayers(playersArray);
       rerollDice();
+      await timeout(1000);
       nextRound(lyingPlayer);
-      resetDefaults();  
+      setDefaultAmount(1); 
     } else {
-      upDefaults();
+      setDefaultAmount(defaultAmount + 1);
       nextTurn(amount, fv, nextPlayer);
     }
-  }
-
-  const resetDefaults = () => {
-    setDefaultAmount(1); 
-    setDefaultFv(1);
-  }
-
-  const upDefaults = () => {
-    const currentTurn = turns[turns.length - 1];
-    let newDefaultFv = currentTurn.fv + 1;
-    let newDefaultAmount = currentTurn.amount;
-    if (newDefaultAmount === 0) {newDefaultAmount++}
-    if (newDefaultFv > 5) {
-      newDefaultFv = 1;
-      newDefaultAmount++;
-    }
-    setDefaultFv(newDefaultFv);
-    setDefaultAmount(newDefaultAmount);
   }
 
   const renderedPlayer = (playerNumber) => {
