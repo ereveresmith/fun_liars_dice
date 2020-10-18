@@ -3,50 +3,24 @@ import Styled from 'styled-components';
 import { Styles } from './util/Styles'
 import Game from './GAME';
 import Settings from './SETTINGS';
-import { randomInt, YOU, mockPlayers, mockNames } from './util/Helper';
 
 const App = () => {
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, [page, gameSettings]);
+  // }, [gameSettings]);
 
-  const randomName = () => {
-    const int = randomInt(5);
-    return mockNames[int];
-  }
-
-  const defaultPlayers = [YOU];
-  const defaultSettings = {
-    amountOfPlayers: 5,
-    players: defaultPlayers,
-  }
-
-  const generatePlayers = () => {
-    let players = [];
-
-    for (let i = 0; i < 4; i++) {
-
-      players.push({
-        name: randomName(), 
-        id: i+2, 
-        hand: [0, 0, 0, 0, 0], 
-        color: Styles.colors.blue,
-      })
-
-    }
-
-    return mockPlayers;
-  }
   const [page, setPage] = useState('settings');
-  const [gameSettings, setGameSettings] = useState(defaultSettings)
+  const [gameSettings, setGameSettings] = useState({})
 
-  const handleStartGame = () => {
+  const handleStartGame = (settings) => {
+    setGameSettings(settings);
     setPage('game');
   }
 
   const handleEndGame = () => {
     setPage('settings');
+    setGameSettings({});
   }
 
   const renderPage = () => {
@@ -54,9 +28,9 @@ const App = () => {
       case 'game': 
         return <Game settings={gameSettings} onEnd={handleEndGame}></Game>;
       case 'settings': 
-        return <Settings onStart={handleStartGame}></Settings>;
+        return <Settings onSubmit={handleStartGame}></Settings>;
       default: 
-        return <Settings onStart={handleStartGame}></Settings>;
+        return <Settings onSubmit={handleStartGame}></Settings>;
     }
   }
 

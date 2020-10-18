@@ -12,6 +12,11 @@ export const YOU = {
     name: 'YOU', id: 1, hand: [1, 2, 3, 4, 5], color: Styles.colors.purple
 }
 
+export const mockBot = {
+  name: 'mock bot', id: 2, hand: [1, 2, 3, 4, 5], color: Styles.colors.blue
+}
+
+
 
 export const randomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max));
@@ -40,7 +45,42 @@ export const mockNames = [
   'Dirt',
   'Jock',
   'Rock',
+  'Borry',
+  'Ross',
+  'Rick',
+  'Terry',
+  'Barns',
+  'Snarf',
+  'Friend',
   'Tack',
   'Peter',
   'Haley',
+  'Pringle',
+  'Pruney',
+  'Little Lick',
+  'Snort',
+  'Toss',
+  'Rumble',
+  'Knock',
+  'Tear',
+  'Mr. Cry',
+  'Bumblo',
+  'Tutu',
+  'Lil Duck', 
+  'Stop Gap',
+  'Mr MVP',
+  'Luis',
+  'Susan',
+  'Shane',
+  'Jesse',
+  'Vinny',
+  'David',
+  'Megan',
+  'Titan',
+  'Alex',
+  'Alec',
 ]
+
+export const defaultSettings = {
+  players: [YOU, mockBot],
+};

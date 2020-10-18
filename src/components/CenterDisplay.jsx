@@ -52,14 +52,21 @@ const TurnArrow = Styled.div`
   margin-bottom: 8px;
 `
 
-const CenterDisplay = ({ turn, isChallenge }) => {
+const CenterDisplay = ({ turn, isChallenge, amountOfPlayers }) => {
   const calcAngle = () => {
     const offset = 180;
-    if (turn.nextPlayer.id === 1) {
-      return offset;
-    } else {
-      return (turn.nextPlayer.id * 45) + offset;
+
+    switch(amountOfPlayers) {
+      case 4: 
+        return (turn.nextPlayer.id * 90) + 90;
+      case 6: 
+        if (turn.nextPlayer.id === 1) {
+          return offset;
+        } else {
+          return (turn.nextPlayer.id * 45) + offset;
+        }
     }
+
   }
 
   let turnColor = turn.nextPlayer.color;
