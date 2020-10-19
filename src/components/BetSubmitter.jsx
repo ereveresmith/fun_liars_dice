@@ -11,6 +11,7 @@ const HugeText = Styled.h1`
 `
 
 const Wrapper = Styled.div`
+  z-index: 2;
   height: 100%;
   padding: 4px;
   background-color: ${Styles.colors.darkGrey};
@@ -18,23 +19,22 @@ const Wrapper = Styled.div`
   border: 2px solid ${Styles.colors.darkGrey};
   border-radius: 8px;
   display: grid;
-  grid-template-columns: auto auto;
+  width: 300px;
+  grid-template-columns: auto auto auto auto;
   align-self: center;
   align-items: center;
-  justify-items: center;
+  justify-items: end;
 `
 
 const VerticalGrid = Styled.div`
   display: grid;
   grid-template-rows: auto auto auto;
-  height: 170px;
   align-items: center;
   justify-items: center;
 `
 const BetSubmitter = (props) => {
   const [fv, setFv] = useState(props.defaultFv);
   const [amount, setAmount] = useState(props.defaultAmount);
-  const [position, setPosition] =useState({x: 1, y: 1})
 
   useEffect(() => {
     setFv(props.defaultFv);
@@ -86,11 +86,13 @@ const BetSubmitter = (props) => {
       </VerticalGrid>
       <VerticalGrid>
         <Button isSecondary onClick={handleRaiseFv}></Button>
-        <Dice fv={fv} size={Styles.fontSizes.huge}></Dice>
+        <Dice fv={fv} size={Styles.diceSizes.large}></Dice>
         <Button isSecondary onClick={handleLowerFv}></Button>
       </VerticalGrid>
-      <Button isSecondary label="Liar!" onClick={handleCall}></Button>
-      <Button label="Submit" onClick={handleSubmit}></Button>
+      <VerticalGrid>
+        <Button label="Submit" onClick={handleSubmit}></Button>
+        <Button isSecondary label="Liar!" onClick={handleCall}></Button>
+      </VerticalGrid>
     </Wrapper>
   );
 }

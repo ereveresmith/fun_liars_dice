@@ -2,12 +2,12 @@ import React from 'react';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
+import LogContainer from './LogContainer';
 
 const Cell = Styled.div`
   display: grid;
   width: 100%;
-  height: 240px;
-  min-width: 200px;
+  height: 100%;
 `
 
 const GridWrapper = Styled.div`
@@ -16,13 +16,11 @@ const GridWrapper = Styled.div`
   height: 100%;
   margin: 8px 0;
   align-items: center;
-
 `
 
 const Text = Styled.h2`
   font-size: ${Styles.fontSizes.medium};
   text-align: center;
-  width: 200px;
   font-weight: 700;
   justify-self: center;
   transition: color 200ms ease;
@@ -35,15 +33,15 @@ const Text = Styled.h2`
 const TurnArrow = Styled.div`
   width: 0; 
   height: 0; 
-  border-left: 2em solid transparent;
-  border-right: 2em solid transparent;
+  border-left: 1.5em solid transparent;
+  border-right: 1.5em solid transparent;
   align-self: end;
   justify-self: center;
   transform-origin: center;
   transition: all 200ms ease;
 
   ${props => props.color && `
-    border-bottom: 4em solid ${props.color};
+    border-bottom: 3em solid ${props.color};
   `}
 
   ${props => props.angle && `
@@ -52,7 +50,7 @@ const TurnArrow = Styled.div`
   margin-bottom: 8px;
 `
 
-const CenterDisplay = ({ turn, isChallenge, amountOfPlayers }) => {
+const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log }) => {
   const calcAngle = () => {
     const offset = 180;
 
@@ -90,6 +88,7 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers }) => {
   return (
     <Cell>
       <GridWrapper>
+        <LogContainer log={log}></LogContainer>
         <TurnArrow color={turnColor} angle={calcAngle()}></TurnArrow>
         <Text color={turnColor}>{isChallenge ? challengeText : turnText}</Text>
       </GridWrapper>

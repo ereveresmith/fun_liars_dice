@@ -3,20 +3,20 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 
 const StyledMessage = Styled.span`
-  font-size: ${Styles.fontSizes.medium};
+  font-size: ${Styles.fontSizes.large};
   overflow: hidden;
   font-weight: 500;
-  color: ${Styles.colors.white};
+  color: ${Styles.colors.black};
   opacity: 0.9;
+  text-align: center;
   margin-bottom: 8px;
 `
 
 const Wrapper = Styled.div`
-  height: 100%;
+  height: 130px;
   padding: 4px;
-  background-color: ${Styles.colors.darkGrey};
   opacity: 0.8;
-  border: 2px solid ${Styles.colors.darkGrey};
+  justify-content: center;
   border-radius: 8px;
   grid-auto-rows: max-content;
   display: grid;

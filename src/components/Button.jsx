@@ -3,11 +3,9 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
-  padding: 12px 12px;
+  padding: 16px;
   border-radius: 24px;
-  margin: 8px;
-  min-width: 4  0px;
-  min-height: 10px;
+  margin: 2px;
   color: white;
   text-transform: uppercase;
   font-weight: 800;

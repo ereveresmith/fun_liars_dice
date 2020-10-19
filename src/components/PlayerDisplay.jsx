@@ -33,11 +33,12 @@ const ColoredDiv = Styled.div`
 
 const Cell = Styled.div`
   display: grid;
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: auto auto;
+  height: 200px;
+  margin: 0 24px;
   border: 1px solid ${Styles.colors.darkGrey};
-  border-radius: 2px;
-  height: 240px;
-  width: 100%;
+  width: 80%;
+  margin: 24px 0;
   transition: background-color 100ms ease-out;
 
   ${props => props.isOut && `
@@ -76,7 +77,6 @@ const HandGrid = Styled.div`
   padding: 8px 24px;
   display: grid;
   grid-gap: 6px;
-  width: 280px;
   jusity-items: center;
   grid-template-columns: auto auto auto auto auto;
 `;
@@ -86,9 +86,9 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showDice, showTurn
 
   const renderedHand = player.hand.map((fv, index) => {
     if (showDice) {
-      return <Dice size={'3em'} key={`dice${index}`} fv={fv}></Dice>
+      return <Dice size={Styles.diceSizes.medium} key={`dice${index}`} fv={fv}></Dice>
     } else {
-      return <Dice size={'2em'} key={`dice${index}`} fv={0}></Dice>
+      return <Dice size={Styles.diceSizes.small} key={`dice${index}`} fv={0}></Dice>
     }
   })
 

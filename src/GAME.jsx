@@ -9,32 +9,30 @@ import LogContainer from './components/LogContainer';
 import { calcBotMove } from './util/Bot';
 import { randomInt, YOU } from './util/Helper';
 
+const UIGrid = Styled.div`
+  display: grid;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+`
 
 const EmptyCell = Styled.div`
   display: grid;
   width: 100%;
-  border: 1px solid ${Styles.colors.darkGrey};
-  background-color: ${Styles.colors.lightGrey};
+  border: 1px solid ${Styles.colors.lightGrey};
   opacity: 0;
-  height: 248px;
-  min-width: 200px;
-`
-
-const ToolsCell = Styled.div`
-  display: grid;
-  width: 100%;
-  height: 248px;
-  min-width: 200px;
+  height: 100%;
 `
 
 const Wrapper = Styled.div`
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: 4% 12% 0 12%;
   `
 
 const GameGrid = Styled.div`
+  margin: 8px 0;
+  grid-gap: 4px;
   width: 100%;
   display: grid;
   justify-items: center;
@@ -307,7 +305,8 @@ const GamePage = ({ settings, onEnd}) => {
     if (player === undefined) {
       return null;
     } else {
-      const isShowingDice = (isChallenge | player.id === 1);
+      const isYou = player.id === 1;
+      const isShowingDice = (isChallenge | isYou);
       let opacity = 1;
       const isActive = (player.id === currentTurn.nextPlayer.id);
       let isSecondary = false;
@@ -346,7 +345,7 @@ const GamePage = ({ settings, onEnd}) => {
     )};
   }
 
-  const renderGame = () => {
+  const renderCells = () => {
     const amountOfPlayers = players.length;
     const renderedCells = [];
     const currentTurn = turns[turns.length - 1];
@@ -357,35 +356,12 @@ const GamePage = ({ settings, onEnd}) => {
 
     const renderedCenterDisplay = () => {
       return <CenterDisplay 
+        log={log}
         amountOfPlayers={settings.players.length}
         key="centerDisplay" 
         isChallenge={isChallenge} 
         turn={currentTurn}>
       </CenterDisplay>
-    }
-
-    const renderedLog = () => {
-      return <ToolsCell key="logDisplay">
-        <LogContainer log={log}></LogContainer>
-      </ToolsCell>
-    }
-
-    const renderedBetDisplay = () => {
-      return <ToolsCell key="betDisplay">
-        <BetSubmitter 
-          canCall={currentTurn.fv > 0} 
-          disabled={!yourTurn} 
-          defaultFv={defaultFv} 
-          defaultAmount={defaultAmount} 
-          onSubmit={handleClickSubmit}>
-        </BetSubmitter>
-      </ToolsCell>
-    }
-
-    const renderedBottomSection = () => {
-      renderedCells.push(renderedLog());
-      renderedCells.push(renderedPlayer(1));
-      renderedCells.push(renderedBetDisplay());
     }
 
     switch(amountOfPlayers) {
@@ -400,7 +376,9 @@ const GamePage = ({ settings, onEnd}) => {
         renderedCells.push(emptyCell(3));
         renderedCells.push(renderedCenterDisplay());
         renderedCells.push(emptyCell(4));
-        renderedBottomSection();
+        renderedCells.push(emptyCell(5));
+        renderedCells.push(renderedPlayer(1));
+        renderedCells.push(emptyCell(6));
         break;
       case 3: 
         renderedCells.push(emptyCell(1));
@@ -409,7 +387,6 @@ const GamePage = ({ settings, onEnd}) => {
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedCenterDisplay());
         renderedCells.push(emptyCell(3));
-        renderedBottomSection();
         break;
       case 4: 
         renderedCells.push(emptyCell(1));
@@ -418,16 +395,17 @@ const GamePage = ({ settings, onEnd}) => {
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedCenterDisplay());
         renderedCells.push(renderedPlayer(4));
-        renderedBottomSection();
+        renderedCells.push(emptyCell(5));
+        renderedCells.push(renderedPlayer(1));
+        renderedCells.push(emptyCell(6));
         break;
       case 5: 
-      renderedCells.push(renderedPlayer(3));
-      renderedCells.push(renderedPlayer(4));
-      renderedCells.push(renderedPlayer(5));
-      renderedCells.push(renderedPlayer(2));
-      renderedCells.push(renderedCenterDisplay());
-      renderedCells.push(emptyCell(1));
-      renderedBottomSection();
+        renderedCells.push(renderedPlayer(3));
+        renderedCells.push(renderedPlayer(4));
+        renderedCells.push(renderedPlayer(5));
+        renderedCells.push(renderedPlayer(2));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(emptyCell(1));
         break;
       case 6: 
         renderedCells.push(renderedPlayer(3));
@@ -436,27 +414,29 @@ const GamePage = ({ settings, onEnd}) => {
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedCenterDisplay());
         renderedCells.push(renderedPlayer(6));
-        renderedBottomSection();
         break;
     }
 
-    return (
-      <GameGrid>
-        {renderedCells}
-      </GameGrid>
-    )
+    return renderedCells;
   }
 
-  const handleGotoSettings = () => {
-    onEnd();
-  }
+  const currentTurn = turns[turns.length - 1];
 
   return (
-    <div>
-      <Wrapper>
-        {renderGame()}
-      </Wrapper>
-    </div>
+    <Wrapper>
+          <UIGrid>
+            <BetSubmitter 
+              canCall={currentTurn.fv > 0} 
+              disabled={!yourTurn} 
+              defaultFv={defaultFv} 
+              defaultAmount={defaultAmount} 
+              onSubmit={handleClickSubmit}>
+            </BetSubmitter>
+          </UIGrid>
+      <GameGrid>
+        {renderCells()}
+      </GameGrid>
+    </Wrapper>
   );
 }
 
