@@ -51,7 +51,12 @@ const SettingsPage = (props) => {
     let hand = [];
 
     for (let i = 0; i< handSize; i++) {
-      hand.push(0);
+      const diceObj = {
+        fv: 0,
+        visible: true,
+        disabled: false,
+      }
+      hand.push(diceObj);
     }
 
     for (let i = 0; i < amountOfPlayers; i++) {

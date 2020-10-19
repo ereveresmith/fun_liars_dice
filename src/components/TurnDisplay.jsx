@@ -16,13 +16,14 @@ const FlexWrapper = Styled.div`
 `
 
 const HugeText = Styled.h1`
-  font-size: ${Styles.fontSizes.large};
+  font-size: ${Styles.fontSizes.huge};
   ${props => props.color && `
     color: ${props.color};
   `}
-  opacity: 0.86;
-  padding-right: 16px;
+  opacity: 0.8;
+  padding-right: 8px;
   text-align: center;
+  align-self: center;
 `
 
 const TurnDisplay = ({ amount, fv, opacity, color }) => {
@@ -31,7 +32,7 @@ const TurnDisplay = ({ amount, fv, opacity, color }) => {
   return (
     <FlexWrapper opacity={opacity}>
       <HugeText color={color}>{amountDisplay}</HugeText>
-      <Dice fv={fv} size={Styles.diceSizes.medium}></Dice>
+      <Dice fv={fv} size={Styles.diceSizes.medium} visible></Dice>
     </FlexWrapper>
   );
 }

@@ -80,15 +80,13 @@ const HandGrid = Styled.div`
   grid-template-columns: auto auto auto auto auto;
 `;
 
-const PlayerDisplay = ({ isActive, isChallenge, player, turn, showDice, showTurn, turnOpacity}) => {
+const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity}) => {
   const isOut = !player.hand.length;
 
-  const renderedHand = player.hand.map((fv, index) => {
-    if (showDice) {
-      return <Dice size={Styles.diceSizes.medium} key={`dice${index}`} fv={fv}></Dice>
-    } else {
-      return <Dice size={Styles.diceSizes.small} key={`dice${index}`} fv={0}></Dice>
-    }
+  const renderedHand = player.hand.map((dice, index) => {
+      const diceSize = dice.visible ? Styles.diceSizes.large : Styles.diceSizes.medium;
+      console.log(diceSize)
+      return <Dice size={diceSize} visible={dice.visible} disabled={dice.disabled} key={`dice${index}`} fv={dice.fv}></Dice>
   })
 
   const turnColor = isChallenge ? Styles.colors.white : Styles.colors.black;

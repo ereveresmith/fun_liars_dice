@@ -85,7 +85,7 @@ const BetSubmitter = (props) => {
       </VerticalGrid>
       <VerticalGrid>
         <Button isSecondary onClick={handleRaiseFv}></Button>
-        <Dice fv={fv} size={Styles.diceSizes.large}></Dice>
+        <Dice fv={fv} size={Styles.diceSizes.large} visible></Dice>
         <Button isSecondary onClick={handleLowerFv}></Button>
       </VerticalGrid>
       <VerticalGrid>

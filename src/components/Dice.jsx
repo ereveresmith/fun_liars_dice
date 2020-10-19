@@ -15,8 +15,13 @@ const Wrapper = Styled.div`
         height: ${props.size};
     `}
 
-    ${props => props.fv === 0 && `
+    ${props => props.visible === false && `
         background-color: ${Styles.colors.grey};
+    `}
+
+    ${props => props.disabled === true && `
+        border: 2px dashed ${Styles.colors.red};
+        opacity: 0.3;
     `}
 `
 
@@ -88,10 +93,10 @@ const renderedDots = (value) => {
   }
 }
 
-const Dice = (props) => {
+const Dice = ({ visible, fv, size, disabled }) => {
   return ( 
-      <Wrapper fv={props.fv} size={props.size}>
-          {renderedDots(props.fv)}
+      <Wrapper fv={fv} size={size} visible={visible} disabled={disabled}>
+          {visible && !disabled && renderedDots(fv)}
       </Wrapper>   
   )
 }

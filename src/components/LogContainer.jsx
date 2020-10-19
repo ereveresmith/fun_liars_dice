@@ -75,7 +75,7 @@ const LogContainer = (props) => {
             {message.value}
           </MessageWrapper>
           {hasFv && <DiceWrapper>
-            <Dice fv={message.fv} size={calcDiceSize()}></Dice>
+            <Dice fv={message.fv} size={calcDiceSize()} visible></Dice>
           </DiceWrapper>}
       </StyledSpand>;
       return logMessage;

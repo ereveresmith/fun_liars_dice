@@ -202,8 +202,8 @@ const GamePage = ({ settings, onEnd}) => {
     }
 
     await timeout(1000);
-    printLog(`There are ${amountFound} `, fv, amountFound)
-    await timeout(2000);
+    await printLog(`There are ${amountFound} `, fv, amountFound)
+    await timeout(4000);
 
     if (amountFound >= amount) {
       return false;
@@ -217,7 +217,19 @@ const GamePage = ({ settings, onEnd}) => {
 
     playersArray.forEach((player) => {
       const newHand = player.hand.map((dice) => {
-        return randomInt(5) + 1;
+        const newFv = randomInt(5) + 1;
+
+        const isYou = player.id === 1;
+        let visible = false;
+        if (isYou) {
+          visible = true;
+        }
+
+        return {
+          fv: newFv,
+          visible: visible,
+          disabled: dice.disabled,
+        }
       })
 
       player.hand = newHand;
@@ -272,7 +284,7 @@ const GamePage = ({ settings, onEnd}) => {
     
       printLog(`${nextPlayer.name} challenged ${player.name}`);
       setIsChallenge(true);
-      await timeout(4000);
+      await timeout(2000);
   
       if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];
@@ -280,7 +292,9 @@ const GamePage = ({ settings, onEnd}) => {
 
       await timeout(2000);
 
-      lyingPlayer.hand.pop();
+      lyingPlayer.hand[lyingPlayer.hand.length - 1].disabled = true;
+
+      console.log(lyingPlayer.hand)
       printLog(`${lyingPlayer.name} lost a dice!`);
       await timeout(2000);
 
@@ -307,7 +321,7 @@ const GamePage = ({ settings, onEnd}) => {
       return null;
     } else {
       const isYou = player.id === 1;
-      const isShowingDice = (isChallenge | isYou);
+      // const isShowingDice = (isChallenge | isYou);
       let opacity = 1;
       const isActive = (player.id === currentTurn.nextPlayer.id);
       let isSecondary = false;
@@ -340,8 +354,7 @@ const GamePage = ({ settings, onEnd}) => {
           turnOpacity={opacity}
           showTurn={isShowingTurn}
           isActive={isActive}
-          player={player}
-          showDice={isShowingDice}>
+          player={player}>
         </PlayerDisplay>
     )};
   }
