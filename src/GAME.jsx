@@ -86,7 +86,7 @@ const GamePage = ({ settings, onEnd}) => {
     printLog("New round, new dice!")
     let nextPlayer = currentPlayer;
 
-    if (currentPlayer.hand.length === 0) {
+    if (checkOutOfDice(currentPlayer.hand)) {
       nextPlayer = calcNextPlayer(currentPlayer);
     } 
 
@@ -138,12 +138,15 @@ const GamePage = ({ settings, onEnd}) => {
     }
     let nextPlayer = players[playerIndex];
 
-    while (nextPlayer.hand.length === 0) {
+    let isOut = checkOutOfDice(nextPlayer.hand);
+
+    while (isOut === true) {
       playerIndex = playerIndex + 1;
       if (playerIndex >= players.length) {
         playerIndex = 0;
       }
       nextPlayer = players[playerIndex];
+      isOut = checkOutOfDice(nextPlayer.hand);
     }
     return nextPlayer;
   }
@@ -267,6 +270,25 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }
 
+  const checkOutOfDice = (hand) => {
+    for(let i = 0; i < hand.length; i++) {
+      if (hand[i].disabled === false) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  const disableDice = (hand) => {
+    for (let i = hand.length - 1; i >= 0; i--) {
+      if (hand[i].disabled === false) {
+        hand[i].disabled = true;
+        return;
+      }
+    }
+  }
+
   const submitBet = async (amount, fv) => {
     const isCall = (amount === -1 && fv === -1);
     const currentTurn = turns[turns.length - 1];
@@ -292,15 +314,15 @@ const GamePage = ({ settings, onEnd}) => {
 
       await timeout(2000);
 
-      lyingPlayer.hand[lyingPlayer.hand.length - 1].disabled = true;
+      disableDice(lyingPlayer.hand);
+      let isOutOfDice = checkOutOfDice(lyingPlayer.hand);
 
-      console.log(lyingPlayer.hand)
       printLog(`${lyingPlayer.name} lost a dice!`);
-      await timeout(2000);
 
-      if (lyingPlayer.hand.length === 0) {
+      if (isOutOfDice) {
         printLog(`${lyingPlayer.name} is out of the game!`);
       }
+      playersArray[player.id-1] = lyingPlayer;
       setPlayers(playersArray);
       rerollDice();
       await timeout(3000);

@@ -21,21 +21,21 @@ const diceObj2 = {
 }
 
 export const YOU = {
-    name: 'YOU', id: 1, hand: [diceObj, diceObj, diceObj2], color: Styles.colors.purple
+    name: 'YOU', id: 1, hand: [diceObj, diceObj2], color: Styles.colors.purple
 }
 
 export const mockBot = {
-  name: 'Mock Bot', id: 2, hand: [diceObj, diceObj, diceObj], color: Styles.colors.blue
+  name: 'Mock Bot', id: 2, hand: [diceObj], color: Styles.colors.blue
 }
 
 export const mockBot2 = {
-  name: 'Darngo', id: 3, hand: [diceObj, diceObj, diceObj], color: Styles.colors.pink
+  name: 'Darngo', id: 3, hand: [diceObj], color: Styles.colors.pink
 }
 
 
 
 export const mockBot3 = {
-  name: 'Ron', id: 4, hand: [diceObj, diceObj, diceObj], color: Styles.colors.orange
+  name: 'Ron', id: 4, hand: [diceObj], color: Styles.colors.orange
 }
 
 
