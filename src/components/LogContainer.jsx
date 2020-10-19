@@ -42,7 +42,6 @@ const Wrapper = Styled.div`
   justify-content: center;
   border-radius: 8px;
   grid-auto-rows: max-content;
-  display: grid;
   overflow: scroll;
   align-self: center;
   padding-left: 12px;

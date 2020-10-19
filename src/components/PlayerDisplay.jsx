@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Styled, { keyframes } from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
@@ -82,6 +82,10 @@ const HandGrid = Styled.div`
 
 const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity}) => {
   let isOut = true;
+
+  // useEffect(() => {
+  //   console.log('hand was changed');
+  // }, [player.hand])
 
   const renderedHand = player.hand.map((dice, index) => {
       const diceSize = dice.visible ? Styles.diceSizes.large : Styles.diceSizes.medium;

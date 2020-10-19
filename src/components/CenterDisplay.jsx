@@ -14,7 +14,6 @@ const GridWrapper = Styled.div`
   display: grid;
   grid-columns: auto auto;
   box-shadow: 0px 0px 15px ${Styles.colors.grey};
-  overflow: hidden;
   border-radius: 4px;
   width: 80%;
   justify-self: center;

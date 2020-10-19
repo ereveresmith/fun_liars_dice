@@ -123,7 +123,7 @@ const GamePage = ({ settings, onEnd}) => {
     let amountOfPlayersLeft = 0;
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
-      if (player.hand.length) {
+      if (checkOutOfDice(player.hand) === false) {
         amountOfPlayersLeft++;
       }
     }
@@ -306,7 +306,15 @@ const GamePage = ({ settings, onEnd}) => {
     
       printLog(`${nextPlayer.name} challenged ${player.name}`);
       setIsChallenge(true);
-      await timeout(2000);
+      
+      for (let i = 0; i < players.length; i++) {
+        let hand = players[i].hand;
+  
+        for (let y = 0; y < hand.length; y++) {
+          hand[y].visible = true;
+          await timeout(2000);
+        }
+      }
   
       if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];
@@ -343,7 +351,6 @@ const GamePage = ({ settings, onEnd}) => {
       return null;
     } else {
       const isYou = player.id === 1;
-      // const isShowingDice = (isChallenge | isYou);
       let opacity = 1;
       const isActive = (player.id === currentTurn.nextPlayer.id);
       let isSecondary = false;
