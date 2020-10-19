@@ -13,9 +13,16 @@ export const YOU = {
 }
 
 export const mockBot = {
-  name: 'mock bot', id: 2, hand: [1, 2, 3, 4, 5], color: Styles.colors.blue
+  name: 'Mock Bot', id: 2, hand: [1, 2, 3, 4, 5], color: Styles.colors.blue
 }
 
+export const mockBot2 = {
+  name: 'Darngo', id: 3, hand: [1, 2, 3, 4, 5], color: Styles.colors.pink
+}
+
+export const mockBot3 = {
+  name: 'Ron', id: 4, hand: [1, 2, 3, 4, 5], color: Styles.colors.orange
+}
 
 
 export const randomInt = (max) => {
@@ -82,5 +89,5 @@ export const mockNames = [
 ]
 
 export const defaultSettings = {
-  players: [YOU, mockBot],
+  players: [YOU, mockBot, mockBot2, mockBot3],
 };

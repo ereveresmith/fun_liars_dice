@@ -8,11 +8,10 @@ const StyledButton = Styled.button`
   margin: 2px;
   color: white;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
   background-color: ${Styles.colors.purple};
   font-size: ${Styles.fontSizes.small};
   border: 1px solid ${Styles.colors.grey};
-  opacity: 0.9;
   cursor: pointer;
   outline: 0;
   transition: background-color 80ms ease-out;

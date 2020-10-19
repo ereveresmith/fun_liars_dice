@@ -20,7 +20,7 @@ const HugeText = Styled.h1`
   ${props => props.color && `
     color: ${props.color};
   `}
-  opacity: 0.6;
+  opacity: 0.86;
   padding-right: 16px;
   text-align: center;
 `

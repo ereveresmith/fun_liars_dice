@@ -5,9 +5,9 @@ export const Styles = {
         large: "3em",
     },
     fontSizes: {
-        small: "1em",
+        small: "0.9em",
         medium: "1.2em",
-        large: "1.6em",
+        large: "2em",
         huge: "3em",
     },
     colors: {

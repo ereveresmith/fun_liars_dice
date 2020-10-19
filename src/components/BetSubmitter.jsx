@@ -16,7 +16,7 @@ const Wrapper = Styled.div`
   background-color: ${Styles.colors.darkGrey};
   opacity: 0.8;
   border: 2px solid ${Styles.colors.darkGrey};
-  border-radius: 8px;
+  border-radius: 4px 0 0 0;
   display: grid;
   width: 300px;
   grid-template-columns: auto auto auto auto;

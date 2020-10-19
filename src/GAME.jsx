@@ -78,13 +78,12 @@ const GamePage = ({ settings, onEnd}) => {
     restartGame(settings);
   }, [settings])
 
-  const printLog = (value, fv) => {
-    setLog(log => [...log, {value: value, fv: fv}]);
+  const printLog = (value, fv, amount) => {
+    setLog(log => [...log, {value: value, fv: fv, amount: amount}]);
   }
 
   const nextRound = (currentPlayer) => {
-    printLog("Starting next round");
-    printLog("Rerolling all dice")
+    printLog("New round, new dice!")
     let nextPlayer = currentPlayer;
 
     if (currentPlayer.hand.length === 0) {
@@ -153,7 +152,7 @@ const GamePage = ({ settings, onEnd}) => {
     return new Promise( res => setTimeout(res, delay) );}
 
   const calcBotTurn = async () => {
-    const botWait = randomInt(1300) + 800;
+    const botWait = randomInt(2300) + 800;
     await timeout(botWait);
     const bet = calcBotMove(turns, amountOfDice());
     submitBet(bet.amount, bet.fv, turns[turns.length -1].nextPlayer);
@@ -202,8 +201,9 @@ const GamePage = ({ settings, onEnd}) => {
       })
     }
 
-    await timeout(500);
-    printLog(`${amountFound} ${fv}'s found`)
+    await timeout(1000);
+    printLog(`There are ${amountFound} `, fv, amountFound)
+    await timeout(2000);
 
     if (amountFound >= amount) {
       return false;
@@ -237,7 +237,7 @@ const GamePage = ({ settings, onEnd}) => {
       nextPlayer: nextPlayer,
     }
 
-    printLog(`${newTurn.amount}`, newTurn.fv);
+    printLog(`${newTurn.amount}`, newTurn.fv, newTurn.amount);
     await timeout(400);
 
     setTurns(turns => [...turns, newTurn]);
@@ -272,7 +272,7 @@ const GamePage = ({ settings, onEnd}) => {
     
       printLog(`${nextPlayer.name} challenged ${player.name}`);
       setIsChallenge(true);
-      await timeout(2000);
+      await timeout(4000);
   
       if (isLiar()) {
         lyingPlayer = playersArray[player.id-1];
@@ -282,12 +282,14 @@ const GamePage = ({ settings, onEnd}) => {
 
       lyingPlayer.hand.pop();
       printLog(`${lyingPlayer.name} lost a dice!`);
+      await timeout(2000);
+
       if (lyingPlayer.hand.length === 0) {
         printLog(`${lyingPlayer.name} is out of the game!`);
       }
       setPlayers(playersArray);
       rerollDice();
-      await timeout(1000);
+      await timeout(3000);
       nextRound(lyingPlayer);
       setDefaultAmount(1); 
     } else {

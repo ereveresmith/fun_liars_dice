@@ -16,7 +16,7 @@ const GridWrapper = Styled.div`
   box-shadow: 0px 0px 15px ${Styles.colors.grey};
   overflow: hidden;
   border-radius: 4px;
-  width: 60%;
+  width: 80%;
   justify-self: center;
   border-radius: 800px;
   height: 100%;
@@ -28,11 +28,16 @@ const Text = Styled.h2`
   text-align: center;
   font-weight: 700;
   margin-bottom: 8px;
+  padding: 8px;
   justify-self: center;
   transition: color 200ms ease;
 
   ${props => props.color && `
     color: ${props.color};
+  `}
+
+  ${props => props.isChallenge && `
+    opacity: 0;
   `}
 `
 
@@ -41,11 +46,11 @@ const TurnArrow = Styled.div`
   height: 0; 
   border-left: 1.5em solid transparent;
   border-right: 1.5em solid transparent;
-  margin-bottom: 4px;
   align-self: end;
   justify-self: center;
   transform-origin: center;
   transition: all 200ms ease;
+  margin-bottom: 16px;
 
   ${props => props.color && `
     border-bottom: 3em solid ${props.color};
@@ -54,7 +59,10 @@ const TurnArrow = Styled.div`
   ${props => props.angle && `
     transform: rotate(${props.angle}deg);
   `}
-  margin-bottom: 8px;
+
+  ${props => props.isChallenge && `
+    opacity: 0;
+  `}
 `
 
 const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log }) => {
@@ -86,18 +94,22 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log }) => {
 
   let turnColor = turn.nextPlayer.color;
   let turnText = `${turn.nextPlayer.name}'s turn...`;
-  let challengeText = `${turn.nextPlayer.name} challenged ${turn.player.name}`;
 
   if (turn.nextPlayer.id === 1) {
     turnText = 'Your Turn';
   }
 
+  if (isChallenge) {
+    turnText = "!";
+    turnColor = Styles.colors.red;
+  }
+  
   return (
     <Cell>
       <GridWrapper>
         <LogContainer log={log}></LogContainer>
-        <Text color={turnColor}>{isChallenge ? challengeText : turnText}</Text>
-        <TurnArrow color={turnColor} angle={calcAngle()}></TurnArrow>
+        <Text isChallenge={isChallenge} color={turnColor}>{turnText}</Text>
+        <TurnArrow isChallenge={isChallenge} color={turnColor} angle={calcAngle()}></TurnArrow>
       </GridWrapper>
     </Cell>
   );

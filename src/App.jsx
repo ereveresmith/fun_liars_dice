@@ -12,7 +12,7 @@ const StyledNav = Styled.nav`
   opacity: 0.9;
   height: 32px;
   padding: 4px;
-  border-radius: 8px;
+  border-radius: 0 0 4px 4px;
   display: flex;
   justify-items: end;
   padding-right: 12px;
