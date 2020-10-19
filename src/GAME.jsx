@@ -5,7 +5,6 @@ import { Styles } from './util/Styles';
 import CenterDisplay from './components/CenterDisplay';
 import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
-import LogContainer from './components/LogContainer';
 import { calcBotMove } from './util/Bot';
 import { randomInt, YOU } from './util/Helper';
 
@@ -67,7 +66,7 @@ const GamePage = ({ settings, onEnd}) => {
   const restartGame = (settings) => {
     setPlayers(settings.players);
     setTurns([initialTurn]);
-    setLog(['Starting a new game']);
+    printLog('Starting a new game');
     setDefaultAmount(1);
     setDefaultFv(1);
     setYourTurn(true);
@@ -79,8 +78,8 @@ const GamePage = ({ settings, onEnd}) => {
     restartGame(settings);
   }, [settings])
 
-  const printLog = (message) => {
-    setLog(log => [...log, message]);
+  const printLog = (value, fv) => {
+    setLog(log => [...log, {value: value, fv: fv}]);
   }
 
   const nextRound = (currentPlayer) => {
@@ -238,8 +237,8 @@ const GamePage = ({ settings, onEnd}) => {
       nextPlayer: nextPlayer,
     }
 
-    printLog(`P${currentPlayer.id}: ${newTurn.amount} ${newTurn.fv}`)
-    await timeout(100);
+    printLog(`${newTurn.amount}`, newTurn.fv);
+    await timeout(400);
 
     setTurns(turns => [...turns, newTurn]);
 
@@ -387,6 +386,9 @@ const GamePage = ({ settings, onEnd}) => {
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedCenterDisplay());
         renderedCells.push(emptyCell(3));
+        renderedCells.push(emptyCell(5));
+        renderedCells.push(renderedPlayer(1));
+        renderedCells.push(emptyCell(6));
         break;
       case 4: 
         renderedCells.push(emptyCell(1));
@@ -406,6 +408,9 @@ const GamePage = ({ settings, onEnd}) => {
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedCenterDisplay());
         renderedCells.push(emptyCell(1));
+        renderedCells.push(emptyCell(5));
+        renderedCells.push(renderedPlayer(1));
+        renderedCells.push(emptyCell(6));
         break;
       case 6: 
         renderedCells.push(renderedPlayer(3));
@@ -414,6 +419,9 @@ const GamePage = ({ settings, onEnd}) => {
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedCenterDisplay());
         renderedCells.push(renderedPlayer(6));
+        renderedCells.push(emptyCell(5));
+        renderedCells.push(renderedPlayer(1));
+        renderedCells.push(emptyCell(6));
         break;
     }
 

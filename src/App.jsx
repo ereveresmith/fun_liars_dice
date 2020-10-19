@@ -10,7 +10,8 @@ const StyledNav = Styled.nav`
   background-color: ${Styles.colors.darkGrey};
   color: ${Styles.colors.white};
   opacity: 0.9;
-  height: 64px;
+  height: 32px;
+  padding: 4px;
   border-radius: 8px;
   display: flex;
   justify-items: end;

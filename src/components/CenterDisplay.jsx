@@ -12,9 +12,14 @@ const Cell = Styled.div`
 
 const GridWrapper = Styled.div`
   display: grid;
-  grid-template-rows: auto auto auto;
+  grid-columns: auto auto;
+  box-shadow: 0px 0px 15px ${Styles.colors.grey};
+  overflow: hidden;
+  border-radius: 4px;
+  width: 60%;
+  justify-self: center;
+  border-radius: 800px;
   height: 100%;
-  margin: 8px 0;
   align-items: center;
 `
 
@@ -22,6 +27,7 @@ const Text = Styled.h2`
   font-size: ${Styles.fontSizes.medium};
   text-align: center;
   font-weight: 700;
+  margin-bottom: 8px;
   justify-self: center;
   transition: color 200ms ease;
 
@@ -35,6 +41,7 @@ const TurnArrow = Styled.div`
   height: 0; 
   border-left: 1.5em solid transparent;
   border-right: 1.5em solid transparent;
+  margin-bottom: 4px;
   align-self: end;
   justify-self: center;
   transform-origin: center;
@@ -89,8 +96,8 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log }) => {
     <Cell>
       <GridWrapper>
         <LogContainer log={log}></LogContainer>
-        <TurnArrow color={turnColor} angle={calcAngle()}></TurnArrow>
         <Text color={turnColor}>{isChallenge ? challengeText : turnText}</Text>
+        <TurnArrow color={turnColor} angle={calcAngle()}></TurnArrow>
       </GridWrapper>
     </Cell>
   );

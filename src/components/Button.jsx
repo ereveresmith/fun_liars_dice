@@ -3,12 +3,12 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
-  padding: 16px;
+  padding: 8px 16px;
   border-radius: 24px;
   margin: 2px;
   color: white;
   text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 600;
   background-color: ${Styles.colors.purple};
   font-size: ${Styles.fontSizes.small};
   border: 1px solid ${Styles.colors.grey};

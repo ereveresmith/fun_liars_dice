@@ -31,7 +31,7 @@ const TurnDisplay = ({ amount, fv, opacity, color }) => {
   return (
     <FlexWrapper opacity={opacity}>
       <HugeText color={color}>{amountDisplay}</HugeText>
-      <Dice fv={fv} size={Styles.diceSizes.small}></Dice>
+      <Dice fv={fv} size={Styles.diceSizes.medium}></Dice>
     </FlexWrapper>
   );
 }

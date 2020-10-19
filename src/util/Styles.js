@@ -7,7 +7,7 @@ export const Styles = {
     fontSizes: {
         small: "1em",
         medium: "1.2em",
-        large: "2em",
+        large: "1.6em",
         huge: "3em",
     },
     colors: {

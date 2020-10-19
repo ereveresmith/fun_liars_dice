@@ -34,10 +34,8 @@ const ColoredDiv = Styled.div`
 const Cell = Styled.div`
   display: grid;
   grid-template-rows: auto auto;
-  height: 200px;
-  margin: 0 24px;
+  height: 220px;
   border: 1px solid ${Styles.colors.darkGrey};
-  width: 80%;
   margin: 24px 0;
   transition: background-color 100ms ease-out;
 
