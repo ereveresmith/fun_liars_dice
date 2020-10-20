@@ -63,16 +63,6 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }, [turns]);
 
-  useEffect(() => {
-    async function reveal() {
-      await revealNextDice();
-    }
-    if (isChallenge) {
-      console.log("REVEALING DICE");
-      reveal();
-    }
-  }, [isChallenge]);
-
   const restartGame = (settings) => {
     setPlayers(settings.players);
     setTurns([initialTurn]);
@@ -93,7 +83,8 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const nextRound = (currentPlayer) => {
-    printLog("New round, new dice!")
+    printLog("New round, new dice!");
+    setIsChallenge(false);
     rerollDice();
     let nextPlayer = currentPlayer;
 
@@ -113,7 +104,6 @@ const GamePage = ({ settings, onEnd}) => {
 
     } else {
       const number = turns.length + 1;
-
       const newTurn = {
         number: number,
         amount: 0,
@@ -226,7 +216,9 @@ const GamePage = ({ settings, onEnd}) => {
 
   const rerollDice = () => {
     const playersArray = [...players];
-    console.log("REROLLING")
+    console.log("rerollDice()")
+
+    const newPlayers = [];
 
     playersArray.forEach((player) => {
       const newHand = player.hand.map((dice) => {
@@ -245,10 +237,12 @@ const GamePage = ({ settings, onEnd}) => {
         }
       })
 
-      player.hand = newHand;
+      let playerClone = Object.assign({}, player);
+      playerClone.hand = newHand;
+      newPlayers.push(playerClone);
     })
 
-    setPlayers(playersArray);
+    setPlayers(newPlayers);
   }
 
   const nextTurn = async (amount, fv, currentPlayer) => {
@@ -300,15 +294,13 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const loopBack = async (ms) => {
+    console.log("loopBack()")
     await timeout(ms);
-
-    if (isChallenge) {
-      await revealNextDice();
-    }
+    await revealNextDice();
   }
 
   const revealNextDice = async () => {
-    console.log('revealing a dice')
+    console.log('revealNextDice()')
     const currentTurn = turns[turns.length - 1];
     const fv = currentTurn.fv;
     const playersArray = [...players];
@@ -331,9 +323,8 @@ const GamePage = ({ settings, onEnd}) => {
           }
 
           setPlayers(playersArray);
-          const loopBackTime = isLyingFv ? 1200 : 600;
+          const loopBackTime = isLyingFv ? 1500 : 1500;
 
-          console.log("starting another loop back....")
           await loopBack(loopBackTime);
         }
 
@@ -351,11 +342,11 @@ const GamePage = ({ settings, onEnd}) => {
     const nextPlayer = currentTurn.nextPlayer;
     printLog(`${nextPlayer.name} challenged ${player.name}`);
     setIsChallenge(true);
+    await revealNextDice();
   }
 
   const finishCall = async () => {
     console.log("finishing the call")
-
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
@@ -374,7 +365,6 @@ const GamePage = ({ settings, onEnd}) => {
     }
     console.log("LYING PLAYER: ")
     console.log(lyingPlayer)
-    setIsChallenge(false);
     await timeout(3000);
     nextRound(lyingPlayer);
     setDefaultAmount(1); 
