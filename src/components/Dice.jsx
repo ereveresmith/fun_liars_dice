@@ -23,6 +23,12 @@ const Wrapper = Styled.div`
         border: 2px dashed ${Styles.colors.red};
         opacity: 0.3;
     `}
+
+    ${props => props.highlight === true && `
+        border: 2px dashed ${Styles.colors.black};
+        background-color: ${Styles.colors.red};
+        opacity: 1;
+    `}
 `
 
 const Grid = Styled.div`
@@ -93,9 +99,9 @@ const renderedDots = (value) => {
   }
 }
 
-const Dice = ({ visible, fv, size, disabled }) => {
+const Dice = ({ visible, fv, size, disabled, highlight }) => {
   return ( 
-      <Wrapper fv={fv} size={size} visible={visible} disabled={disabled}>
+      <Wrapper fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight}>
           {visible && !disabled && renderedDots(fv)}
       </Wrapper>   
   )

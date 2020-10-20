@@ -55,6 +55,7 @@ const SettingsPage = (props) => {
         fv: 0,
         visible: true,
         disabled: false,
+        highlight: false,
       }
       hand.push(diceObj);
     }

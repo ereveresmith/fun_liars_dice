@@ -92,7 +92,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
       if (dice.disabled === false) {
         isOut = false;
       }
-      return <Dice size={diceSize} visible={dice.visible} disabled={dice.disabled} key={`dice${index}`} fv={dice.fv}></Dice>
+      return <Dice size={diceSize} visible={dice.visible} disabled={dice.disabled} highlight={dice.highlight} key={`dice${index}`} fv={dice.fv}></Dice>
   })
 
   const turnColor = isChallenge ? Styles.colors.white : Styles.colors.black;

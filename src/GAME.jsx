@@ -63,6 +63,16 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }, [turns]);
 
+  useEffect(() => {
+    async function reveal() {
+      await revealNextDice();
+    }
+    if (isChallenge) {
+      console.log("REVEALING DICE");
+      reveal();
+    }
+  }, [isChallenge]);
+
   const restartGame = (settings) => {
     setPlayers(settings.players);
     setTurns([initialTurn]);
@@ -84,6 +94,7 @@ const GamePage = ({ settings, onEnd}) => {
 
   const nextRound = (currentPlayer) => {
     printLog("New round, new dice!")
+    rerollDice();
     let nextPlayer = currentPlayer;
 
     if (checkOutOfDice(currentPlayer.hand)) {
@@ -188,7 +199,7 @@ const GamePage = ({ settings, onEnd}) => {
     return true;
   }
 
-  const isLiar = async () => {
+  const checkIsLying = () => {
     const currentTurn = turns[turns.length - 1];
     const fv = currentTurn.fv;
     const amount = currentTurn.amount;
@@ -198,15 +209,13 @@ const GamePage = ({ settings, onEnd}) => {
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
       player.hand.forEach((dice) => {
-        if (dice === fv) {
+        if (dice.fv === fv) {
           amountFound++;
         }
       })
     }
 
-    await timeout(1000);
-    await printLog(`There are ${amountFound} `, fv, amountFound)
-    await timeout(4000);
+    printLog(`There are ${amountFound} `, fv, amountFound)
 
     if (amountFound >= amount) {
       return false;
@@ -217,11 +226,11 @@ const GamePage = ({ settings, onEnd}) => {
 
   const rerollDice = () => {
     const playersArray = [...players];
+    console.log("REROLLING")
 
     playersArray.forEach((player) => {
       const newHand = player.hand.map((dice) => {
         const newFv = randomInt(5) + 1;
-
         const isYou = player.id === 1;
         let visible = false;
         if (isYou) {
@@ -232,13 +241,14 @@ const GamePage = ({ settings, onEnd}) => {
           fv: newFv,
           visible: visible,
           disabled: dice.disabled,
+          highlight: false,
         }
       })
 
       player.hand = newHand;
     })
+
     setPlayers(playersArray);
-    setIsChallenge(false);
   }
 
   const nextTurn = async (amount, fv, currentPlayer) => {
@@ -289,6 +299,87 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }
 
+  const loopBack = async (ms) => {
+    await timeout(ms);
+
+    if (isChallenge) {
+      await revealNextDice();
+    }
+  }
+
+  const revealNextDice = async () => {
+    console.log('revealing a dice')
+    const currentTurn = turns[turns.length - 1];
+    const fv = currentTurn.fv;
+    const playersArray = [...players];
+    let foundInvisible = false;
+
+    for (let i = 0; i < playersArray.length; i++) {
+      const player = playersArray[i];
+      let hand = [...player.hand];
+
+      for (let y = 0; y < hand.length; y++) {
+        if (hand[y].visible === false) {
+          hand[y].visible = true;
+          foundInvisible = true;
+          player.hand = hand;
+
+          const isLyingFv = (hand[y].fv === fv);
+
+          if (isLyingFv) {
+            hand[y].highlight = true;
+          }
+
+          setPlayers(playersArray);
+          const loopBackTime = isLyingFv ? 1200 : 600;
+
+          console.log("starting another loop back....")
+          await loopBack(loopBackTime);
+        }
+
+      }
+    }
+
+    if (foundInvisible === false) {
+      await finishCall();
+    }
+  }
+
+  const startCall = async () => {
+    const currentTurn = turns[turns.length - 1];
+    const player = currentTurn.player;
+    const nextPlayer = currentTurn.nextPlayer;
+    printLog(`${nextPlayer.name} challenged ${player.name}`);
+    setIsChallenge(true);
+  }
+
+  const finishCall = async () => {
+    console.log("finishing the call")
+
+    const currentTurn = turns[turns.length - 1];
+    const player = currentTurn.player;
+    const nextPlayer = currentTurn.nextPlayer;
+    const playersArray = [...players];
+    let lyingPlayer = playersArray[nextPlayer.id-1];
+
+    if (checkIsLying()) {
+      lyingPlayer = playersArray[player.id-1];
+    } 
+
+    await timeout(2000);
+    printLog(`${lyingPlayer.name} lost a dice!`);
+    disableDice(lyingPlayer.hand);
+    if (checkOutOfDice(lyingPlayer.hand)) {
+      printLog(`${lyingPlayer.name} is out of the game!`);
+    }
+    console.log("LYING PLAYER: ")
+    console.log(lyingPlayer)
+    setIsChallenge(false);
+    await timeout(3000);
+    nextRound(lyingPlayer);
+    setDefaultAmount(1); 
+  }
+
   const submitBet = async (amount, fv) => {
     const isCall = (amount === -1 && fv === -1);
     const currentTurn = turns[turns.length - 1];
@@ -296,46 +387,7 @@ const GamePage = ({ settings, onEnd}) => {
     const nextPlayer = currentTurn.nextPlayer;
 
     if (isCall) {
-      const playersArray = [...players];
-      let lyingPlayer = playersArray[nextPlayer.id-1];
-
-      const emptyObj = {};
-
-      const newPlayer = Object.assign(emptyObj, lyingPlayer);
-      lyingPlayer = newPlayer;
-    
-      printLog(`${nextPlayer.name} challenged ${player.name}`);
-      setIsChallenge(true);
-      
-      for (let i = 0; i < players.length; i++) {
-        let hand = players[i].hand;
-  
-        for (let y = 0; y < hand.length; y++) {
-          hand[y].visible = true;
-          await timeout(2000);
-        }
-      }
-  
-      if (isLiar()) {
-        lyingPlayer = playersArray[player.id-1];
-      } 
-
-      await timeout(2000);
-
-      disableDice(lyingPlayer.hand);
-      let isOutOfDice = checkOutOfDice(lyingPlayer.hand);
-
-      printLog(`${lyingPlayer.name} lost a dice!`);
-
-      if (isOutOfDice) {
-        printLog(`${lyingPlayer.name} is out of the game!`);
-      }
-      playersArray[player.id-1] = lyingPlayer;
-      setPlayers(playersArray);
-      rerollDice();
-      await timeout(3000);
-      nextRound(lyingPlayer);
-      setDefaultAmount(1); 
+      startCall();
     } else {
       setDefaultAmount(defaultAmount + 1);
       nextTurn(amount, fv, nextPlayer);

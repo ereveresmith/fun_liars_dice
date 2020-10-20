@@ -12,20 +12,22 @@ const diceObj = {
   fv: 0,
   visible: true,
   disabled: false,
+  highlight: false,
 }
 
 const diceObj2 = {
   fv: 0,
   visible: true,
   disabled: true,
+  highlight: false,
 }
 
 export const YOU = {
-    name: 'YOU', id: 1, hand: [diceObj, diceObj2], color: Styles.colors.purple
+    name: 'YOU', id: 1, hand: [diceObj, diceObj, diceObj], color: Styles.colors.purple
 }
 
 export const mockBot = {
-  name: 'Mock Bot', id: 2, hand: [diceObj], color: Styles.colors.blue
+  name: 'Mock Bot', id: 2, hand: [diceObj, diceObj], color: Styles.colors.blue
 }
 
 export const mockBot2 = {
