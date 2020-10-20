@@ -83,16 +83,17 @@ const HandGrid = Styled.div`
 const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity}) => {
   let isOut = true;
 
-  // useEffect(() => {
-  //   console.log('hand was changed');
-  // }, [player.hand])
-
   const renderedHand = player.hand.map((dice, index) => {
       const diceSize = dice.visible ? Styles.diceSizes.large : Styles.diceSizes.medium;
       if (dice.disabled === false) {
         isOut = false;
       }
-      return <Dice size={diceSize} visible={dice.visible} disabled={dice.disabled} highlight={dice.highlight} key={`dice${index}`} fv={dice.fv}></Dice>
+
+      if (player.id === 1) {
+        return <Dice size={Styles.diceSizes.large} visible={true} disabled={dice.disabled} highlight={dice.highlight} key={`dice${index}`} fv={dice.fv}></Dice>
+      } else {
+        return <Dice size={diceSize} visible={dice.visible} disabled={dice.disabled} highlight={dice.highlight} key={`dice${index}`} fv={dice.fv}></Dice>
+      }
   })
 
   const turnColor = isChallenge ? Styles.colors.white : Styles.colors.black;
