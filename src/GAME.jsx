@@ -11,6 +11,8 @@ import useSound from 'use-sound';
 import { Sounds } from './util/Sounds'
 import rerollSound from './media/reroll.mp3';
 import challengeSound from './media/challenge.wav';
+import loseBetSound from './media/loseBet.wav';
+import nextTurnSound from './media/nextTurn.wav';
 import noteD2 from './media/d2.wav';
 import noteE2 from './media/e2.wav';
 import noteF2 from './media/f2.wav';
@@ -26,6 +28,13 @@ import noteA3 from './media/a3.wav';
 import noteB3 from './media/b3.wav';
 import noteC3 from './media/c3.wav';
 import noteD4 from './media/d4.wav';
+// import noteE4 from './media/e4.wav';
+// import noteF4 from './media/f4.wav';
+// import noteG4 from './media/g4.wav';
+// import noteA4 from './media/a4.wav';
+// import noteB4 from './media/b4.wav';
+// import noteC4 from './media/c4.wav';
+// import noteD5 from './media/d4.wav';
 
 const UIGrid = Styled.div`
   display: grid;
@@ -76,7 +85,6 @@ const GamePage = ({ settings, onEnd}) => {
   const [defaultAmount, setDefaultAmount] = useState(1);
   const [defaultFv, setDefaultFv] = useState(1);
   const [gameSpeed, setGameSpeed] = useState(1);
-  const [amountFound, setAmountFound] = useState(0);
   const [yourTurn, setYourTurn] = useState(true);
   const [isChallenge, setIsChallenge] = useState(false);
   const [playRerollSound] = useSound(rerollSound);
@@ -95,22 +103,19 @@ const GamePage = ({ settings, onEnd}) => {
   const [playNoteB3] = useSound(noteB3);
   const [playNoteC3] = useSound(noteC3);
   const [playNoteD4] = useSound(noteD4);
+  const [playloseBetSound] = useSound(loseBetSound);
+  const [playNextTurnSound] = useSound(nextTurnSound);
   const [playChallengeSound] = useSound(challengeSound);
-
 
   const shortWait = 500 * gameSpeed;
   const mediumWait = 1000 * gameSpeed;
-  const longWait = 3000 * gameSpeed;
+  const longWait = 2500 * gameSpeed;
 
   useEffect(() => {
     if (turns[turns.length-1].nextPlayer.id !== 1) {
       calcBotTurn();
     }
   }, [turns]);
-
-  useEffect(() => {
-    console.log("UPDATED AMOUNT FOUND: " + amountFound);
-  }, [amountFound]);
 
   const restartGame = async (settings) => {
     setPlayers(settings.players);
@@ -258,53 +263,109 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }
 
+  // const playNextNoteTwoOctaves = (num) => {
+  //   switch(num) {
+  //     case 1: 
+  //       playNoteD2();
+  //       break;
+  //     case 2: 
+  //       playNoteE2();
+  //       break;
+  //     case 3: 
+  //       playNoteF2();
+  //       break;      
+  //     case 4: 
+  //       playNoteG2();
+  //       break;      
+  //     case 5: 
+  //       playNoteA2();
+  //       break;      
+  //     case 6: 
+  //       playNoteB2();
+  //       break;
+  //     case 7: 
+  //       playNoteC2();
+  //       break;
+  //     case 8: 
+  //       playNoteD3();
+  //       break;
+  //     case 9: 
+  //       playNoteE3();
+  //       break;
+  //     case 10: 
+  //       playNoteF3();
+  //       break;
+  //     case 11: 
+  //       playNoteG3();
+  //       break;
+  //     case 12: 
+  //       playNoteA3();
+  //       break;
+  //     case 13: 
+  //       playNoteB3();
+  //       break;
+  //     case 14: 
+  //       playNoteC3();
+  //       break;
+  //     case 15: 
+  //       playNoteD4();
+  //       break;
+  //     default: 
+  //       playNoteD4();
+  //       break;
+  //   }
+  // }
+
   const playNextNote = (num) => {
     switch(num) {
       case 1: 
-        playNoteD2();
-        break;
-      case 2: 
-        playNoteE2();
-        break;
-      case 3: 
-        playNoteF2();
-        break;      
-      case 4: 
-        playNoteG2();
-        break;      
-      case 5: 
-        playNoteA2();
-        break;      
-      case 6: 
-        playNoteB2();
-        break;
-      case 7: 
-        playNoteC2();
-        break;
-      case 8: 
         playNoteD3();
-        break;
-      case 9: 
+      break;
+      case 2: 
         playNoteE3();
-        break;
-      case 10: 
+      break;
+      case 3: 
         playNoteF3();
         break;
-      case 11: 
+      case 4: 
         playNoteG3();
-        break;
-      case 12: 
+        break;      
+      case 5: 
         playNoteA3();
-        break;
-      case 13: 
+        break;      
+      case 6: 
         playNoteB3();
-        break;
-      case 14: 
+        break;      
+      case 7: 
         playNoteC3();
         break;
-      case 15: 
+      case 8: 
         playNoteD4();
         break;
+      // case 8: 
+      //   playNoteD4();
+      //   break;
+      // case 9: 
+      //   playNoteE4();
+      //   break;
+      // case 10: 
+      //   playNoteF4();
+      //   break;
+      // case 11: 
+      //   playNoteG4();
+      //   break;
+      // case 12: 
+      //   playNoteA4();
+      //   break;
+      // case 13: 
+      //   playNoteB4();
+      //   break;
+      // case 14: 
+      //   playNoteC4();
+      //   break;
+      // case 15: 
+      //   playNoteD5();
+      //   break;
       default: 
         playNoteD4();
         break;
@@ -339,7 +400,7 @@ const GamePage = ({ settings, onEnd}) => {
 
   const nextTurn = async (amount, fv, currentPlayer) => {
     const currentTurn = turns[turns.length - 1];
-    playNoteD3();
+    playNextTurnSound()
     const nextPlayer = calcNextPlayer(currentPlayer);
     const newTurnNumber = currentTurn.number + 1;
     const newTurn = {
@@ -401,8 +462,11 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }
 
-  const loopBack = async (ms) => {
+  const loopBack = async (ms, playSound) => {
     await timeout(ms);
+    // if (playSound) {
+    //   playNextNote(calcAmountFound());
+    // }
     await revealNextDice();
   }
 
@@ -427,23 +491,24 @@ const GamePage = ({ settings, onEnd}) => {
           const isLyingFv = (hand[y].fv === fv);
 
           if (isLyingFv) {
-            console.log("setting amount found to " + (amountFound + 1))
-            playNextNote(amountFound);
-            setAmountFound(amountFound + 1);
             hand[y].highlight = true;
           }
 
           setPlayers(playersArray);
-          const speedOffset = longWait;
+
+          if (isLyingFv) {
+            playNextNote(calcAmountFound());
+          }
+          const speedOffset = longWait + 1000;
           let loopBackTime = (speedOffset / amountOfDice) * gameSpeed;
 
           if(isLyingFv){
-            loopBackTime = (loopBackTime * 1.5);
+            loopBackTime = (loopBackTime * 2);
           }
 
           loopBackTime = Math.floor(loopBackTime);
 
-          await loopBack(loopBackTime);
+          await loopBack(loopBackTime, isLyingFv);
         }
 
       }
@@ -455,8 +520,7 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const startChallenge = async () => {
-    // playChallengeSound(); 
-    // setAmountFound(0);
+    playChallengeSound(); 
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
@@ -480,7 +544,9 @@ const GamePage = ({ settings, onEnd}) => {
     await timeout(mediumWait);
     disableDice(lyingPlayer.hand);
     await printLog(`${lyingPlayer.name} lost a dice.`);
-    playChallengeSound();
+    if (lyingPlayer.id === 1) {
+      playloseBetSound();
+    } 
     if (checkOutOfDice(lyingPlayer.hand)) {
       await printLog(`${lyingPlayer.name} is out of the game.`);
     }
@@ -551,6 +617,21 @@ const GamePage = ({ settings, onEnd}) => {
     )};
   }
 
+  const calcAmountFound = () => {
+    let amountFound = 0;
+    for (let i = 0; i < players.length; i++) {
+      let hand = players[i].hand;
+
+      for (let k = 0; k < hand.length; k++) {
+        if (hand[k].highlight === true) {
+          amountFound++;
+        }
+      }
+    }
+
+    return amountFound;
+  }
+
   const renderCells = () => {
     const amountOfPlayers = players.length;
     const renderedCells = [];
@@ -560,11 +641,14 @@ const GamePage = ({ settings, onEnd}) => {
       return <EmptyCell key={`emptyCell${i}`}></EmptyCell>
     }
 
+
+    
+
     const renderedCenterDisplay = () => {
       return <CenterDisplay 
         log={log}
         amountOfPlayers={settings.players.length}
-        amountFound={amountFound}
+        amountFound={calcAmountFound()}
         key="centerDisplay" 
         isChallenge={isChallenge} 
         turn={currentTurn}>

@@ -8,7 +8,7 @@ const Wrapper = Styled.div`
     border: 2px solid ${Styles.colors.darkGrey};
     border-radius: 4px;
     background-color: ${Styles.colors.white};
-    transition: all ease 300ms;
+    transition: all ease 250ms;
 
     ${props => props.size && `
         width: ${props.size};
