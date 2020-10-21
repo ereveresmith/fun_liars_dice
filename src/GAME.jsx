@@ -108,6 +108,10 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }, [turns]);
 
+  useEffect(() => {
+    console.log("UPDATED AMOUNT FOUND: " + amountFound);
+  }, [amountFound]);
+
   const restartGame = async (settings) => {
     setPlayers(settings.players);
     setTurns([initialTurn]);
@@ -131,7 +135,6 @@ const GamePage = ({ settings, onEnd}) => {
   const nextRound = async (currentPlayer) => {
     await printLog("New round, new dice!");
     setIsChallenge(false);
-    setAmountFound(0);
     rerollDice();
     let nextPlayer = currentPlayer;
 
@@ -336,7 +339,7 @@ const GamePage = ({ settings, onEnd}) => {
 
   const nextTurn = async (amount, fv, currentPlayer) => {
     const currentTurn = turns[turns.length - 1];
-    
+    playNoteD3();
     const nextPlayer = calcNextPlayer(currentPlayer);
     const newTurnNumber = currentTurn.number + 1;
     const newTurn = {
@@ -348,7 +351,7 @@ const GamePage = ({ settings, onEnd}) => {
     }
 
     await printLog(`P${newTurn.player.id}: ${newTurn.amount}`, newTurn.fv, newTurn.amount);
-    playNextNote(newTurnNumber);
+    // playNextNote(newTurnNumber);
     setTurns(turns => [...turns, newTurn]);
 
     if (nextPlayer.id === 1) {
@@ -424,6 +427,8 @@ const GamePage = ({ settings, onEnd}) => {
           const isLyingFv = (hand[y].fv === fv);
 
           if (isLyingFv) {
+            console.log("setting amount found to " + (amountFound + 1))
+            playNextNote(amountFound);
             setAmountFound(amountFound + 1);
             hand[y].highlight = true;
           }
@@ -450,7 +455,8 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const startChallenge = async () => {
-    playChallengeSound(); 
+    // playChallengeSound(); 
+    // setAmountFound(0);
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
@@ -474,6 +480,7 @@ const GamePage = ({ settings, onEnd}) => {
     await timeout(mediumWait);
     disableDice(lyingPlayer.hand);
     await printLog(`${lyingPlayer.name} lost a dice.`);
+    playChallengeSound();
     if (checkOutOfDice(lyingPlayer.hand)) {
       await printLog(`${lyingPlayer.name} is out of the game.`);
     }
