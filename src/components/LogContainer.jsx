@@ -31,7 +31,7 @@ const StyledSpand = Styled.span`
 `
 
 const Wrapper = Styled.div`
-  height: 100px;  
+  height: 150px;  
   border-bottom: 1px solid ${Styles.colors.grey};
   width: 100%;
   justify-self: center;

@@ -11,6 +11,12 @@ const Cell = Styled.div`
   height: 100%;
 `
 
+const BottomGrid = Styled.div`
+  display: grid;
+  width: 100%;
+  height: 100%;
+`
+
 const GridWrapper = Styled.div`
   display: grid;
   padding: 4px;
@@ -20,7 +26,7 @@ const GridWrapper = Styled.div`
   width: 80%;
   justify-self: center;
   border-radius: 800px;
-  height: 260px;
+  height: 290px;
   align-items: center;
 `
 
@@ -102,11 +108,13 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
     <Cell>
       <GridWrapper>
         <LogContainer log={log}></LogContainer>
-        {
-          isChallenge ? <TurnDisplay amount={amountFound} fv={turn.fv}></TurnDisplay>
-          :<Text color={turnColor}>{turnText}</Text>
-        }
-        <TurnArrow isChallenge={isChallenge} color={turnColor} angle={calcAngle()}></TurnArrow>
+        <BottomGrid>
+          {
+            isChallenge ? <TurnDisplay amount={amountFound} fv={turn.fv}></TurnDisplay>
+            :<Text color={turnColor}>{turnText}</Text>
+          }
+          <TurnArrow isChallenge={isChallenge} color={turnColor} angle={calcAngle()}></TurnArrow>
+        </BottomGrid>
       </GridWrapper>
     </Cell>
   );

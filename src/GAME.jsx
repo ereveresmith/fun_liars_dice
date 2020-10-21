@@ -13,6 +13,8 @@ import rerollSound from './media/reroll.mp3';
 import challengeSound from './media/challenge.wav';
 import loseBetSound from './media/loseBet.wav';
 import nextTurnSound from './media/nextTurn.wav';
+import winBetSound from './media/winBet.wav';
+import showDiceSound from './media/showDice.wav';
 import noteD2 from './media/d2.wav';
 import noteE2 from './media/e2.wav';
 import noteF2 from './media/f2.wav';
@@ -106,9 +108,11 @@ const GamePage = ({ settings, onEnd}) => {
   const [playloseBetSound] = useSound(loseBetSound);
   const [playNextTurnSound] = useSound(nextTurnSound);
   const [playChallengeSound] = useSound(challengeSound);
+  const [playWinBetSound] = useSound(winBetSound);
+  const [playShowDiceSound] = useSound(showDiceSound);
 
   const shortWait = 500 * gameSpeed;
-  const mediumWait = 1000 * gameSpeed;
+  const mediumWait = 800 * gameSpeed;
   const longWait = 2500 * gameSpeed;
 
   useEffect(() => {
@@ -120,11 +124,12 @@ const GamePage = ({ settings, onEnd}) => {
   const restartGame = async (settings) => {
     setPlayers(settings.players);
     setTurns([initialTurn]);
+    playRerollSound();
+    rerollDice();
     await printLog('Starting a new game');
     setDefaultAmount(1);
     setDefaultFv(1);
     setYourTurn(true);
-    rerollDice();
     setIsChallenge(false);
   }
 
@@ -205,7 +210,7 @@ const GamePage = ({ settings, onEnd}) => {
     return new Promise( res => setTimeout(res, delay) );}
 
   const calcBotTurn = async () => {
-    const botWait = randomInt(mediumWait) + shortWait;
+    const botWait = randomInt(mediumWait) + mediumWait;
     await timeout(botWait);
     const bet = calcBotMove(turns, amountOfDice());
     submitBet(bet.amount, bet.fv, turns[turns.length -1].nextPlayer);
@@ -462,11 +467,8 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }
 
-  const loopBack = async (ms, playSound) => {
+  const loopBack = async (ms) => {
     await timeout(ms);
-    // if (playSound) {
-    //   playNextNote(calcAmountFound());
-    // }
     await revealNextDice();
   }
 
@@ -498,6 +500,8 @@ const GamePage = ({ settings, onEnd}) => {
 
           if (isLyingFv) {
             playNextNote(calcAmountFound());
+          } else {
+            playShowDiceSound();
           }
           const speedOffset = longWait + 1000;
           let loopBackTime = (speedOffset / amountOfDice) * gameSpeed;
@@ -508,7 +512,7 @@ const GamePage = ({ settings, onEnd}) => {
 
           loopBackTime = Math.floor(loopBackTime);
 
-          await loopBack(loopBackTime, isLyingFv);
+          await loopBack(loopBackTime);
         }
 
       }
@@ -537,7 +541,8 @@ const GamePage = ({ settings, onEnd}) => {
     const playersArray = [...players];
     let lyingPlayer = playersArray[nextPlayer.id-1];
 
-    if (checkIsLying()) {
+    const isLying = await checkIsLying();
+    if (isLying === true) {
       lyingPlayer = playersArray[player.id-1];
     } 
 
@@ -546,7 +551,9 @@ const GamePage = ({ settings, onEnd}) => {
     await printLog(`${lyingPlayer.name} lost a dice.`);
     if (lyingPlayer.id === 1) {
       playloseBetSound();
-    } 
+    } else if (player.id === 1 | nextPlayer.id === 1) {
+      playWinBetSound();
+    }
     if (checkOutOfDice(lyingPlayer.hand)) {
       await printLog(`${lyingPlayer.name} is out of the game.`);
     }
