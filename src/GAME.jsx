@@ -7,6 +7,25 @@ import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
 import { calcBotMove } from './util/Bot';
 import { randomInt, YOU } from './util/Helper';
+import useSound from 'use-sound';
+import { Sounds } from './util/Sounds'
+import rerollSound from './media/reroll.mp3';
+
+import noteD2 from './media/d2.wav';
+import noteE2 from './media/e2.wav';
+import noteF2 from './media/f2.wav';
+import noteG2 from './media/g2.wav';
+import noteA2 from './media/a2.wav';
+import noteB2 from './media/b2.wav';
+import noteC2 from './media/c2.wav';
+import noteD3 from './media/d3.wav';
+import noteE3 from './media/e3.wav';
+import noteF3 from './media/f3.wav';
+import noteG3 from './media/g3.wav';
+import noteA3 from './media/a3.wav';
+import noteB3 from './media/b3.wav';
+import noteC3 from './media/c3.wav';
+import noteD4 from './media/d4.wav';
 
 const UIGrid = Styled.div`
   display: grid;
@@ -41,7 +60,7 @@ const GameGrid = Styled.div`
 `
 
 const initialTurn = {
-  number: 1,
+  number: 0,
   amount: 0,
   fv: 0,
   player: {id: 0},
@@ -60,6 +79,22 @@ const GamePage = ({ settings, onEnd}) => {
   const [amountFound, setAmountFound] = useState(0);
   const [yourTurn, setYourTurn] = useState(true);
   const [isChallenge, setIsChallenge] = useState(false);
+  const [playRerollSound] = useSound(rerollSound);
+  const [playNoteD2] = useSound(noteD2);
+  const [playNoteE2] = useSound(noteE2);
+  const [playNoteF2] = useSound(noteF2);
+  const [playNoteG2] = useSound(noteG2);
+  const [playNoteA2] = useSound(noteA2);
+  const [playNoteB2] = useSound(noteB2);
+  const [playNoteC2] = useSound(noteC2);
+  const [playNoteD3] = useSound(noteD3);
+  const [playNoteE3] = useSound(noteE3);
+  const [playNoteF3] = useSound(noteF3);
+  const [playNoteG3] = useSound(noteG3);
+  const [playNoteA3] = useSound(noteA3);
+  const [playNoteB3] = useSound(noteB3);
+  const [playNoteC3] = useSound(noteC3);
+  const [playNoteD4] = useSound(noteD4);
 
 
   const shortWait = 500 * gameSpeed;
@@ -107,9 +142,8 @@ const GamePage = ({ settings, onEnd}) => {
     if (winner !== undefined) {
       await printLog(`${winner.name} has won the game!`);
     } else {
-      const number = turns.length + 1;
       const newTurn = {
-        number: number,
+        number: 0,
         amount: 0,
         fv: 0,
         player: {id: 0},
@@ -220,6 +254,59 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }
 
+  const playNextNote = (num) => {
+    switch(num) {
+      case 1: 
+        playNoteD2();
+        break;
+      case 2: 
+        playNoteE2();
+        break;
+      case 3: 
+        playNoteF2();
+        break;      
+      case 4: 
+        playNoteG2();
+        break;      
+      case 5: 
+        playNoteA2();
+        break;      
+      case 6: 
+        playNoteB2();
+        break;
+      case 7: 
+        playNoteC2();
+        break;
+      case 8: 
+        playNoteD3();
+        break;
+      case 9: 
+        playNoteE3();
+        break;
+      case 10: 
+        playNoteF3();
+        break;
+      case 11: 
+        playNoteG3();
+        break;
+      case 12: 
+        playNoteA3();
+        break;
+      case 13: 
+        playNoteB3();
+        break;
+      case 14: 
+        playNoteC3();
+        break;
+      case 15: 
+        playNoteD4();
+        break;
+      default: 
+        playNoteD4();
+        break;
+    }
+  }
+
   const rerollDice = () => {
     const playersArray = [...players];
     const newPlayers = [];
@@ -242,21 +329,25 @@ const GamePage = ({ settings, onEnd}) => {
       newPlayers.push(playerClone);
     })
 
+    playRerollSound();
     setPlayers(newPlayers);
   }
 
   const nextTurn = async (amount, fv, currentPlayer) => {
-    const number = turns.length + 1;
+    const currentTurn = turns[turns.length - 1];
+    
     const nextPlayer = calcNextPlayer(currentPlayer);
+    const newTurnNumber = currentTurn.number + 1;
     const newTurn = {
-      number: number,
+      number: newTurnNumber,
       amount: amount,
       fv: fv,
       player: currentPlayer,
       nextPlayer: nextPlayer,
     }
 
-    await printLog(`${newTurn.amount}`, newTurn.fv, newTurn.amount);
+    await printLog(`P${newTurn.player.id}: ${newTurn.amount}`, newTurn.fv, newTurn.amount);
+    playNextNote(newTurnNumber);
     setTurns(turns => [...turns, newTurn]);
 
     if (nextPlayer.id === 1) {

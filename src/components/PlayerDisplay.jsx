@@ -9,6 +9,7 @@ const Grid = Styled.div`
   align-items: center;
   display: grid;
   height: 70%;
+  min-height: 80px;
 `
 
 
