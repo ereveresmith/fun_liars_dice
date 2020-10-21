@@ -48,6 +48,8 @@ const initialTurn = {
   nextPlayer: YOU,
 }
 
+
+
 const GamePage = ({ settings, onEnd}) => {
   const [players, setPlayers] = useState(settings.players);
   const [turns, setTurns] = useState([initialTurn]);
@@ -55,8 +57,14 @@ const GamePage = ({ settings, onEnd}) => {
   const [defaultAmount, setDefaultAmount] = useState(1);
   const [defaultFv, setDefaultFv] = useState(1);
   const [gameSpeed, setGameSpeed] = useState(1);
+  const [amountFound, setAmountFound] = useState(0);
   const [yourTurn, setYourTurn] = useState(true);
   const [isChallenge, setIsChallenge] = useState(false);
+
+
+  const shortWait = 500 * gameSpeed;
+  const mediumWait = 1000 * gameSpeed;
+  const longWait = 3000 * gameSpeed;
 
   useEffect(() => {
     if (turns[turns.length-1].nextPlayer.id !== 1) {
@@ -64,10 +72,10 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }, [turns]);
 
-  const restartGame = (settings) => {
+  const restartGame = async (settings) => {
     setPlayers(settings.players);
     setTurns([initialTurn]);
-    printLog('Starting a new game');
+    await printLog('Starting a new game');
     setDefaultAmount(1);
     setDefaultFv(1);
     setYourTurn(true);
@@ -79,13 +87,15 @@ const GamePage = ({ settings, onEnd}) => {
     restartGame(settings);
   }, [settings])
 
-  const printLog = (value, fv, amount) => {
+  const printLog = async (value, fv, amount) => {
+    timeout(shortWait);
     setLog(log => [...log, {value: value, fv: fv, amount: amount}]);
   }
 
   const nextRound = async (currentPlayer) => {
-    printLog("New round, new dice!");
+    await printLog("New round, new dice!");
     setIsChallenge(false);
+    setAmountFound(0);
     rerollDice();
     let nextPlayer = currentPlayer;
 
@@ -95,7 +105,7 @@ const GamePage = ({ settings, onEnd}) => {
 
     const winner = checkWinner();
     if (winner !== undefined) {
-      printLog(`${winner.name} has won the game!`);
+      await printLog(`${winner.name} has won the game!`);
     } else {
       const number = turns.length + 1;
       const newTurn = {
@@ -152,7 +162,7 @@ const GamePage = ({ settings, onEnd}) => {
     return new Promise( res => setTimeout(res, delay) );}
 
   const calcBotTurn = async () => {
-    const botWait = randomInt(2000) + 1500;
+    const botWait = randomInt(mediumWait) + shortWait;
     await timeout(botWait);
     const bet = calcBotMove(turns, amountOfDice());
     submitBet(bet.amount, bet.fv, turns[turns.length -1].nextPlayer);
@@ -185,25 +195,25 @@ const GamePage = ({ settings, onEnd}) => {
     return true;
   }
 
-  const checkIsLying = () => {
+  const checkIsLying = async () => {
     const currentTurn = turns[turns.length - 1];
     const fv = currentTurn.fv;
     const amount = currentTurn.amount;
 
-    let amountFound = 0;
+    let amntFound = 0;
 
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
       player.hand.forEach((dice) => {
         if (dice.fv === fv && dice.disabled === false) {
-          amountFound++;
+          amntFound++;
         }
       })
     }
 
-    printLog(`There are ${amountFound} `, fv, amountFound)
+    await printLog(`There are ${amntFound} `, fv, amntFound)
 
-    if (amountFound >= amount) {
+    if (amntFound >= amount) {
       return false;
     } else {
       return true;
@@ -246,9 +256,7 @@ const GamePage = ({ settings, onEnd}) => {
       nextPlayer: nextPlayer,
     }
 
-    printLog(`${newTurn.amount}`, newTurn.fv, newTurn.amount);
-    await timeout(400);
-
+    await printLog(`${newTurn.amount}`, newTurn.fv, newTurn.amount);
     setTurns(turns => [...turns, newTurn]);
 
     if (nextPlayer.id === 1) {
@@ -324,16 +332,19 @@ const GamePage = ({ settings, onEnd}) => {
           const isLyingFv = (hand[y].fv === fv);
 
           if (isLyingFv) {
+            setAmountFound(amountFound + 1);
             hand[y].highlight = true;
           }
 
           setPlayers(playersArray);
-          const speedOffset = 3000;
-          let loopBackTime = Math.floor((speedOffset / amountOfDice) * gameSpeed);
+          const speedOffset = longWait;
+          let loopBackTime = (speedOffset / amountOfDice) * gameSpeed;
 
           if(isLyingFv){
-            loopBackTime = (loopBackTime * 2);
+            loopBackTime = (loopBackTime * 1.5);
           }
+
+          loopBackTime = Math.floor(loopBackTime);
 
           await loopBack(loopBackTime);
         }
@@ -350,9 +361,9 @@ const GamePage = ({ settings, onEnd}) => {
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
-    printLog(`${nextPlayer.name} challenged ${player.name}`);
+    await printLog(`${nextPlayer.name} challenged ${player.name}`);
     setIsChallenge(true);
-    await timeout(3000);
+    await timeout(shortWait);
     await revealNextDice();
   }
 
@@ -367,15 +378,15 @@ const GamePage = ({ settings, onEnd}) => {
       lyingPlayer = playersArray[player.id-1];
     } 
 
-    await timeout(2000);
-    printLog(`${lyingPlayer.name} lost a dice!`);
+    await timeout(mediumWait);
     disableDice(lyingPlayer.hand);
-    await timeout(3000);
-
+    await printLog(`${lyingPlayer.name} lost a dice.`);
     if (checkOutOfDice(lyingPlayer.hand)) {
-      printLog(`${lyingPlayer.name} is out of the game!`);
-      await timeout(3000);
+      await printLog(`${lyingPlayer.name} is out of the game.`);
     }
+    await timeout(mediumWait);
+
+
     await nextRound(lyingPlayer);
     setDefaultAmount(1); 
   }
@@ -453,6 +464,7 @@ const GamePage = ({ settings, onEnd}) => {
       return <CenterDisplay 
         log={log}
         amountOfPlayers={settings.players.length}
+        amountFound={amountFound}
         key="centerDisplay" 
         isChallenge={isChallenge} 
         turn={currentTurn}>

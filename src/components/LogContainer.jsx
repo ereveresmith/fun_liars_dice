@@ -37,6 +37,7 @@ const Wrapper = Styled.div`
   justify-self: center;
   padding: 8px;
   margin-bottom: 8px;
+  border-radius: 800px;
   align-content: end;
   opacity: 0.8;
   justify-content: center;
@@ -44,7 +45,7 @@ const Wrapper = Styled.div`
   grid-auto-rows: max-content;
   overflow: scroll;
   align-self: center;
-  padding-left: 12px;
+  padding-top: 2px;
   align-items: start;
 `
 

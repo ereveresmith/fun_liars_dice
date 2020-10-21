@@ -4,6 +4,13 @@ import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
 import TurnDisplay from '../components/TurnDisplay';
 
+const Grid = Styled.div`
+  align-content: center;
+  align-items: center;
+  display: grid;
+  height: 70%;
+`
+
 
 const FadeAnimation = keyframes`
   from {
@@ -14,6 +21,13 @@ const FadeAnimation = keyframes`
     opacity: 0.1;
   }
 `;
+
+const LieDisplay = Styled.div`
+  font-weight: 900;
+  align-self: center;
+  font-size: ${Styles.fontSizes.large};
+  opacity: 0.7;
+`
 
 const TakingTurnDisplay = Styled.div`
   font-weight: 900;
@@ -34,10 +48,10 @@ const ColoredDiv = Styled.div`
 const Cell = Styled.div`
   display: grid;
   grid-template-rows: auto auto;
-  min-height: 220px;
-  min-width: 220px;
+  min-height: 240px;
+  min-width: 330px;
   border: 1px solid ${Styles.colors.darkGrey};
-  margin: 24px 0;
+  margin: 12px 0;
   transition: background-color 100ms ease-out;
 
   ${props => props.isOut && `
@@ -110,12 +124,20 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
   }
 
   const renderBottomSection = () => {
+    let activeDisplay = null;
+
+    if (isActive && isChallenge) {
+      activeDisplay = <LieDisplay>It's a lie!!!</LieDisplay>
+    } else if (isActive) {
+      activeDisplay = <TakingTurnDisplay>...</TakingTurnDisplay>;
+    } else if (showTurn && !isOut && !isChallenge) {
+      activeDisplay = <TurnDisplay color={turnColor} opacity={turnOpacity} amount={turn.amount} fv={turn.fv}></TurnDisplay>
+    }
+
     return (
-      <div>
-      {isActive ? 
-        <TakingTurnDisplay>...</TakingTurnDisplay> 
-      : (showTurn && !isOut) ? <TurnDisplay color={turnColor} opacity={turnOpacity} amount={turn.amount} fv={turn.fv}></TurnDisplay> : null}
-      </div>
+      <Grid>
+        {activeDisplay}
+      </Grid>
     )
   }
 

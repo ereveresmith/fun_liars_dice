@@ -3,6 +3,7 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
 import LogContainer from './LogContainer';
+import TurnDisplay from './TurnDisplay';
 
 const Cell = Styled.div`
   display: grid;
@@ -12,13 +13,14 @@ const Cell = Styled.div`
 
 const GridWrapper = Styled.div`
   display: grid;
+  padding: 4px;
   grid-columns: auto auto;
   box-shadow: 0px 0px 15px ${Styles.colors.grey};
   border-radius: 4px;
   width: 80%;
   justify-self: center;
   border-radius: 800px;
-  height: 100%;
+  height: 260px;
   align-items: center;
 `
 
@@ -33,10 +35,6 @@ const Text = Styled.h2`
 
   ${props => props.color && `
     color: ${props.color};
-  `}
-
-  ${props => props.isChallenge && `
-    opacity: 0;
   `}
 `
 
@@ -64,7 +62,7 @@ const TurnArrow = Styled.div`
   `}
 `
 
-const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log }) => {
+const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound }) => {
   const calcAngle = () => {
     const offset = 180;
 
@@ -98,16 +96,16 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log }) => {
     turnText = 'Your Turn';
   }
 
-  if (isChallenge) {
-    turnText = "!";
-    turnColor = Styles.colors.red;
-  }
+
   
   return (
     <Cell>
       <GridWrapper>
         <LogContainer log={log}></LogContainer>
-        <Text isChallenge={isChallenge} color={turnColor}>{turnText}</Text>
+        {
+          isChallenge ? <TurnDisplay amount={amountFound} fv={turn.fv}></TurnDisplay>
+          :<Text color={turnColor}>{turnText}</Text>
+        }
         <TurnArrow isChallenge={isChallenge} color={turnColor} angle={calcAngle()}></TurnArrow>
       </GridWrapper>
     </Cell>
