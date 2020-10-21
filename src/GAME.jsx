@@ -10,7 +10,7 @@ import { randomInt, YOU } from './util/Helper';
 import useSound from 'use-sound';
 import { Sounds } from './util/Sounds'
 import rerollSound from './media/reroll.mp3';
-
+import challengeSound from './media/challenge.wav';
 import noteD2 from './media/d2.wav';
 import noteE2 from './media/e2.wav';
 import noteF2 from './media/f2.wav';
@@ -95,6 +95,7 @@ const GamePage = ({ settings, onEnd}) => {
   const [playNoteB3] = useSound(noteB3);
   const [playNoteC3] = useSound(noteC3);
   const [playNoteD4] = useSound(noteD4);
+  const [playChallengeSound] = useSound(challengeSound);
 
 
   const shortWait = 500 * gameSpeed;
@@ -449,6 +450,7 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const startChallenge = async () => {
+    playChallengeSound(); 
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
