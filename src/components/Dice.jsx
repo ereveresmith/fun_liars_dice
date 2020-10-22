@@ -2,7 +2,23 @@ import React from 'react';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles'
 
+const Arrow = Styled.div`
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -20px;
+    display: block;
+    border-right: 5px solid ${Styles.colors.black};
+    border-bottom: 5px solid ${Styles.colors.black};
+    box-shadow: 6px 2px 1px ${Styles.colors.darkGrey};
+    width: 20px;
+    height: 20px;
+    z-index: 3;
+    transform: translate(-50%, -50%) rotate(45deg);
+`
+
 const Wrapper = Styled.div`
+    position: relative;
     align-self: center;
     display: flex;
     border: 2px solid ${Styles.colors.darkGrey};
@@ -25,8 +41,7 @@ const Wrapper = Styled.div`
     `}
 
     ${props => props.highlight === true && `
-        border: 2px dashed ${Styles.colors.black};
-        background-color: ${Styles.colors.red};
+        background-color: ${Styles.colors.green};
         opacity: 1;
     `}
 `
@@ -99,9 +114,10 @@ const renderedDots = (value) => {
   }
 }
 
-const Dice = ({ visible, fv, size, disabled, highlight }) => {
+const Dice = ({ visible, fv, size, disabled, highlight, hasArrow }) => {
   return ( 
       <Wrapper fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight}>
+          {hasArrow && <Arrow></Arrow>}
           {visible && !disabled && renderedDots(fv)}
       </Wrapper>   
   )

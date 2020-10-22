@@ -60,12 +60,21 @@ const LogContainer = (props) => {
   const renderedLog = () => {
     const logItems = props.log.map((message, index) => {
       const isNewest = props.log.length === (index+1);
-      const hasFv = (message.fv !== undefined);
 
-      const calcDiceSize = () => {
-        const calcSize = 1.7 + (0.1 * message.amount);
-        const sizeEm = `${calcSize}em`;
-        return sizeEm;
+
+      const hasFv = (message.fv !== undefined);
+      const hasAmount = (message.amount !== undefined);
+
+      const actionDisplay = () => {
+        let value = null;
+
+        if (hasFv && hasAmount) {
+          value = <DiceWrapper>
+            <Dice fv={message.fv} size={Styles.diceSizes.medium} visible></Dice>
+          </DiceWrapper>
+        }
+
+        return value;
       }
 
       let logMessage = <StyledSpand 
@@ -73,10 +82,8 @@ const LogContainer = (props) => {
         key={`message${index}`}>
           <MessageWrapper>
             {message.value}
+            {actionDisplay()}
           </MessageWrapper>
-          {hasFv && <DiceWrapper>
-            <Dice fv={message.fv} size={calcDiceSize()} visible></Dice>
-          </DiceWrapper>}
       </StyledSpand>;
       return logMessage;
     })

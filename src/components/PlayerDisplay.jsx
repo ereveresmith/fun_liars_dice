@@ -105,9 +105,9 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
       }
 
       if (player.id === 1) {
-        return <Dice size={Styles.diceSizes.large} visible={true} disabled={dice.disabled} highlight={dice.highlight} key={`dice${index}`} fv={dice.fv}></Dice>
+        return <Dice size={Styles.diceSizes.large} visible={true} disabled={dice.disabled} highlight={dice.highlight} hasArrow={dice.hasArrow} key={`dice${index}`} fv={dice.fv}></Dice>
       } else {
-        return <Dice size={diceSize} visible={dice.visible} disabled={dice.disabled} highlight={dice.highlight} key={`dice${index}`} fv={dice.fv}></Dice>
+        return <Dice size={diceSize} visible={dice.visible} disabled={dice.disabled} highlight={dice.highlight} hasArrow={dice.hasArrow} key={`dice${index}`} fv={dice.fv}></Dice>
       }
   })
 

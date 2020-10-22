@@ -15,6 +15,9 @@ import loseBetSound from './media/loseBet.wav';
 import nextTurnSound from './media/nextTurn.wav';
 import winBetSound from './media/winBet.wav';
 import showDiceSound from './media/showDice.wav';
+import loseDiceSound from './media/loseDice.wav';
+
+
 import noteD2 from './media/d2.wav';
 import noteE2 from './media/e2.wav';
 import noteF2 from './media/f2.wav';
@@ -110,10 +113,11 @@ const GamePage = ({ settings, onEnd}) => {
   const [playChallengeSound] = useSound(challengeSound);
   const [playWinBetSound] = useSound(winBetSound);
   const [playShowDiceSound] = useSound(showDiceSound);
+  const [playLoseDiceSound] = useSound(loseDiceSound);
 
-  const shortWait = 500 * gameSpeed;
+  const tinyWait = 240 * gameSpeed;
+  const shortWait = 400 * gameSpeed;
   const mediumWait = 800 * gameSpeed;
-  const longWait = 2500 * gameSpeed;
 
   useEffect(() => {
     if (turns[turns.length-1].nextPlayer.id !== 1) {
@@ -122,9 +126,9 @@ const GamePage = ({ settings, onEnd}) => {
   }, [turns]);
 
   const restartGame = async (settings) => {
+    playRerollSound();
     setPlayers(settings.players);
     setTurns([initialTurn]);
-    playRerollSound();
     rerollDice();
     await printLog('Starting a new game');
     setDefaultAmount(1);
@@ -391,6 +395,7 @@ const GamePage = ({ settings, onEnd}) => {
           visible: visible,
           disabled: dice.disabled,
           highlight: false,
+          hasArrow: false,
         }
       })
 
@@ -416,7 +421,7 @@ const GamePage = ({ settings, onEnd}) => {
       nextPlayer: nextPlayer,
     }
 
-    await printLog(`P${newTurn.player.id}: ${newTurn.amount}`, newTurn.fv, newTurn.amount);
+    await printLog(`P${newTurn.player.id}: `, newTurn.fv, newTurn.amount);
     // playNextNote(newTurnNumber);
     setTurns(turns => [...turns, newTurn]);
 
@@ -487,6 +492,19 @@ const GamePage = ({ settings, onEnd}) => {
       for (let y = 0; y < hand.length; y++) {
         if (hand[y].disabled === false && hand[y].visible === false) {
           hand[y].visible = true;
+          hand[y].hasArrow = true;
+
+          if (y > 0) {
+            hand[y-1].hasArrow = false;
+          } else {
+            if (i > 0) {
+              const handToUpdate =  playersArray[i - 1].hand;
+              handToUpdate.forEach((dice) => {
+                dice.hasArrow = false;
+              })
+            }
+          }
+
           foundInvisible = true;
           player.hand = hand;
 
@@ -503,13 +521,11 @@ const GamePage = ({ settings, onEnd}) => {
           } else {
             playShowDiceSound();
           }
-          const speedOffset = longWait + 1000;
-          let loopBackTime = (speedOffset / amountOfDice) * gameSpeed;
+          let loopBackTime = tinyWait;
 
           if(isLyingFv){
-            loopBackTime = (loopBackTime * 2);
+            loopBackTime = loopBackTime * 2;
           }
-
           loopBackTime = Math.floor(loopBackTime);
 
           await loopBack(loopBackTime);
@@ -528,9 +544,9 @@ const GamePage = ({ settings, onEnd}) => {
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
-    await printLog(`${nextPlayer.name} challenged ${player.name}`);
+    await printLog(`P${nextPlayer.id} challenged P${player.id} on `, currentTurn.fv, currentTurn.amount);
     setIsChallenge(true);
-    await timeout(shortWait);
+    await timeout(mediumWait);
     await revealNextDice();
   }
 
@@ -545,10 +561,14 @@ const GamePage = ({ settings, onEnd}) => {
     if (isLying === true) {
       lyingPlayer = playersArray[player.id-1];
     } 
-
     await timeout(mediumWait);
+
     disableDice(lyingPlayer.hand);
+    playLoseDiceSound();
+
     await printLog(`${lyingPlayer.name} lost a dice.`);
+    await timeout(mediumWait);
+
     if (lyingPlayer.id === 1) {
       playloseBetSound();
     } else if (player.id === 1 | nextPlayer.id === 1) {

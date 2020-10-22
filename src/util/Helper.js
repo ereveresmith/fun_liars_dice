@@ -13,6 +13,7 @@ const diceObj = {
   visible: true,
   disabled: false,
   highlight: false,
+  hasArrow: false,
 }
 
 const diceObj2 = {
@@ -20,6 +21,7 @@ const diceObj2 = {
   visible: true,
   disabled: true,
   highlight: false,
+  hasArrow: false,
 }
 
 export const YOU = {
