@@ -33,6 +33,7 @@ const GridWrapper = Styled.div`
 const Text = Styled.h2`
   font-size: ${Styles.fontSizes.medium};
   text-align: center;
+  align-self: center;
   font-weight: 700;
   margin-bottom: 8px;
   padding: 8px;
@@ -102,7 +103,17 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
     turnText = 'Your Turn';
   }
 
+  const sizeIncreaseSpeed = 0.1;
 
+  const calcDiceSize = () => {
+    let val = (amountFound * sizeIncreaseSpeed) + 2.5;
+    return `${val}em`;
+  }
+
+  const calcTextSize = () => {
+    let val = (amountFound * sizeIncreaseSpeed) + 3;
+    return `${val}em`;
+  }
   
   return (
     <Cell>
@@ -110,7 +121,7 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
         <LogContainer log={log}></LogContainer>
         <BottomGrid>
           {
-            isChallenge ? <TurnDisplay amount={amountFound} fv={turn.fv}></TurnDisplay>
+            isChallenge ? <TurnDisplay amount={amountFound} fv={turn.fv} diceSize={calcDiceSize()} textSize={calcTextSize()}></TurnDisplay>
             :<Text color={turnColor}>{turnText}</Text>
           }
           <TurnArrow isChallenge={isChallenge} color={turnColor} angle={calcAngle()}></TurnArrow>

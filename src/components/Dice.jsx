@@ -41,7 +41,7 @@ const Wrapper = Styled.div`
     `}
 
     ${props => props.highlight === true && `
-        background-color: ${Styles.colors.green};
+        background-color: ${props.highlightColor};
         opacity: 1;
     `}
 `
@@ -114,9 +114,9 @@ const renderedDots = (value) => {
   }
 }
 
-const Dice = ({ visible, fv, size, disabled, highlight, hasArrow }) => {
+const Dice = ({ visible, fv, size, disabled, highlight, hasArrow, highlightColor }) => {
   return ( 
-      <Wrapper fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight}>
+      <Wrapper fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight} highlightColor={highlightColor}>
           {hasArrow && <Arrow></Arrow>}
           {visible && !disabled && renderedDots(fv)}
       </Wrapper>   

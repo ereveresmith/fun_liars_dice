@@ -8,7 +8,7 @@ export const Styles = {
         small: "0.9em",
         medium: "1.2em",
         large: "2em",
-        huge: "3em",
+        huge: "2.8em",
     },
     colors: {
         white: 'white',

@@ -14,6 +14,7 @@ const diceObj = {
   disabled: false,
   highlight: false,
   hasArrow: false,
+  highlightColor: Styles.colors.red,
 }
 
 const diceObj2 = {
@@ -22,6 +23,7 @@ const diceObj2 = {
   disabled: true,
   highlight: false,
   hasArrow: false,
+  highlightColor: Styles.colors.red,
 }
 
 export const YOU = {

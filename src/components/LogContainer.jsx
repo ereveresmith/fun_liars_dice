@@ -2,25 +2,39 @@ import React, {useEffect, useRef} from 'react';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
-import TurnDisplay from './TurnDisplay';
 
 const DiceWrapper = Styled.div`
-  margin-left: 16px;
+  margin-left: 8px;
+  display: grid;
+  grid-template-columns: auto auto;
 `
 
-const MessageWrapper = Styled.div`
-  font-size: ${Styles.fontSizes.medium};
+const HugeText = Styled.div`
+  font-size: ${Styles.fontSizes.large};
+  font-weight: 500;
+  opacity: 0.7;
+  text-align: center;
+  align-self: center;
+  margin-right: 8px;
+
+  ${props => props.isNewest && `
+    opacity: .95;
+    font-weight: 700;
+  `}
 `
 
-const StyledSpand = Styled.span`
+
+const StyledSpan = Styled.span`
   overflow: hidden;
   align-items: center;
   color: ${Styles.colors.black};
   opacity: 0.7;
+  font-size: ${Styles.fontSizes.medium};
   text-align: center;
   margin-bottom: 8px;
-  display: flex;
+  display: grid;
   padding: 4px;
+  grid-template-columns: auto auto auto;
   justify-content: center;
   transition: opacity ease 2s;
 
@@ -66,25 +80,25 @@ const LogContainer = (props) => {
       const hasAmount = (message.amount !== undefined);
 
       const actionDisplay = () => {
-        let value = null;
+        let actionDiv = null;
 
-        if (hasFv && hasAmount) {
-          value = <DiceWrapper>
+        if (hasFv) {
+          actionDiv = <DiceWrapper>
+            <HugeText isNewest={isNewest}>{message.amount}</HugeText>
             <Dice fv={message.fv} size={Styles.diceSizes.medium} visible></Dice>
           </DiceWrapper>
         }
 
-        return value;
+        return actionDiv;
       }
 
-      let logMessage = <StyledSpand 
+      let logMessage = <StyledSpan 
         isNewest={isNewest}
         key={`message${index}`}>
-          <MessageWrapper>
-            {message.value}
-            {actionDisplay()}
-          </MessageWrapper>
-      </StyledSpand>;
+          {message.value}
+          {actionDisplay()}
+          {message.value2}
+      </StyledSpan>;
       return logMessage;
     })
 

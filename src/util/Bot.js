@@ -1,67 +1,122 @@
-    // const currentTurn = turns[turns.length - 1];
-    // const currentFv = currentTurn.fv;
-    // const currentAmount = currentTurn.amount;
-    // let newFv = currentFv + 1;
-    // let newAmount = currentAmount;
-    // if (newFv > 6) {
-    //   newAmount++;
-    //   newFv = 1;
-    // }
+import { randomInt } from '../util/Helper';
+    
+export const calcBotMove = (turns, amountOfDice, player) => {
+    const currentTurn = turns[turns.length - 1];
+    const currentFv = currentTurn.fv;
+    const currentAmount = currentTurn.amount;
 
-    export const calcBotMove = (turns, amountOfDice) => {
-        const currentTurn = turns[turns.length - 1];
-        const currentFv = currentTurn.fv;
-        const currentAmount = currentTurn.amount;
+    let newFv = currentFv;
+    let newAmount = currentAmount;
+    let move = 'addOne';
 
-        let newFv = currentFv;
-        let newAmount = currentAmount;
-        let move = 'jump';
 
-        let riskPercent = 0.3;
 
-        
-        if (currentAmount >= (amountOfDice * riskPercent)) {
-            move = 'call'
+
+
+    let randomA = randomInt(10);
+    let randomB = randomInt(10);
+    let randomC = randomInt(10);
+
+    const myHand = player.hand;
+    let handAmnt = 0;
+
+    const handMap = [
+        0, 0, 0, 0, 0, 0,
+    ]
+
+    for (let i = 0; i < myHand.length; i++) {
+        if (!myHand[i].disabled) {
+            let fv = myHand[i].fv;
+            handMap[fv-1]++;
+            handAmnt++;
         }
-
-
-        if (currentAmount === 0 && currentFv === 0) {
-            move = 'jump';
-        }
-
-        if (currentFv === 0) {
-            newFv = 1;
-        }
-
-
-
-        switch(move) {
-            case 'simple':
-                newFv++;
-                if (newFv > 6) {
-                    newAmount++;
-                    newFv = 1;
-                }
-                break;
-            case 'jump':
-                newAmount++;
-                break;
-            case 'call':
-                newAmount = -1;
-                newFv = -1;
-                break;
-            default:
-                newFv++;
-                if (newFv > 6) {
-                    newAmount++;
-                    newFv = 1;
-                }
-                break; 
-        }
-
-
-        return {
-            amount: newAmount, 
-            fv: newFv
-        };
     }
+
+    let riskPercent = 0.35 - (handAmnt * 0.01);
+    let bestOptionIndex = 0;
+
+    for (let i = 0; i < handMap.length; i++) {
+        if (handMap[i] > handMap[bestOptionIndex]) {
+            bestOptionIndex = i;
+        }
+    }
+    
+    if (newAmount === 0) {
+        newAmount = 1;
+    }
+
+    if (currentFv === 0) {
+        newFv = 1;
+    }
+
+    if (randomA > 3) {
+        if (randomB > 3) {
+            move = 'best';
+        }
+    } else {
+        if (randomB > 6) {
+            move = 'random';
+        } else {
+            if (randomC > 1) {
+                move = 'addOne';
+            } else {
+                move = 'risky';
+            }
+            
+        }
+    }
+
+    // console.log(`amount of dice: ${amountOfDice}`);
+    // console.log(`risk %: ${riskPercent}`);
+    // console.log(`${newAmount} >= ${amountOfDice * riskPercent} ?`)
+    if (newAmount >= (amountOfDice * riskPercent)) {
+        move = 'call'
+    }
+
+    console.log(`${player.name}: ${move}`)
+    switch(move) {
+        case 'best':
+            newFv = bestOptionIndex + 1;
+
+
+            if (newFv <= currentFv) {
+                newAmount++;
+            }
+            break;
+        case 'simple':
+            newFv++;
+            if (newFv > 6) {
+                newAmount++;
+                newFv = 1;
+            }
+            break;
+        case 'random':
+            newFv = randomInt(5) + 1;
+            newAmount = randomInt(2) + newAmount
+            break;
+        case 'risky':
+            newFv = bestOptionIndex + 1;
+            newAmount = randomInt(3) + newAmount
+            break;
+        case 'addOne':
+            newAmount++;
+            break;
+        case 'call':
+            newAmount = -1;
+            newFv = -1;
+            break;
+        default:
+            newFv++;
+            if (newFv > 6) {
+                newAmount++;
+                newFv = 1;
+            }
+            break; 
+    }
+
+
+    return {
+        amount: newAmount, 
+        fv: newFv
+    };
+}
