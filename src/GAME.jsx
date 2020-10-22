@@ -90,7 +90,6 @@ const GamePage = ({ settings, onEnd}) => {
   const [defaultAmount, setDefaultAmount] = useState(1);
   const [defaultFv, setDefaultFv] = useState(1);
   const [gameSpeed, setGameSpeed] = useState(1);
-  const [yourTurn, setYourTurn] = useState(true);
   const [isChallenge, setIsChallenge] = useState(false);
   const [playRerollSound] = useSound(rerollSound);
   const [playNoteD2] = useSound(noteD2);
@@ -136,7 +135,6 @@ const GamePage = ({ settings, onEnd}) => {
     await printLog('Starting a new game');
     setDefaultAmount(1);
     setDefaultFv(1);
-    setYourTurn(true);
     setIsChallenge(false);
   }
 
@@ -174,11 +172,6 @@ const GamePage = ({ settings, onEnd}) => {
         nextPlayer: nextPlayer,
       }
       setTurns([newTurn]);
-      if (nextPlayer.id === 1) {
-        setYourTurn(true);
-      } else {
-        setYourTurn(false);
-      }
     }
   }
 
@@ -421,6 +414,8 @@ const GamePage = ({ settings, onEnd}) => {
     playNextTurnSound()
     const nextPlayer = calcNextPlayer(currentPlayer);
     const newTurnNumber = currentTurn.number + 1;
+    timeout(mediumWait);
+
     const newTurn = {
       number: newTurnNumber,
       amount: amount,
@@ -432,12 +427,6 @@ const GamePage = ({ settings, onEnd}) => {
     await printLog(`${newTurn.player.name}: `, newTurn.fv, newTurn.amount);
     setTurns(turns => [...turns, newTurn]);
     timeout(mediumWait);
-
-    if (nextPlayer.id === 1) {
-      setYourTurn(true);
-    } else {
-      setYourTurn(false);
-    }
   }
 
   const handleClickSubmit = async (amount, fv) => {
@@ -583,7 +572,7 @@ const GamePage = ({ settings, onEnd}) => {
     playLoseDiceSound();
 
     await printLog(`${lyingPlayer.name} lost a dice.`);
-    await timeout(mediumWait);
+    await timeout(longWait);
 
     if (lyingPlayer.id === 1) {
       playloseBetSound();
@@ -593,7 +582,7 @@ const GamePage = ({ settings, onEnd}) => {
     if (checkOutOfDice(lyingPlayer.hand)) {
       await printLog(`${lyingPlayer.name} is out of the game.`);
     }
-    await timeout(mediumWait);
+    await timeout(longWait);
 
 
     await nextRound(lyingPlayer);
@@ -610,7 +599,7 @@ const GamePage = ({ settings, onEnd}) => {
       startChallenge();
     } else {
       setDefaultAmount(defaultAmount + 1);
-      nextTurn(amount, fv, nextPlayer);
+      await nextTurn(amount, fv, nextPlayer);
     }
   }
 
@@ -764,13 +753,15 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const currentTurn = turns[turns.length - 1];
+  const nextPlayer = currentTurn.nextPlayer;
+  const myTurn = (nextPlayer.id === 1);
 
   return (
     <Wrapper>
           <UIGrid>
             <BetSubmitter 
               canCall={currentTurn.fv > 0} 
-              disabled={!yourTurn} 
+              disabled={!myTurn} 
               defaultFv={defaultFv} 
               defaultAmount={defaultAmount} 
               onSubmit={handleClickSubmit}>

@@ -131,7 +131,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
       activeDisplay = <LieDisplay>It's a lie!!!</LieDisplay>
     } else if (isActive) {
       activeDisplay = <TakingTurnDisplay>...</TakingTurnDisplay>;
-    } else if (showTurn && !isOut && !isChallenge) {
+    } else if (showTurn && !isOut) {
       activeDisplay = <TurnDisplay diceSize={Styles.diceSizes.large} textSize={Styles.fontSizes.huge} color={turnColor} opacity={turnOpacity} amount={turn.amount} fv={turn.fv}></TurnDisplay>
     }
 

@@ -54,10 +54,10 @@ export const calcBotMove = (turns, amountOfDice, player) => {
             move = 'best';
         }
     } else {
-        if (randomB > 6) {
+        if (randomB > 4) {
             move = 'random';
         } else {
-            if (randomC > 1) {
+            if (randomC > 2) {
                 move = 'addOne';
             } else {
                 move = 'risky';

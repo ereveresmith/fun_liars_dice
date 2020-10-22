@@ -32,11 +32,10 @@ const StyledH1 = Styled.h1`
 `
 
 const TurnDisplay = ({ amount, fv, opacity, color, textSize, diceSize }) => {
-  const amountDisplay = (amount > 0 ? amount : '?');
 
   return (
     <FlexWrapper opacity={opacity}>
-      <StyledH1 color={color} size={textSize}>{amountDisplay}</StyledH1>
+      <StyledH1 color={color} size={textSize}>{amount}</StyledH1>
       <Dice fv={fv} size={diceSize} visible></Dice>
     </FlexWrapper>
   );
