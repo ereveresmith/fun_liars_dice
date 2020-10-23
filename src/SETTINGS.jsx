@@ -3,6 +3,8 @@ import Button from './components/Button';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
 import { mockPlayers, YOU, randomInt, mockNames, mockBot } from './util/Helper';
+import useSound from 'use-sound';
+import { Sounds, Notes } from './util/Sounds';
 
 const Wrapper = Styled.div`
   display: grid;
@@ -30,7 +32,9 @@ const StyledInput = Styled.input`
 const SettingsPage = (props) => {
   const [amountOfPlayers, setAmountOfPlayers] = useState(4);
   const [name, setName] = useState("Ethan");
-  const [handSize, setHandSize] = useState(5);
+  const [handSize, setHandSize] = useState(3);
+  const [playRerollSound] = useSound(Sounds.reroll);
+
 
   const randomName = () => {
     const int = randomInt(mockNames.length);
@@ -80,6 +84,7 @@ const SettingsPage = (props) => {
     const gameSettings = {
       players: [...generatedPlayers]
     }
+    playRerollSound();
     props.onSubmit(gameSettings);
   }
 

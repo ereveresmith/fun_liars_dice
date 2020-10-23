@@ -1,50 +1,3 @@
-import { Styles } from './Styles';
-
-export const mockPlayers = [
-    {name: 'Jenkins', id: 2, hand: [5], color: Styles.colors.blue},
-    {name: 'Rich', id: 3, hand: [6, 6], color: Styles.colors.red},
-    {name: 'Sucks', id: 4, hand: [1], color: Styles.colors.green},
-    {name: 'Mr. Macho', id: 5, hand: [1, 2, 6, 6], color: Styles.colors.orange},
-    {name: 'Jorgenbro', id: 6, hand: [2], color: Styles.colors.pink},
-  ]
-
-const diceObj = {
-  fv: 0,
-  visible: true,
-  disabled: false,
-  highlight: false,
-  hasArrow: false,
-  highlightColor: Styles.colors.red,
-}
-
-const diceObj2 = {
-  fv: 0,
-  visible: true,
-  disabled: true,
-  highlight: false,
-  hasArrow: false,
-  highlightColor: Styles.colors.red,
-}
-
-export const YOU = {
-    name: 'YOU', id: 1, hand: [diceObj, diceObj, diceObj, diceObj2, diceObj2], color: Styles.colors.purple
-}
-
-export const mockBot = {
-  name: 'Mock Bot', id: 2, hand: [diceObj, diceObj, diceObj, diceObj, diceObj2], color: Styles.colors.blue
-}
-
-export const mockBot2 = {
-  name: 'Darngo', id: 3, hand: [diceObj, diceObj, diceObj, diceObj2, diceObj2], color: Styles.colors.pink
-}
-
-
-
-export const mockBot3 = {
-  name: 'Ron', id: 4, hand: [diceObj, diceObj2, diceObj2, diceObj2, diceObj2], color: Styles.colors.orange
-}
-
-
 export const randomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max));
 }
@@ -108,6 +61,4 @@ export const mockNames = [
   'Alec',
 ]
 
-export const defaultSettings = {
-  players: [YOU, mockBot, mockBot2, mockBot3],
-};
+export const defaultSettings = null;

@@ -49,17 +49,14 @@ const Wrapper = Styled.div`
   border-bottom: 1px solid ${Styles.colors.grey};
   width: 100%;
   justify-self: center;
-  padding: 8px;
   margin-bottom: 8px;
-  border-radius: 800px;
+  border-radius: 800px 800px 0 0;
   align-content: end;
   opacity: 0.8;
   justify-content: center;
-  border-radius: 8px;
   grid-auto-rows: max-content;
   overflow: scroll;
   align-self: center;
-  padding-top: 2px;
   align-items: start;
 `
 

@@ -6,40 +6,9 @@ import CenterDisplay from './components/CenterDisplay';
 import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
 import { calcBotMove } from './util/Bot';
-import { randomInt, YOU } from './util/Helper';
+import { randomInt } from './util/Helper';
 import useSound from 'use-sound';
-import { Sounds } from './util/Sounds'
-import rerollSound from './media/reroll.mp3';
-import challengeSound from './media/challenge.wav';
-import loseBetSound from './media/loseBet.wav';
-import nextTurnSound from './media/nextTurn.wav';
-import winBetSound from './media/winBet.wav';
-import showDiceSound from './media/showDice.wav';
-import loseDiceSound from './media/loseDice.wav';
-
-
-import noteD2 from './media/d2.wav';
-import noteE2 from './media/e2.wav';
-import noteF2 from './media/f2.wav';
-import noteG2 from './media/g2.wav';
-import noteA2 from './media/a2.wav';
-import noteB2 from './media/b2.wav';
-import noteC2 from './media/c2.wav';
-import noteD3 from './media/d3.wav';
-import noteE3 from './media/e3.wav';
-import noteF3 from './media/f3.wav';
-import noteG3 from './media/g3.wav';
-import noteA3 from './media/a3.wav';
-import noteB3 from './media/b3.wav';
-import noteC3 from './media/c3.wav';
-import noteD4 from './media/d4.wav';
-// import noteE4 from './media/e4.wav';
-// import noteF4 from './media/f4.wav';
-// import noteG4 from './media/g4.wav';
-// import noteA4 from './media/a4.wav';
-// import noteB4 from './media/b4.wav';
-// import noteC4 from './media/c4.wav';
-// import noteD5 from './media/d4.wav';
+import { Sounds, Notes } from './util/Sounds'
 
 const UIGrid = Styled.div`
   display: grid;
@@ -73,51 +42,57 @@ const GameGrid = Styled.div`
   grid-gap: 12px;
 `
 
-const initialTurn = {
-  number: 0,
-  amount: 0,
-  fv: 0,
-  player: {id: 0},
-  nextPlayer: YOU,
-}
 
 
 
 const GamePage = ({ settings, onEnd}) => {
   const [players, setPlayers] = useState(settings.players);
+
+  const initialTurn = {
+    number: 0,
+    amount: 0,
+    fv: 0,
+    player: {id: 0},
+    nextPlayer: players[0],
+  }
+  
   const [turns, setTurns] = useState([initialTurn]);
   const [log, setLog] = useState([]);
   const [defaultAmount, setDefaultAmount] = useState(1);
   const [defaultFv, setDefaultFv] = useState(1);
   const [gameSpeed, setGameSpeed] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
-  const [playRerollSound] = useSound(rerollSound);
-  const [playNoteD2] = useSound(noteD2);
-  const [playNoteE2] = useSound(noteE2);
-  const [playNoteF2] = useSound(noteF2);
-  const [playNoteG2] = useSound(noteG2);
-  const [playNoteA2] = useSound(noteA2);
-  const [playNoteB2] = useSound(noteB2);
-  const [playNoteC2] = useSound(noteC2);
-  const [playNoteD3] = useSound(noteD3);
-  const [playNoteE3] = useSound(noteE3);
-  const [playNoteF3] = useSound(noteF3);
-  const [playNoteG3] = useSound(noteG3);
-  const [playNoteA3] = useSound(noteA3);
-  const [playNoteB3] = useSound(noteB3);
-  const [playNoteC3] = useSound(noteC3);
-  const [playNoteD4] = useSound(noteD4);
-  const [playloseBetSound] = useSound(loseBetSound);
-  const [playNextTurnSound] = useSound(nextTurnSound);
-  const [playChallengeSound] = useSound(challengeSound);
-  const [playWinBetSound] = useSound(winBetSound);
-  const [playShowDiceSound] = useSound(showDiceSound);
-  const [playLoseDiceSound] = useSound(loseDiceSound);
 
-  const tinyWait = 240 * gameSpeed;
-  const shortWait = 400 * gameSpeed;
-  const mediumWait = 800 * gameSpeed;
-  const longWait = 1200 * gameSpeed;
+
+  const [playRerollSound] = useSound(Sounds.reroll);
+  const [playChallengeSound] = useSound(Sounds.challenge);
+  const [playNextRoundSound] = useSound(Sounds.nextRound);
+  const [playFindDiceSound] = useSound(Sounds.findDice);
+  const [playNextTurnSound] = useSound(Sounds.nextTurn);
+  const [playLoseDiceSound] = useSound(Sounds.loseDice);
+  const [playPlayerLoseSound] = useSound(Sounds.playerLose);
+
+  const [playNote0] = useSound(Notes[0]);
+  const [playNote1] = useSound(Notes[1]);
+  const [playNote2] = useSound(Notes[2]);
+  const [playNote3] = useSound(Notes[3]);
+  const [playNote4] = useSound(Notes[4]);
+  const [playNote5] = useSound(Notes[5]);
+  const [playNote6] = useSound(Notes[6]);
+  const [playNote7] = useSound(Notes[7]);
+  const [playNote8] = useSound(Notes[8]);
+  const [playNote9] = useSound(Notes[9]);
+  const [playNote10] = useSound(Notes[10]);
+  const [playNote11] = useSound(Notes[11]);
+  const [playNote12] = useSound(Notes[12]);
+  const [playNote13] = useSound(Notes[13]);
+  const [playNote14] = useSound(Notes[14]);
+
+
+  const tinyWait = 140 * gameSpeed;
+  const shortWait = 300 * gameSpeed;
+  const mediumWait = 700 * gameSpeed;
+  const longWait = 1000 * gameSpeed;
 
   useEffect(() => {
     const nextPlayer = turns[turns.length-1].nextPlayer;
@@ -263,120 +238,41 @@ const GamePage = ({ settings, onEnd}) => {
       })
     }
 
-    await printLog(`There are `, fv, amntFound, ' !!!')
 
     if (amntFound >= amount) {
+      await printLog(`It was the truth. There are `, fv, amntFound, ' !');
       return false;
     } else {
+      await printLog(`It was a lie. There are only`, fv, amntFound, ' ...');
       return true;
     }
   }
 
-  // const playNextNoteTwoOctaves = (num) => {
-  //   switch(num) {
-  //     case 1: 
-  //       playNoteD2();
-  //       break;
-  //     case 2: 
-  //       playNoteE2();
-  //       break;
-  //     case 3: 
-  //       playNoteF2();
-  //       break;      
-  //     case 4: 
-  //       playNoteG2();
-  //       break;      
-  //     case 5: 
-  //       playNoteA2();
-  //       break;      
-  //     case 6: 
-  //       playNoteB2();
-  //       break;
-  //     case 7: 
-  //       playNoteC2();
-  //       break;
-  //     case 8: 
-  //       playNoteD3();
-  //       break;
-  //     case 9: 
-  //       playNoteE3();
-  //       break;
-  //     case 10: 
-  //       playNoteF3();
-  //       break;
-  //     case 11: 
-  //       playNoteG3();
-  //       break;
-  //     case 12: 
-  //       playNoteA3();
-  //       break;
-  //     case 13: 
-  //       playNoteB3();
-  //       break;
-  //     case 14: 
-  //       playNoteC3();
-  //       break;
-  //     case 15: 
-  //       playNoteD4();
-  //       break;
-  //     default: 
-  //       playNoteD4();
-  //       break;
-  //   }
-  // }
-
   const playNextNote = (num) => {
     switch(num) {
-      case 1: 
-        playNoteD3();
-      break;
-      case 2: 
-        playNoteE3();
-      break;
-      case 3: 
-        playNoteF3();
+      case 0: 
+        playNote0();
         break;
+      case 1: 
+        playNote1();
+        break;
+      case 2: 
+        playNote2();
+        break;      
+      case 3: 
+        playNote3();
+        break;      
       case 4: 
-        playNoteG3();
+        playNote4();
         break;      
       case 5: 
-        playNoteA3();
-        break;      
+        playNote5();
+        break;
       case 6: 
-        playNoteB3();
-        break;      
-      case 7: 
-        playNoteC3();
+        playNote6();
         break;
-      case 8: 
-        playNoteD4();
-        break;
-      // case 8: 
-      //   playNoteD4();
-      //   break;
-      // case 9: 
-      //   playNoteE4();
-      //   break;
-      // case 10: 
-      //   playNoteF4();
-      //   break;
-      // case 11: 
-      //   playNoteG4();
-      //   break;
-      // case 12: 
-      //   playNoteA4();
-      //   break;
-      // case 13: 
-      //   playNoteB4();
-      //   break;
-      // case 14: 
-      //   playNoteC4();
-      //   break;
-      // case 15: 
-      //   playNoteD5();
-      //   break;
       default: 
-        playNoteD4();
+        playNote6();
         break;
     }
   }
@@ -411,7 +307,7 @@ const GamePage = ({ settings, onEnd}) => {
 
   const nextTurn = async (amount, fv, currentPlayer) => {
     const currentTurn = turns[turns.length - 1];
-    playNextTurnSound()
+    playNextTurnSound();
     const nextPlayer = calcNextPlayer(currentPlayer);
     const newTurnNumber = currentTurn.number + 1;
     timeout(mediumWait);
@@ -522,14 +418,16 @@ const GamePage = ({ settings, onEnd}) => {
           setPlayers(playersArray);
 
           if (isLyingFv) {
-            playNextNote(calcAmountFound());
-          } else {
-            playShowDiceSound();
+            playNextNote(calcAmountFound() - 1);
           }
+
           let loopBackTime = tinyWait;
+          // if (currentTurn.player.id === 1 || currentTurn.nextPlayer.id === 1) {
+          // loopBackTime = tinyWait / 2;
+          // }
 
           if(isLyingFv){
-            loopBackTime = loopBackTime * 2;
+            loopBackTime = loopBackTime * 3;
           }
           loopBackTime = Math.floor(loopBackTime);
 
@@ -549,7 +447,7 @@ const GamePage = ({ settings, onEnd}) => {
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
-    await printLog(`${nextPlayer.name} challenged ${player.name} on `, currentTurn.fv, currentTurn.amount);
+    await printLog(`${nextPlayer.name} challenged the bet of `, currentTurn.fv, currentTurn.amount); 
     setIsChallenge(true);
     await timeout(mediumWait);
     await revealNextDice();
@@ -574,13 +472,14 @@ const GamePage = ({ settings, onEnd}) => {
     await printLog(`${lyingPlayer.name} lost a dice.`);
     await timeout(longWait);
 
-    if (lyingPlayer.id === 1) {
-      playloseBetSound();
-    } else if (player.id === 1 | nextPlayer.id === 1) {
-      playWinBetSound();
-    }
     if (checkOutOfDice(lyingPlayer.hand)) {
       await printLog(`${lyingPlayer.name} is out of the game.`);
+    }
+
+    if(lyingPlayer.id === 1) {
+      playPlayerLoseSound();
+    } else {
+      playNextRoundSound();
     }
     await timeout(longWait);
 
@@ -611,7 +510,7 @@ const GamePage = ({ settings, onEnd}) => {
     if (player === undefined) {
       return null;
     } else {
-      const isYou = player.id === 1;
+      const isYou  = player.id === 1;
       let opacity = 1;
       const isActive = (player.id === currentTurn.nextPlayer.id);
       let isSecondary = false;
@@ -633,7 +532,7 @@ const GamePage = ({ settings, onEnd}) => {
         }
       }
 
-      const isShowingTurn = (isTertiary | isSecondary);
+      const isShowingTurn = (isSecondary);
       const isShowingChallenge = (isChallenge && (player.id === currentTurn.player.id | player.id === currentTurn.nextPlayer.id))
       
       return (

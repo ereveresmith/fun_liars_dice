@@ -8,8 +8,7 @@ const Grid = Styled.div`
   align-content: center;
   align-items: center;
   display: grid;
-  height: 70%;
-  min-height: 80px;
+  padding: 12px;
 `
 
 
@@ -25,9 +24,9 @@ const FadeAnimation = keyframes`
 
 const LieDisplay = Styled.div`
   font-weight: 900;
-  align-self: center;
-  font-size: ${Styles.fontSizes.large};
-  opacity: 0.7;
+  align-self: start;
+  font-size: ${Styles.fontSizes.huge};
+  opacity: 0.6;
 `
 
 const TakingTurnDisplay = Styled.div`
@@ -111,7 +110,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
       }
   })
 
-  const turnColor = isChallenge ? Styles.colors.white : Styles.colors.black;
+  const turnColor = Styles.colors.black;
 
   const renderTopSection = () => {
     const isColored = isActive | isChallenge;

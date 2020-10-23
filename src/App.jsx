@@ -4,7 +4,6 @@ import { Styles } from './util/Styles'
 import Game from './GAME';
 import Settings from './SETTINGS';
 import Button from './components/Button'
-import { defaultSettings } from './util/Helper';
 
 const StyledNav = Styled.nav`
   background-color: ${Styles.colors.darkGrey};
@@ -21,8 +20,8 @@ const StyledNav = Styled.nav`
 `
 
 const App = () => {
-  const [page, setPage] = useState('game');
-  const [gameSettings, setGameSettings] = useState(defaultSettings)
+  const [page, setPage] = useState('settings');
+  const [gameSettings, setGameSettings] = useState(null)
 
   const handleStartGame = (settings) => {
     setGameSettings(settings);

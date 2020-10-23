@@ -73,7 +73,7 @@ export const calcBotMove = (turns, amountOfDice, player) => {
         move = 'call'
     }
 
-    console.log(`${player.name}: ${move}`)
+    // console.log(`${player.name}: ${move}`)
     switch(move) {
         case 'best':
             newFv = bestOptionIndex + 1;

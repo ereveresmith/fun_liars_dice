@@ -22,8 +22,7 @@ const GridWrapper = Styled.div`
   padding: 4px;
   grid-columns: auto auto;
   box-shadow: 0px 0px 15px ${Styles.colors.grey};
-  border-radius: 4px;
-  width: 80%;
+  width: 100%;
   justify-self: center;
   border-radius: 800px;
   height: 290px;
@@ -35,7 +34,6 @@ const Text = Styled.h2`
   text-align: center;
   align-self: center;
   font-weight: 700;
-  margin-bottom: 8px;
   padding: 8px;
   justify-self: center;
   transition: color 200ms ease;
