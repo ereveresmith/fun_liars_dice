@@ -28,18 +28,18 @@ const StyledSpan = Styled.span`
   overflow: hidden;
   align-items: center;
   color: ${Styles.colors.black};
-  opacity: 0.7;
+  opacity: 0.65;
   font-size: ${Styles.fontSizes.medium};
   text-align: center;
   margin-bottom: 8px;
   display: grid;
-  padding: 4px;
+  padding: 8px 0;
   grid-template-columns: auto auto auto;
   justify-content: center;
   transition: opacity ease 2s;
 
   ${props => props.isNewest && `
-    opacity: .95;
+    opacity: .97;
     font-weight: 600;
   `}
 `

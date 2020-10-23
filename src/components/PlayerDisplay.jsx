@@ -4,17 +4,16 @@ import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
 import TurnDisplay from '../components/TurnDisplay';
 
-const Grid = Styled.div`
+const BottomGrid = Styled.div`
   align-content: center;
   align-items: center;
   display: grid;
-  padding: 12px;
 `
 
 
 const FadeAnimation = keyframes`
   from {
-    opacity: 0.5;
+    opacity: 0.7;
   }
 
   to {
@@ -23,6 +22,7 @@ const FadeAnimation = keyframes`
 `;
 
 const LieDisplay = Styled.div`
+  padding: 32px 0;
   font-weight: 900;
   align-self: start;
   font-size: ${Styles.fontSizes.huge};
@@ -30,9 +30,10 @@ const LieDisplay = Styled.div`
 `
 
 const TakingTurnDisplay = Styled.div`
+  padding: 24px 0;
   font-weight: 900;
-  font-size: ${Styles.fontSizes.huge};
-  animation: ${FadeAnimation} 1.3s linear infinite;
+  font-size: 50px;
+  animation: ${FadeAnimation} 1.2s linear infinite;
 `
 
 const ColoredDiv = Styled.div`
@@ -135,9 +136,9 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
     }
 
     return (
-      <Grid>
+      <BottomGrid>
         {activeDisplay}
-      </Grid>
+      </BottomGrid>
     )
   }
 

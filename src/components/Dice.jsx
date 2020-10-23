@@ -23,7 +23,8 @@ const Wrapper = Styled.div`
     display: flex;
     border: 2px solid ${Styles.colors.darkGrey};
     border-radius: 4px;
-    background-color: ${Styles.colors.white};
+    background: linear-gradient(to bottom right, ${Styles.colors.lightGrey}, ${Styles.colors.white});
+
     transition: all ease 250ms;
 
     ${props => props.size && `
@@ -32,7 +33,7 @@ const Wrapper = Styled.div`
     `}
 
     ${props => props.visible === false && `
-        background-color: ${Styles.colors.grey};
+        background: linear-gradient(to bottom right, ${Styles.colors.grey}, ${Styles.colors.white});
     `}
 
     ${props => props.disabled === true && `
@@ -41,7 +42,7 @@ const Wrapper = Styled.div`
     `}
 
     ${props => props.highlight === true && `
-        background-color: ${props.highlightColor};
+        background: linear-gradient(137deg, ${props.highlightColor} 35%, ${Styles.colors.white} 99%);
         opacity: 1;
     `}
 `

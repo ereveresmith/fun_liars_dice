@@ -61,7 +61,7 @@ const SettingsPage = (props) => {
         disabled: false,
         highlight: false,
         hasArrow: false,
-        highlightColor: Styles.colors.red,
+        highlightColor: Styles.colors.green,
       }
       hand.push(diceObj);
     }

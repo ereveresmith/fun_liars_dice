@@ -29,12 +29,20 @@ const GridWrapper = Styled.div`
   align-items: center;
 `
 
+
+const ColorText = Styled.h1`
+  font-size: ${Styles.fontSizes.medium};
+  text-align: center;
+  align-self: center;
+  font-weight: 600;
+  justify-self: center;
+`
+
 const Text = Styled.h2`
   font-size: ${Styles.fontSizes.medium};
   text-align: center;
   align-self: center;
-  font-weight: 700;
-  padding: 8px;
+  font-weight: 600;
   justify-self: center;
   transition: color 200ms ease;
 
@@ -112,6 +120,26 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
     let val = (amountFound * sizeIncreaseSpeed) + 3;
     return `${val}em`;
   }
+
+  const renderChallenge = () => {
+    let value = "IT'S A LIE..."
+
+    if (amountFound >= turn.amount) {
+      value = "IT'S THE TRUTH!"
+    }
+
+    return <div>
+      <TurnDisplay 
+        amount={amountFound} 
+        fv={turn.fv} 
+        diceSize={calcDiceSize()} 
+        textSize={calcTextSize()}>
+      </TurnDisplay>
+      <ColorText>
+        {value}
+      </ColorText>
+    </div>
+  }
   
   return (
     <Cell>
@@ -119,7 +147,7 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
         <LogContainer log={log}></LogContainer>
         <BottomGrid>
           {
-            isChallenge ? <TurnDisplay amount={amountFound} fv={turn.fv} diceSize={calcDiceSize()} textSize={calcTextSize()}></TurnDisplay>
+            isChallenge ? renderChallenge()
             :<Text color={turnColor}>{turnText}</Text>
           }
           <TurnArrow isChallenge={isChallenge} color={turnColor} angle={calcAngle()}></TurnArrow>

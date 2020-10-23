@@ -5,20 +5,6 @@ import Game from './GAME';
 import Settings from './SETTINGS';
 import Button from './components/Button'
 
-const StyledNav = Styled.nav`
-  background-color: ${Styles.colors.darkGrey};
-  color: ${Styles.colors.white};
-  opacity: 0.9;
-  height: 32px;
-  padding: 4px;
-  border-radius: 0 0 4px 4px;
-  display: flex;
-  justify-items: end;
-  padding-right: 12px;
-  justify-content: flex-end;
-  align-items: center;
-`
-
 const App = () => {
   const [page, setPage] = useState('settings');
   const [gameSettings, setGameSettings] = useState(null)
@@ -29,25 +15,15 @@ const App = () => {
   }
 
   const handleEndGame = () => {
-    setPage('settings');
+    setPage('home');
     setGameSettings({});
-  }
-
-  const handleClickSettings = () => {
-    setPage('settings');
-  }
-
-  const handleClickGame = () => {
-    if (gameSettings !== null) {
-      setPage('game');
-    }
   }
 
   const renderPage = () => {
     switch(page) {
       case 'game': 
         return <Game settings={gameSettings} onEnd={handleEndGame}></Game>;
-      case 'settings': 
+      case 'home': 
         return <Settings onSubmit={handleStartGame}></Settings>;
       default: 
         return <Settings onSubmit={handleStartGame}></Settings>;
@@ -56,10 +32,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <StyledNav>
-        <Button label={"Settings"} isSecondary onClick={handleClickSettings}></Button>
-        <Button label={"Play"} isPrimary onClick={handleClickGame}></Button>
-      </StyledNav>
       {renderPage()}
     </div>
   );

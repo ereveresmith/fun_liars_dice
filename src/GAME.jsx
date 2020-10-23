@@ -189,7 +189,7 @@ const GamePage = ({ settings, onEnd}) => {
 
   const calcBotTurn = async () => {
     const nextPlayer = turns[turns.length -1].nextPlayer;
-    const botWait = randomInt(longWait) + mediumWait;
+    const botWait = randomInt(mediumWait) + mediumWait;
     await timeout(botWait);
     const bet = calcBotMove(turns, amountOfActiveDice(), nextPlayer);
     submitBet(bet.amount, bet.fv, nextPlayer);
@@ -291,7 +291,7 @@ const GamePage = ({ settings, onEnd}) => {
           visible: visible,
           disabled: dice.disabled,
           highlight: false,
-          highlightColor: Styles.colors.red,
+          highlightColor: Styles.colors.green,
           hasArrow: false,
         }
       })
@@ -356,10 +356,32 @@ const GamePage = ({ settings, onEnd}) => {
     return amount;
   }
 
+  const resetHighlight = (playersArray) => {
+    for (let i = 0; i < playersArray.length; i++) {
+      let hand = playersArray[i].hand;
+      for (let k = 0; k < hand.length; k++) {
+        hand[k].highlight = false;
+        hand[k].highlightColor = Styles.colors.green;
+      }
+    }
+  }
+
+
+  const highlightLoser = (hand) => {
+    for (let i = hand.length - 1; i >= 0; i--) {
+      if (hand[i].disabled === false) {
+        hand[i].highlight = true;
+        hand[i].highlightColor = Styles.colors.red;
+        return;
+      }
+    }
+  }
+
   const disableDice = (hand) => {
     for (let i = hand.length - 1; i >= 0; i--) {
       if (hand[i].disabled === false) {
         hand[i].disabled = true;
+        hand[i].highlight = false;
         return;
       }
     }
@@ -465,11 +487,16 @@ const GamePage = ({ settings, onEnd}) => {
       lyingPlayer = playersArray[player.id-1];
     } 
     await timeout(mediumWait);
-
-    disableDice(lyingPlayer.hand);
+    resetHighlight(playersArray);
+    setPlayers(playersArray);
+    await timeout(mediumWait);
+    highlightLoser(lyingPlayer.hand);
+    setPlayers(playersArray);
     playLoseDiceSound();
-
+    await timeout(shortWait);
     await printLog(`${lyingPlayer.name} lost a dice.`);
+    disableDice(lyingPlayer.hand);
+    setPlayers(playersArray);
     await timeout(longWait);
 
     if (checkOutOfDice(lyingPlayer.hand)) {
