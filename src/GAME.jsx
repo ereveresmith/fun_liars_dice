@@ -58,8 +58,6 @@ const GamePage = ({ settings, onEnd}) => {
   
   const [turns, setTurns] = useState([initialTurn]);
   const [log, setLog] = useState([]);
-  const [defaultAmount, setDefaultAmount] = useState(1);
-  const [defaultFv, setDefaultFv] = useState(1);
   const [gameSpeed, setGameSpeed] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
 
@@ -89,10 +87,12 @@ const GamePage = ({ settings, onEnd}) => {
   const [playNote14] = useSound(Notes[14]);
 
 
-  const tinyWait = 140 * gameSpeed;
+  const tinyWait = 160 * gameSpeed;
   const shortWait = 300 * gameSpeed;
-  const mediumWait = 700 * gameSpeed;
+  const mediumWait = 600 * gameSpeed;
   const longWait = 1000 * gameSpeed;
+  const MASSIVE_WAIT = 500000 * gameSpeed;
+
 
   useEffect(() => {
     const nextPlayer = turns[turns.length-1].nextPlayer;
@@ -108,8 +108,6 @@ const GamePage = ({ settings, onEnd}) => {
     setTurns([initialTurn]);
     rerollDice();
     await printLog('Starting a new game');
-    setDefaultAmount(1);
-    setDefaultFv(1);
     setIsChallenge(false);
   }
 
@@ -123,9 +121,11 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const nextRound = async (currentPlayer) => {
-    await printLog("New round, new dice!");
+    await timeout(mediumWait);
+    setLog([]);
     setIsChallenge(false);
-    timeout(mediumWait)
+    await printLog("Starting new round");
+    timeout(longWait)
     rerollDice();
     let nextPlayer = currentPlayer;
 
@@ -271,8 +271,11 @@ const GamePage = ({ settings, onEnd}) => {
       case 6: 
         playNote6();
         break;
+      case 7: 
+        playNote7();
+        break;
       default: 
-        playNote6();
+        playNote7();
         break;
     }
   }
@@ -291,8 +294,9 @@ const GamePage = ({ settings, onEnd}) => {
           visible: visible,
           disabled: dice.disabled,
           highlight: false,
-          highlightColor: Styles.colors.green,
+          highlightColor: Styles.colors.red,
           hasArrow: false,
+          found: false,
         }
       })
 
@@ -360,8 +364,9 @@ const GamePage = ({ settings, onEnd}) => {
     for (let i = 0; i < playersArray.length; i++) {
       let hand = playersArray[i].hand;
       for (let k = 0; k < hand.length; k++) {
+        hand[k].hasArrow = false;
         hand[k].highlight = false;
-        hand[k].highlightColor = Styles.colors.green;
+        hand[k].highlightColor = Styles.colors.red;
       }
     }
   }
@@ -370,8 +375,9 @@ const GamePage = ({ settings, onEnd}) => {
   const highlightLoser = (hand) => {
     for (let i = hand.length - 1; i >= 0; i--) {
       if (hand[i].disabled === false) {
-        hand[i].highlight = true;
         hand[i].highlightColor = Styles.colors.red;
+        hand[i].highlight = true;
+        hand[i].hasArrow = true;
         return;
       }
     }
@@ -380,8 +386,8 @@ const GamePage = ({ settings, onEnd}) => {
   const disableDice = (hand) => {
     for (let i = hand.length - 1; i >= 0; i--) {
       if (hand[i].disabled === false) {
-        hand[i].disabled = true;
         hand[i].highlight = false;
+        hand[i].disabled = true;
         return;
       }
     }
@@ -426,9 +432,12 @@ const GamePage = ({ settings, onEnd}) => {
 
           if (isLyingFv) {
             hand[y].highlight = true;
+            hand[y].found = true;
           }
 
-          if (calcAmountFound() >= amount) {
+          const amountFound = calcAmountFound();
+
+          if (amountFound >= amount) {
             for (let z = 0; z < playersArray.length; z++) {
               let playerHand = playersArray[z].hand;
               for (let p = 0; p < playerHand.length; p++) {
@@ -440,13 +449,14 @@ const GamePage = ({ settings, onEnd}) => {
           setPlayers(playersArray);
 
           if (isLyingFv) {
-            playNextNote(calcAmountFound() - 1);
+            if (amountFound >= amount) {
+              playNextNote(7);
+            } else {
+              playNextNote(amountFound - 1);
+            }
           }
 
           let loopBackTime = tinyWait;
-          // if (currentTurn.player.id === 1 || currentTurn.nextPlayer.id === 1) {
-          // loopBackTime = tinyWait / 2;
-          // }
 
           if(isLyingFv){
             loopBackTime = loopBackTime * 3;
@@ -467,11 +477,10 @@ const GamePage = ({ settings, onEnd}) => {
   const startChallenge = async () => {
     playChallengeSound(); 
     const currentTurn = turns[turns.length - 1];
-    const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
-    await printLog(`${nextPlayer.name} challenged the bet of `, currentTurn.fv, currentTurn.amount); 
+    await printLog(`${nextPlayer.name}: That's bullshit!`); 
     setIsChallenge(true);
-    await timeout(mediumWait);
+    await timeout(longWait);
     await revealNextDice();
   }
 
@@ -486,33 +495,27 @@ const GamePage = ({ settings, onEnd}) => {
     if (isLying === true) {
       lyingPlayer = playersArray[player.id-1];
     } 
-    await timeout(mediumWait);
+    await timeout(longWait);
     resetHighlight(playersArray);
     setPlayers(playersArray);
-    await timeout(mediumWait);
-    highlightLoser(lyingPlayer.hand);
-    setPlayers(playersArray);
-    playLoseDiceSound();
     await timeout(shortWait);
+    highlightLoser(lyingPlayer.hand);
+    setPlayers(playersArray);    
+    if(lyingPlayer.id === 1) {
+      playPlayerLoseSound();
+    }
+    await timeout(longWait);
     await printLog(`${lyingPlayer.name} lost a dice.`);
     disableDice(lyingPlayer.hand);
     setPlayers(playersArray);
-    await timeout(longWait);
-
+    playLoseDiceSound();
     if (checkOutOfDice(lyingPlayer.hand)) {
+      await timeout(mediumWait);
       await printLog(`${lyingPlayer.name} is out of the game.`);
     }
-
-    if(lyingPlayer.id === 1) {
-      playPlayerLoseSound();
-    } else {
-      playNextRoundSound();
-    }
     await timeout(longWait);
-
-
+    playNextRoundSound();
     await nextRound(lyingPlayer);
-    setDefaultAmount(1); 
   }
 
   const submitBet = async (amount, fv) => {
@@ -524,7 +527,6 @@ const GamePage = ({ settings, onEnd}) => {
     if (isCall) {
       startChallenge();
     } else {
-      setDefaultAmount(defaultAmount + 1);
       await nextTurn(amount, fv, nextPlayer);
     }
   }
@@ -581,7 +583,7 @@ const GamePage = ({ settings, onEnd}) => {
       let hand = players[i].hand;
 
       for (let k = 0; k < hand.length; k++) {
-        if (hand[k].highlight === true) {
+        if (hand[k].found === true) {
           amountFound++;
         }
       }
@@ -682,12 +684,26 @@ const GamePage = ({ settings, onEnd}) => {
   const nextPlayer = currentTurn.nextPlayer;
   const myTurn = (nextPlayer.id === 1);
 
+
+  let defaultAmount = currentTurn.amount;
+  if (defaultAmount < 1) {
+    defaultAmount++;
+  }
+
+  let defaultFv = currentTurn.fv + 1;
+  if (defaultFv  < 1) {
+    defaultFv++;
+  } else if (defaultFv > 6) {
+    defaultFv = 1;
+    defaultAmount++;
+  }
+
   return (
     <Wrapper>
           <UIGrid>
             <BetSubmitter 
               canCall={currentTurn.fv > 0} 
-              disabled={!myTurn} 
+              disabled={!myTurn || isChallenge} 
               defaultFv={defaultFv} 
               defaultAmount={defaultAmount} 
               onSubmit={handleClickSubmit}>

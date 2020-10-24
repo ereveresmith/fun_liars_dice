@@ -11,6 +11,12 @@ const Cell = Styled.div`
   height: 100%;
 `
 
+const ChallengeGrid = Styled.div`
+    display: grid;
+    justify-items: center;
+    align-items: center;
+`
+
 const BottomGrid = Styled.div`
   display: grid;
   width: 100%;
@@ -27,15 +33,6 @@ const GridWrapper = Styled.div`
   border-radius: 800px;
   height: 290px;
   align-items: center;
-`
-
-
-const ColorText = Styled.h1`
-  font-size: ${Styles.fontSizes.medium};
-  text-align: center;
-  align-self: center;
-  font-weight: 600;
-  justify-self: center;
 `
 
 const Text = Styled.h2`
@@ -68,10 +65,6 @@ const TurnArrow = Styled.div`
 
   ${props => props.angle && `
     transform: rotate(${props.angle}deg);
-  `}
-
-  ${props => props.isChallenge && `
-    opacity: 0;
   `}
 `
 
@@ -122,23 +115,32 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
   }
 
   const renderChallenge = () => {
-    let value = "IT'S A LIE..."
+    let value = "LIE"
+    let color = Styles.colors.red;
 
     if (amountFound >= turn.amount) {
-      value = "IT'S THE TRUTH!"
+      value = "TRUE";
+      color = Styles.colors.green;
     }
 
-    return <div>
+    return <ChallengeGrid>
+      <Text color={color}>{value}</Text>
       <TurnDisplay 
         amount={amountFound} 
         fv={turn.fv} 
         diceSize={calcDiceSize()} 
         textSize={calcTextSize()}>
       </TurnDisplay>
-      <ColorText>
-        {value}
-      </ColorText>
-    </div>
+    </ChallengeGrid>
+  }
+
+  const renderTurn = () => {
+    return (
+      <ChallengeGrid>
+        <Text color={turnColor}>{turnText}</Text>
+        <TurnArrow color={turnColor} angle={calcAngle()}></TurnArrow>
+      </ChallengeGrid>
+    )
   }
   
   return (
@@ -146,11 +148,7 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
       <GridWrapper>
         <LogContainer log={log}></LogContainer>
         <BottomGrid>
-          {
-            isChallenge ? renderChallenge()
-            :<Text color={turnColor}>{turnText}</Text>
-          }
-          <TurnArrow isChallenge={isChallenge} color={turnColor} angle={calcAngle()}></TurnArrow>
+          {isChallenge ? renderChallenge() : renderTurn()}
         </BottomGrid>
       </GridWrapper>
     </Cell>

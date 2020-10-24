@@ -13,6 +13,8 @@ import noteG4 from '../media/notes/g4.wav';
 import noteA4 from '../media/notes/a4.wav';
 import noteB4 from '../media/notes/b4.wav';
 import noteC4 from '../media/notes/c4.wav';
+import noteD5 from '../media/notes/d5.wav';
+
 
 export const Sounds = {
     reroll: rerollSound,
@@ -32,4 +34,5 @@ export const Notes = [
     noteA4,
     noteB4,
     noteC4,
+    noteD5,
 ]
