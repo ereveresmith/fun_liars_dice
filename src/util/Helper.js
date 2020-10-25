@@ -12,6 +12,15 @@ export const randomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+export const mockLieMessages = [
+  "That's a lie!",
+  "No way...",
+  "Not in 100 years!",
+  "I have to call that one",
+  "Yeah, right!",
+  "LOL, not a chance",
+]
+
 export const mockNames = [
   'Jeff',
   'John',

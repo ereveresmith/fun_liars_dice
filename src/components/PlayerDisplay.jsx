@@ -3,6 +3,7 @@ import Styled, { keyframes } from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
 import TurnDisplay from '../components/TurnDisplay';
+import { randomInt, mockLieMessages } from '../util/Helper';
 
 const BottomGrid = Styled.div`
   align-content: center;
@@ -25,8 +26,10 @@ const LieDisplay = Styled.div`
   padding: 32px 0;
   font-weight: 900;
   align-self: start;
-  font-size: ${Styles.fontSizes.huge};
-  opacity: 0.6;
+  font-size: ${Styles.fontSizes.large};
+  opacity: 0.5;
+  border: 2px ${Styles.colors.grey};
+  border-radius: 64px;
 `
 
 const TakingTurnDisplay = Styled.div`
@@ -125,10 +128,13 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
   }
 
   const renderBottomSection = () => {
-    let activeDisplay = null;
+    let activeDisplay = null;  
+    let rand = randomInt(mockLieMessages.length);
+    const lieMessage = "That's bullshit!"
+    // const lieMessage = mockLieMessages[rand];
 
     if (isActive && isChallenge) {
-      activeDisplay = <LieDisplay>It's a lie!!!</LieDisplay>
+      activeDisplay = <LieDisplay>{lieMessage}</LieDisplay>
     } else if (isActive) {
       activeDisplay = <TakingTurnDisplay>...</TakingTurnDisplay>;
     } else if (showTurn && !isOut) {

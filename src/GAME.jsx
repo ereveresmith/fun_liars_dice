@@ -5,6 +5,7 @@ import { Styles } from './util/Styles';
 import CenterDisplay from './components/CenterDisplay';
 import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
+import UISection from './components/UISection';
 import { calcBotMove } from './util/Bot';
 import { randomInt, tinyWait, shortWait, mediumWait, longWait, massiveWait } from './util/Helper';
 import useSound from 'use-sound';
@@ -704,6 +705,9 @@ const GamePage = ({ settings, onEnd}) => {
   return (
     <Wrapper>
           <UIGrid>
+            <UISection>
+              {amountOfActiveDice()} dice left
+            </UISection>
             <BetSubmitter 
               canCall={currentTurn.fv > 0} 
               disabled={!myTurn || isChallenge} 
