@@ -1,3 +1,13 @@
+
+
+
+export const tinyWait = 110;
+export const shortWait = 280;
+export const mediumWait = 460;
+export const longWait = 1000;
+export const massiveWait = 500000;
+
+
 export const randomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max));
 }

@@ -6,7 +6,7 @@ import CenterDisplay from './components/CenterDisplay';
 import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
 import { calcBotMove } from './util/Bot';
-import { randomInt } from './util/Helper';
+import { randomInt, tinyWait, shortWait, mediumWait, longWait, massiveWait } from './util/Helper';
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds'
 
@@ -86,14 +86,6 @@ const GamePage = ({ settings, onEnd}) => {
   const [playNote13] = useSound(Notes[13]);
   const [playNote14] = useSound(Notes[14]);
 
-
-  const tinyWait = 160 * gameSpeed;
-  const shortWait = 300 * gameSpeed;
-  const mediumWait = 600 * gameSpeed;
-  const longWait = 1000 * gameSpeed;
-  const MASSIVE_WAIT = 500000 * gameSpeed;
-
-
   useEffect(() => {
     const nextPlayer = turns[turns.length-1].nextPlayer;
 
@@ -121,12 +113,11 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const nextRound = async (currentPlayer) => {
-    await timeout(mediumWait);
-    setLog([]);
     setIsChallenge(false);
+    setLog([]);
     await printLog("Starting new round");
-    timeout(longWait)
     rerollDice();
+    await timeout(longWait);
     let nextPlayer = currentPlayer;
 
     if (checkOutOfDice(currentPlayer.hand)) {
@@ -189,9 +180,8 @@ const GamePage = ({ settings, onEnd}) => {
 
   const calcBotTurn = async () => {
     const nextPlayer = turns[turns.length -1].nextPlayer;
-    const botWait = randomInt(mediumWait) + mediumWait;
-    await timeout(botWait);
     const bet = calcBotMove(turns, amountOfActiveDice(), nextPlayer);
+    await timeout(bet.timeout);
     submitBet(bet.amount, bet.fv, nextPlayer);
   }
 
@@ -248,7 +238,7 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }
 
-  const playNextNote = (num) => {
+  const playNextNote = (num, isChord) => {
     switch(num) {
       case 0: 
         playNote0();
@@ -258,24 +248,39 @@ const GamePage = ({ settings, onEnd}) => {
         break;
       case 2: 
         playNote2();
+        if (isChord) {
+          playNote0();
+        }
         break;      
       case 3: 
         playNote3();
+        if (isChord) {
+          playNote1();
+        }
         break;      
       case 4: 
         playNote4();
+        if (isChord) {
+          playNote2();
+        }
         break;      
       case 5: 
         playNote5();
+        if (isChord) {
+          playNote3();
+        }
         break;
       case 6: 
         playNote6();
-        break;
-      case 7: 
-        playNote7();
+        if (isChord) {
+          playNote4();
+        }
         break;
       default: 
-        playNote7();
+        playNote6();
+        if (isChord) {
+          playNote4();
+        }
         break;
     }
   }
@@ -377,7 +382,6 @@ const GamePage = ({ settings, onEnd}) => {
       if (hand[i].disabled === false) {
         hand[i].highlightColor = Styles.colors.red;
         hand[i].highlight = true;
-        hand[i].hasArrow = true;
         return;
       }
     }
@@ -449,17 +453,14 @@ const GamePage = ({ settings, onEnd}) => {
           setPlayers(playersArray);
 
           if (isLyingFv) {
-            if (amountFound >= amount) {
-              playNextNote(7);
-            } else {
-              playNextNote(amountFound - 1);
-            }
+            let isEnough = (amountFound >= amount);
+            playNextNote(amountFound-1, isEnough);
           }
 
           let loopBackTime = tinyWait;
 
           if(isLyingFv){
-            loopBackTime = loopBackTime * 3;
+            loopBackTime = loopBackTime * 2;
           }
           loopBackTime = Math.floor(loopBackTime);
 
@@ -475,7 +476,7 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const startChallenge = async () => {
-    playChallengeSound(); 
+    playChallengeSound();
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
     await printLog(`${nextPlayer.name}: That's bullshit!`); 
@@ -498,23 +499,25 @@ const GamePage = ({ settings, onEnd}) => {
     await timeout(longWait);
     resetHighlight(playersArray);
     setPlayers(playersArray);
-    await timeout(shortWait);
+    await timeout(tinyWait);
     highlightLoser(lyingPlayer.hand);
     setPlayers(playersArray);    
-    if(lyingPlayer.id === 1) {
-      playPlayerLoseSound();
-    }
-    await timeout(longWait);
+    await timeout(shortWait);
     await printLog(`${lyingPlayer.name} lost a dice.`);
     disableDice(lyingPlayer.hand);
-    setPlayers(playersArray);
     playLoseDiceSound();
+    setPlayers(playersArray);
     if (checkOutOfDice(lyingPlayer.hand)) {
+      if(lyingPlayer.id === 1) {
+        playPlayerLoseSound();
+      } else {
+        playNextRoundSound();
+      }
+
       await timeout(mediumWait);
       await printLog(`${lyingPlayer.name} is out of the game.`);
     }
     await timeout(longWait);
-    playNextRoundSound();
     await nextRound(lyingPlayer);
   }
 

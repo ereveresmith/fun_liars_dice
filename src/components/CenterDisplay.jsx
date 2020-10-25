@@ -102,7 +102,7 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
     turnText = 'Your Turn';
   }
 
-  const sizeIncreaseSpeed = 0.1;
+  const sizeIncreaseSpeed = 0.04;
 
   const calcDiceSize = () => {
     let val = (amountFound * sizeIncreaseSpeed) + 2.5;

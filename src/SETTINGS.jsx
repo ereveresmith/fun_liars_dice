@@ -30,9 +30,9 @@ const StyledInput = Styled.input`
   `
 
 const SettingsPage = (props) => {
-  const [amountOfPlayers, setAmountOfPlayers] = useState(4);
+  const [amountOfPlayers, setAmountOfPlayers] = useState(6);
   const [name, setName] = useState("Ethan");
-  const [handSize, setHandSize] = useState(3);
+  const [handSize, setHandSize] = useState(5);
   const [playRerollSound] = useSound(Sounds.reroll);
 
 

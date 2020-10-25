@@ -1,4 +1,4 @@
-import { randomInt } from '../util/Helper';
+import { randomInt, tinyWait, shortWait, mediumWait, longWait } from '../util/Helper';
     
 export const calcBotMove = (turns, amountOfDice, player) => {
     const currentTurn = turns[turns.length - 1];
@@ -8,10 +8,6 @@ export const calcBotMove = (turns, amountOfDice, player) => {
     let newFv = currentFv;
     let newAmount = currentAmount;
     let move = 'addOne';
-
-
-
-
 
     let randomA = randomInt(10);
     let randomB = randomInt(10);
@@ -32,7 +28,6 @@ export const calcBotMove = (turns, amountOfDice, player) => {
         }
     }
 
-    let riskPercent = 0.35 - (handAmnt * 0.01);
     let bestOptionIndex = 0;
 
     for (let i = 0; i < handMap.length; i++) {
@@ -66,14 +61,20 @@ export const calcBotMove = (turns, amountOfDice, player) => {
         }
     }
 
-    // console.log(`amount of dice: ${amountOfDice}`);
-    // console.log(`risk %: ${riskPercent}`);
-    // console.log(`${newAmount} >= ${amountOfDice * riskPercent} ?`)
-    if (newAmount >= (amountOfDice * riskPercent)) {
+
+    let riskPercent = 0.35 - (handAmnt * 0.01);
+    let newTimeout = randomInt(mediumWait) + mediumWait;;
+    const isSafe = newAmount < ((amountOfDice * riskPercent) / 2.7);
+    const isRisky = newAmount >= (amountOfDice * riskPercent)
+
+    if (isSafe) {
+        newTimeout = randomInt(mediumWait) + shortWait;
+    } else if (isRisky) {
         move = 'call'
+        newTimeout = randomInt(longWait) + mediumWait;
     }
 
-    // console.log(`${player.name}: ${move}`)
+
     switch(move) {
         case 'best':
             newFv = bestOptionIndex + 1;
@@ -117,6 +118,7 @@ export const calcBotMove = (turns, amountOfDice, player) => {
 
     return {
         amount: newAmount, 
-        fv: newFv
+        fv: newFv,
+        timeout: newTimeout,
     };
 }
