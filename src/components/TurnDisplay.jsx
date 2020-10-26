@@ -8,7 +8,8 @@ const FlexWrapper = Styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
-  margin: 28px 0;
+  margin: 0px 0;
+  height: 100%;
 
   ${props => props.opacity && `
     opacity: ${props.opacity};
@@ -24,7 +25,6 @@ const StyledH1 = Styled.h1`
   ${props => props.size && `
     font-size: ${props.size};
   `}
-  opacity: 0.7;
   margin-right: 8px;
   margin-bottom: 4px;
   text-align: center;

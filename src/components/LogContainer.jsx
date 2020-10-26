@@ -46,10 +46,9 @@ const StyledSpan = Styled.span`
 
 const Wrapper = Styled.div`
   height: 150px;  
-  border-bottom: 1px solid ${Styles.colors.grey};
+  border-bottom: 2px solid ${Styles.colors.grey};
   width: 100%;
   justify-self: center;
-  margin-bottom: 8px;
   border-radius: 800px 800px 0 0;
   align-content: end;
   opacity: 0.8;

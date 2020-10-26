@@ -9,6 +9,7 @@ const BottomGrid = Styled.div`
   align-content: center;
   align-items: center;
   display: grid;
+  min-height: 122px;
 `
 
 

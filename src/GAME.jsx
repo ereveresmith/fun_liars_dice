@@ -43,6 +43,12 @@ const GameGrid = Styled.div`
   grid-gap: 12px;
 `
 
+const UIText = Styled.h1`
+  color: white;
+  font-weight: 700;
+  font-size: ${Styles.fontSizes.medium};
+  margin: 0;
+`
 
 
 
@@ -458,10 +464,16 @@ const GamePage = ({ settings, onEnd}) => {
             playNextNote(amountFound-1, isEnough);
           }
 
+
+          const isBotChallenge = (currentTurn.player.id !== 1 && currentTurn.nextPlayer.id !==1)
           let loopBackTime = tinyWait;
 
           if(isLyingFv){
             loopBackTime = loopBackTime * 2;
+          }
+
+          if (isBotChallenge) {
+            loopBackTime = tinyWait;
           }
           loopBackTime = Math.floor(loopBackTime);
 
@@ -548,6 +560,7 @@ const GamePage = ({ settings, onEnd}) => {
       const isActive = (player.id === currentTurn.nextPlayer.id);
       let isSecondary = false;
       let isTertiary = false;
+      let isQuad = false;
 
       if (turns.length > 1) {
         const prevTurn = turns[turns.length - 2];
@@ -559,13 +572,22 @@ const GamePage = ({ settings, onEnd}) => {
         if (turns.length > 2 && !isChallenge) {
           isTertiary = (player.id === prevTurn.player.id);
           if (isTertiary) {
-            opacity = 0.8;
+            opacity = 0.6;
             turnToShow =  prevTurn;
+          }
+          if (turns.length > 3 && !isChallenge) {
+            const prevTurn = turns[turns.length - 3];
+
+            isQuad = (player.id === prevTurn.player.id);
+            if (isQuad) {
+              opacity = 0.4;
+              turnToShow =  prevTurn;
+            }
           }
         }
       }
 
-      const isShowingTurn = (isSecondary);
+      const isShowingTurn = (isSecondary || isTertiary || isQuad);
       const isShowingChallenge = (isChallenge && (player.id === currentTurn.player.id | player.id === currentTurn.nextPlayer.id))
       
       return (
@@ -706,7 +728,9 @@ const GamePage = ({ settings, onEnd}) => {
     <Wrapper>
           <UIGrid>
             <UISection>
-              {amountOfActiveDice()} dice left
+              <UIText>
+                {amountOfActiveDice()} dice left
+              </UIText>
             </UISection>
             <BetSubmitter 
               canCall={currentTurn.fv > 0} 

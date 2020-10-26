@@ -21,6 +21,7 @@ const Wrapper = Styled.div`
   grid-template-columns: auto auto auto auto;
   align-self: center;
   align-items: center;
+  user-select: none;
   justify-items: end;
 `
 
@@ -75,8 +76,15 @@ const BetSubmitter = (props) => {
     }
   }
 
+  const handleKeyDown = (event) => {
+    console.log(event)
+    if(event.key === 'Enter' || event.key === 'Space'){
+      handleSubmit();
+    }
+  }
+
   return (
-    <Wrapper>
+    <Wrapper tabIndex="-1" onKeyPress={handleKeyDown}>
       <VerticalGrid>
         <Button isSecondary onClick={handleRaiseAmount}></Button>
         <HugeText>{amount}</HugeText>

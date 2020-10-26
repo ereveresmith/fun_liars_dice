@@ -12,6 +12,7 @@ const Cell = Styled.div`
 `
 
 const ChallengeGrid = Styled.div`
+    padding: 8px;
     display: grid;
     justify-items: center;
     align-items: center;
@@ -20,7 +21,14 @@ const ChallengeGrid = Styled.div`
 const BottomGrid = Styled.div`
   display: grid;
   width: 100%;
-  height: 100%;
+  transition: background 220ms ease;
+
+  ${props => props.color && `
+    background: ${props.color};
+    color: white;
+  `}
+  height: 114px;
+  border-radius: 0 0 800px 800px;
 `
 
 const GridWrapper = Styled.div`
@@ -31,7 +39,6 @@ const GridWrapper = Styled.div`
   width: 100%;
   justify-self: center;
   border-radius: 800px;
-  height: 290px;
   align-items: center;
 `
 
@@ -39,7 +46,7 @@ const Text = Styled.h2`
   font-size: ${Styles.fontSizes.medium};
   text-align: center;
   align-self: center;
-  font-weight: 600;
+  font-weight: 700;
   justify-self: center;
   transition: color 200ms ease;
 
@@ -116,16 +123,21 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
 
   const renderChallenge = () => {
     let value = "LIE"
-    let color = Styles.colors.red;
 
     if (amountFound >= turn.amount) {
       value = "TRUE";
-      color = Styles.colors.green;
+    }
+
+    let displayColor = Styles.colors.black;
+
+    if (isChallenge) {
+      displayColor = Styles.colors.white;
     }
 
     return <ChallengeGrid>
-      <Text color={color}>{value}</Text>
+      <Text color={Styles.colors.white}>{value}</Text>
       <TurnDisplay 
+        color={displayColor}
         amount={amountFound} 
         fv={turn.fv} 
         diceSize={calcDiceSize()} 
@@ -136,18 +148,27 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
 
   const renderTurn = () => {
     return (
-      <ChallengeGrid>
+      <Cell>
         <Text color={turnColor}>{turnText}</Text>
         <TurnArrow color={turnColor} angle={calcAngle()}></TurnArrow>
-      </ChallengeGrid>
+      </Cell>
     )
   }
-  
+
+  let bottomColor = undefined;
+  if (isChallenge) {
+    if (amountFound >= turn.amount) {
+      bottomColor = Styles.colors.green;
+    } else {
+      bottomColor = Styles.colors.red;
+    }
+  }
+
   return (
     <Cell>
       <GridWrapper>
         <LogContainer log={log}></LogContainer>
-        <BottomGrid>
+        <BottomGrid color={bottomColor}>
           {isChallenge ? renderChallenge() : renderTurn()}
         </BottomGrid>
       </GridWrapper>

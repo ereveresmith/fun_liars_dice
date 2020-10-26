@@ -20,9 +20,8 @@ const Wrapper = Styled.div`
   width: 300px;
   min-height: 12px;
   grid-template-columns: auto auto auto auto;
-  align-self: center;
-  align-items: center;
-  justify-items: end;
+  justify-items: center;
+  align-text: center;
 `
 
 const VerticalGrid = Styled.div`
