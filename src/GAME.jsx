@@ -120,12 +120,12 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const nextRound = async (currentPlayer) => {
+    let nextPlayer = currentPlayer;
     setIsChallenge(false);
     setLog([]);
     await printLog("Starting new round");
     rerollDice();
     await timeout(longWait);
-    let nextPlayer = currentPlayer;
 
     if (checkOutOfDice(currentPlayer.hand)) {
       nextPlayer = calcNextPlayer(currentPlayer);
@@ -179,6 +179,7 @@ const GamePage = ({ settings, onEnd}) => {
       nextPlayer = players[playerIndex];
       isOut = checkOutOfDice(nextPlayer.hand);
     }
+
     return nextPlayer;
   }
 
