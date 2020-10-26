@@ -28,7 +28,7 @@ const LieDisplay = Styled.div`
   font-weight: 900;
   align-self: start;
   font-size: ${Styles.fontSizes.large};
-  opacity: 0.5;
+  opacity: 0.65;
   border: 2px ${Styles.colors.grey};
   border-radius: 64px;
 `

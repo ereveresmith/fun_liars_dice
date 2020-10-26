@@ -101,6 +101,10 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }, [turns]);
 
+  useEffect(() => {
+    playRerollSound();
+  }, []);
+
   const restartGame = async (settings) => {
     playRerollSound();
     setPlayers(settings.players);
@@ -121,22 +125,15 @@ const GamePage = ({ settings, onEnd}) => {
 
   const nextRound = async (currentPlayer) => {
     let nextPlayer = currentPlayer;
-    setIsChallenge(false);
-    setLog([]);
-    await printLog("Starting new round");
-    rerollDice();
-    await timeout(longWait);
-
     if (checkOutOfDice(currentPlayer.hand)) {
       nextPlayer = calcNextPlayer(currentPlayer);
-    } 
+    }
+    setIsChallenge(false);
 
     const winner = checkWinner();
     if (winner !== undefined) {
       await printLog(`${winner.name} has won the game!`);
     } else {
-      timeout(mediumWait)
-
       const newTurn = {
         number: 0,
         amount: 0,
@@ -144,7 +141,11 @@ const GamePage = ({ settings, onEnd}) => {
         player: {id: 0},
         nextPlayer: nextPlayer,
       }
+      rerollDice();
       setTurns([newTurn]);
+      setLog([]);
+      await printLog("Starting new round");
+      await timeout(longWait);
     }
   }
 
@@ -527,6 +528,7 @@ const GamePage = ({ settings, onEnd}) => {
     disableDice(lyingPlayer.hand);
     if (lyingPlayer.id === 1) {
       playLoseDiceSound();
+      await timeout(mediumWait);
     }
     setPlayers(playersArray);
     if (checkOutOfDice(lyingPlayer.hand)) {
@@ -559,7 +561,6 @@ const GamePage = ({ settings, onEnd}) => {
     if (player === undefined) {
       return null;
     } else {
-      const isYou  = player.id === 1;
       let opacity = 1;
       const isActive = (player.id === currentTurn.nextPlayer.id);
       let isSecondary = false;
@@ -576,7 +577,7 @@ const GamePage = ({ settings, onEnd}) => {
         if (turns.length > 2 && !isChallenge) {
           isTertiary = (player.id === prevTurn.player.id);
           if (isTertiary) {
-            opacity = 0.6;
+            opacity = 0.4;
             turnToShow =  prevTurn;
           }
           if (turns.length > 3 && !isChallenge) {
@@ -584,7 +585,7 @@ const GamePage = ({ settings, onEnd}) => {
 
             isQuad = (player.id === prevTurn.player.id);
             if (isQuad) {
-              opacity = 0.4;
+              opacity = 0.1;
               turnToShow =  prevTurn;
             }
           }

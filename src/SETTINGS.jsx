@@ -14,7 +14,7 @@ const Wrapper = Styled.div`
   `
 
   const Label = Styled.span`
-    font-size: ${Styles.fontSizes.large};
+    font-size: ${Styles.fontSizes.medium};
     align-self: center;
     text-align: left;
   `
@@ -26,15 +26,13 @@ const GridDiv = Styled.div`
 
 const StyledInput = Styled.input`
   margin: 8px 0;
-  font-size: ${Styles.fontSizes.large};
+  font-size: ${Styles.fontSizes.medium};
   `
 
 const SettingsPage = (props) => {
   const [amountOfPlayers, setAmountOfPlayers] = useState(4);
   const [name, setName] = useState("Ethan");
   const [handSize, setHandSize] = useState(4);
-  const [playRerollSound] = useSound(Sounds.reroll);
-
 
   const randomName = () => {
     const int = randomInt(mockNames.length);
@@ -85,7 +83,6 @@ const SettingsPage = (props) => {
     const gameSettings = {
       players: [...generatedPlayers]
     }
-    playRerollSound();
     props.onSubmit(gameSettings);
   }
 
