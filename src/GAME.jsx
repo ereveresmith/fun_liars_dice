@@ -508,9 +508,13 @@ const GamePage = ({ settings, onEnd}) => {
     const isLying = await checkIsLying();
     if (isLying === true) {
       lyingPlayer = playersArray[player.id-1];
-    } else { 
+    } 
+    
+    if (lyingPlayer.id !== 1 && playersArray[nextPlayer.id-1].id === 1) { 
+      await timeout(mediumWait);
       playNextRoundSound();
     }
+
     await timeout(longWait);
     resetHighlight(playersArray);
     setPlayers(playersArray);

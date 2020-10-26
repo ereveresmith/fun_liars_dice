@@ -43,10 +43,10 @@ const GridWrapper = Styled.div`
 `
 
 const Text = Styled.h2`
-  font-size: ${Styles.fontSizes.medium};
+  font-size: ${Styles.fontSizes.large};
   text-align: center;
   align-self: center;
-  font-weight: 700;
+  font-weight: 600;
   justify-self: center;
   transition: color 200ms ease;
 
@@ -63,7 +63,7 @@ const TurnArrow = Styled.div`
   align-self: end;
   justify-self: center;
   transform-origin: center;
-  transition: all 200ms ease;
+  transition: all 120ms ease;
   margin-bottom: 16px;
 
   ${props => props.color && `

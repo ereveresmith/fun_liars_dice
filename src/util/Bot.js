@@ -5,7 +5,7 @@ export const calcBotMove = (turns, amountOfDice, player) => {
     const currentFv = currentTurn.fv;
     const currentAmount = currentTurn.amount;
 
-    let newFv = currentFv;
+    let newFv = currentFv + 1;
     let newAmount = currentAmount;
     let move = 'addOne';
 
