@@ -95,8 +95,12 @@ const HandGrid = Styled.div`
   padding: 8px 24px;
   display: grid;
   grid-gap: 6px;
-  jusity-items: center;
-  grid-template-columns: auto auto auto auto auto;
+  justify-content: center;
+  justify-items: center;
+
+  ${props => props.columns && `
+    grid-template-columns: ${props.columns};
+  `}
 `;
 
 const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity}) => {
@@ -120,10 +124,15 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
   const renderTopSection = () => {
     const isColored = isActive | isChallenge;
 
+    let generatedColumns = '';
+    for (let i = 0; i < player.hand.length; i++) {
+      generatedColumns = generatedColumns + ' auto';
+    }
+
     return (
       <ColoredDiv color={player.color} isColored={isColored}>
         <NameText color={player.color} isColored={isColored}>{player.id}: {player.name}</NameText>
-        <HandGrid>{renderedHand}</HandGrid>
+        <HandGrid columns={generatedColumns}>{renderedHand}</HandGrid>
       </ColoredDiv>
     )
   }

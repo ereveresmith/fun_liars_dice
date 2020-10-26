@@ -490,10 +490,10 @@ const GamePage = ({ settings, onEnd}) => {
 
   const startChallenge = async () => {
     playChallengeSound();
+    setIsChallenge(true);
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
     await printLog(`${nextPlayer.name}: That's bullshit!`); 
-    setIsChallenge(true);
     await timeout(longWait);
     await revealNextDice();
   }
@@ -508,7 +508,9 @@ const GamePage = ({ settings, onEnd}) => {
     const isLying = await checkIsLying();
     if (isLying === true) {
       lyingPlayer = playersArray[player.id-1];
-    } 
+    } else { 
+      playNextRoundSound();
+    }
     await timeout(longWait);
     resetHighlight(playersArray);
     setPlayers(playersArray);
@@ -518,15 +520,12 @@ const GamePage = ({ settings, onEnd}) => {
     await timeout(shortWait);
     await printLog(`${lyingPlayer.name} lost a dice.`);
     disableDice(lyingPlayer.hand);
-    playLoseDiceSound();
+    if (lyingPlayer.id === 1) {
+      playLoseDiceSound();
+    }
     setPlayers(playersArray);
     if (checkOutOfDice(lyingPlayer.hand)) {
-      if(lyingPlayer.id === 1) {
-        playPlayerLoseSound();
-      } else {
-        playNextRoundSound();
-      }
-
+      playPlayerLoseSound();
       await timeout(mediumWait);
       await printLog(`${lyingPlayer.name} is out of the game.`);
     }

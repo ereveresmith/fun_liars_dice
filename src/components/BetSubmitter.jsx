@@ -77,7 +77,6 @@ const BetSubmitter = (props) => {
   }
 
   const handleKeyDown = (event) => {
-    console.log(event)
     if(event.key === 'Enter' || event.key === 'Space'){
       handleSubmit();
     }

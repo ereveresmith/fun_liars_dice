@@ -14,7 +14,7 @@ const Wrapper = Styled.div`
   `
 
   const Label = Styled.span`
-    font-size: ${Styles.fontSizes.medium};
+    font-size: ${Styles.fontSizes.large};
     align-self: center;
     text-align: left;
   `
@@ -25,8 +25,8 @@ const GridDiv = Styled.div`
 `
 
 const StyledInput = Styled.input`
-  margin: 8px;
-  font-size: ${Styles.fontSizes.medium};
+  margin: 8px 0;
+  font-size: ${Styles.fontSizes.large};
   `
 
 const SettingsPage = (props) => {
@@ -104,7 +104,9 @@ const SettingsPage = (props) => {
   return (
     <div>
       <Wrapper>
-        <h1>Settings</h1>
+        <h1>Ethan's Liar's Dice</h1>
+
+        <h2>Settings</h2>
         <GridDiv>
           <Label>Your Name:</Label>
           <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
