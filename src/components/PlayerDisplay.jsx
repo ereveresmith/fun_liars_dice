@@ -131,7 +131,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
 
     return (
       <ColoredDiv color={player.color} isColored={isColored}>
-        <NameText color={player.color} isColored={isColored}>{player.id}: {player.name}</NameText>
+        <NameText color={player.color} isColored={isColored}>{player.name}</NameText>
         <HandGrid columns={generatedColumns}>{renderedHand}</HandGrid>
       </ColoredDiv>
     )

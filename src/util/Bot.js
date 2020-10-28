@@ -68,7 +68,7 @@ export const calcBotMove = (turns, amountOfDice, player) => {
     const isRisky = newAmount >= (amountOfDice * riskPercent)
 
     if (isSafe) {
-        newTimeout = randomInt(mediumWait) + shortWait;
+        newTimeout = randomInt(shortWait) + mediumWait;
     } else if (isRisky) {
         move = 'call'
         newTimeout = randomInt(longWait) + mediumWait;

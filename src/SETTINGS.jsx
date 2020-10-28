@@ -41,11 +41,11 @@ const SettingsPage = (props) => {
 
   const colorsArray = [
     Styles.colors.purple,
-    Styles.colors.green,
     Styles.colors.orange,
     Styles.colors.blue,
-    Styles.colors.red,
     Styles.colors.pink,
+    Styles.colors.orange,
+    Styles.colors.blue,
   ]
 
   const generatePlayers = () => {

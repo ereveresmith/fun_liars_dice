@@ -194,14 +194,6 @@ const GamePage = ({ settings, onEnd}) => {
     submitBet(bet.amount, bet.fv, nextPlayer);
   }
 
-  const amountOfDiceTotal = () => {
-    let amountOfDiceTotal = 0;
-    for (let i = 0; i < players.length; i++) {
-      amountOfDiceTotal = amountOfDiceTotal + players[i].hand.length;
-    }
-    return amountOfDiceTotal;
-  }
-
   const isValidBet = (amount, fv) => {
     const currentTurn = turns[turns.length - 1];
     if (amount === -1 && fv === -1) {
@@ -389,8 +381,9 @@ const GamePage = ({ settings, onEnd}) => {
   const highlightLoser = (hand) => {
     for (let i = hand.length - 1; i >= 0; i--) {
       if (hand[i].disabled === false) {
-        hand[i].highlightColor = Styles.colors.red;
         hand[i].highlight = true;
+        hand[i].hasArrow = true;
+        hand[i].highlightColor = Styles.colors.red;
         return;
       }
     }
@@ -524,16 +517,14 @@ const GamePage = ({ settings, onEnd}) => {
     highlightLoser(lyingPlayer.hand);
     setPlayers(playersArray);    
     await timeout(shortWait);
-    await printLog(`${lyingPlayer.name} lost a dice.`);
     disableDice(lyingPlayer.hand);
+    setPlayers(playersArray);
+    await printLog(`${lyingPlayer.name} lost a dice.`);
     if (lyingPlayer.id === 1) {
       playLoseDiceSound();
-      await timeout(mediumWait);
     }
-    setPlayers(playersArray);
     if (checkOutOfDice(lyingPlayer.hand)) {
       playPlayerLoseSound();
-      await timeout(mediumWait);
       await printLog(`${lyingPlayer.name} is out of the game.`);
     }
     await timeout(longWait);
