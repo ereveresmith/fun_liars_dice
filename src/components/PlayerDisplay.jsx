@@ -92,7 +92,7 @@ const HandGrid = Styled.div`
   padding: 2px 8px;
   display: grid;
   height: 30px;
-  width: 140px;
+  width: 150px;
   grid-gap: 6px;
   justify-content: center;
   justify-items: center;
@@ -106,7 +106,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
   let isOut = true;
 
   const renderedHand = player.hand.map((dice, index) => {
-      const diceSize = dice.visible ? Styles.diceSizes.large : Styles.diceSizes.medium;
+      const diceSize = dice.visible ? Styles.diceSizes.medium : Styles.diceSizes.small;
       if (dice.disabled === false) {
         isOut = false;
       }

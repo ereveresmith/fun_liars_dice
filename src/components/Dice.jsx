@@ -51,15 +51,18 @@ const DotGrid = Styled.div`
     display: grid;
     grid-template-rows: auto auto auto;
     grid-template-columns: auto auto auto;
-    grid-gap: 3px;  
-    padding: 3px;
+    margin: 1px;
+    grid-gap: 1px;
     width: 100%;
 `
 
 const Dot = Styled.div`
     background-color: #939796;
     border-radius: 50%;
-    width: 100%;
+    width: 97%;
+    height: 97%;
+    align-self: center;
+    justify-self: center;
     grid-column: ${props => props.column} / ${props => props.column + 1};
     grid-row: ${props => props.row} / ${props => props.row + 1};
 `

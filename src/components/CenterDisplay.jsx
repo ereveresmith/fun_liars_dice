@@ -20,7 +20,6 @@ const ChallengeGrid = Styled.div`
 const BottomGrid = Styled.div`
   display: grid;
   width: 100%;
-  height: 50px;
   transition: background 220ms ease;
   opacity: 0.9;
 `
@@ -92,7 +91,7 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
         color={Styles.colors.darkGrey}
         amount={amountFound} 
         fv={turn.fv} 
-        diceSize={Styles.diceSizes.large} 
+        diceSize={Styles.diceSizes.medium} 
         textSize={Styles.fontSizes.huge}>
       </TurnDisplay>
     </ChallengeGrid>

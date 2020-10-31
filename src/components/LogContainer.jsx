@@ -44,7 +44,7 @@ const StyledSpan = Styled.span`
 `
 
 const Wrapper = Styled.div`
-  height: 100px;  
+  height: 80px;  
   border-bottom: 2px solid ${Styles.colors.grey};
   width: 100%;
   justify-self: center;
@@ -61,7 +61,7 @@ const LogContainer = (props) => {
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current.scrollIntoView({ behavior: "smooth"})
+    bottomRef.current.scrollIntoView({ behavior: "smooth", block: 'end' })
   }, [props.log])
 
 
