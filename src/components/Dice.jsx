@@ -47,12 +47,12 @@ const Wrapper = Styled.div`
     `}
 `
 
-const Grid = Styled.div`
+const DotGrid = Styled.div`
     display: grid;
     grid-template-rows: auto auto auto;
     grid-template-columns: auto auto auto;
-    grid-gap: 4px;  
-    padding: 4px;
+    grid-gap: 3px;  
+    padding: 3px;
     width: 100%;
 `
 
@@ -67,51 +67,51 @@ const Dot = Styled.div`
 const renderedDots = (value) => {
   switch(value) {
       case 0:
-          return <Grid>
-          </Grid>
+          return <DotGrid>
+          </DotGrid>
       case 1:
-          return <Grid>
+          return <DotGrid>
                   <Dot row={2} column={2}></Dot>
-              </Grid>
+              </DotGrid>
       case 2:
-          return <Grid>
+          return <DotGrid>
                   <Dot row={1} column={1}></Dot>
                   <Dot row={3} column={3}></Dot>
-              </Grid>
+              </DotGrid>
       case 3:
-          return <Grid>
+          return <DotGrid>
                   <Dot row={1} column={3}></Dot>
                   <Dot row={2} column={2}></Dot>
                   <Dot row={3} column={1}></Dot>
-              </Grid>
+              </DotGrid>
       case 4:
-          return <Grid>
+          return <DotGrid>
                   <Dot row={1} column={1}></Dot>
                   <Dot row={3} column={3}></Dot>
                   <Dot row={3} column={1}></Dot>
                   <Dot row={1} column={3}></Dot>
-              </Grid>
+              </DotGrid>
       case 5:
-          return <Grid>
+          return <DotGrid>
               <Dot row={1} column={1}></Dot>
                   <Dot row={3} column={3}></Dot>
                   <Dot row={3} column={1}></Dot>
                   <Dot row={1} column={3}></Dot>
                   <Dot row={1} column={1}></Dot>
                   <Dot row={2} column={2}></Dot>
-              </Grid>
+              </DotGrid>
       case 6:
-          return <Grid>
+          return <DotGrid>
                   <Dot row={1} column={1}></Dot>
                   <Dot row={2} column={1}></Dot>
                   <Dot row={3} column={1}></Dot>
                   <Dot row={1} column={3}></Dot>
                   <Dot row={2} column={3}></Dot>
                   <Dot row={3} column={3}></Dot>
-              </Grid>
+              </DotGrid>
       default:
-          return <Grid>
-              </Grid>
+          return <DotGrid>
+              </DotGrid>
   }
 }
 

@@ -12,7 +12,6 @@ const Cell = Styled.div`
 `
 
 const ChallengeGrid = Styled.div`
-    padding: 8px;
     display: grid;
     justify-items: center;
     align-items: center;
@@ -21,28 +20,25 @@ const ChallengeGrid = Styled.div`
 const BottomGrid = Styled.div`
   display: grid;
   width: 100%;
+  height: 50px;
   transition: background 220ms ease;
 
   ${props => props.color && `
     background: ${props.color};
     color: white;
   `}
-  border-radius: 0 0 800px 800px;
 `
 
 const GridWrapper = Styled.div`
   display: grid;
-  padding: 4px;
   grid-columns: auto auto;
-  box-shadow: 0px 0px 15px ${Styles.colors.grey};
   width: 100%;
   justify-self: center;
-  border-radius: 800px;
   align-items: center;
 `
 
 const Text = Styled.h2`
-  font-size: ${Styles.fontSizes.large};
+  font-size: ${Styles.fontSizes.medium};
   text-align: center;
   align-self: center;
   font-weight: 600;
@@ -94,39 +90,14 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
     turnText = 'Your Turn';
   }
 
-  const sizeIncreaseSpeed = 0.04;
-
-  const calcDiceSize = () => {
-    let val = (amountFound * sizeIncreaseSpeed) + Styles.diceSizes.medium;
-    return `${val}em`;
-  }
-
-  const calcTextSize = () => {
-    let val = (amountFound * sizeIncreaseSpeed) + Styles.fontSizes.medium;
-    return `${val}em`;
-  }
-
   const renderChallenge = () => {
-    let value = "LIE"
-
-    if (amountFound >= turn.amount) {
-      value = "TRUE";
-    }
-
-    let displayColor = Styles.colors.black;
-
-    if (isChallenge) {
-      displayColor = Styles.colors.white;
-    }
-
     return <ChallengeGrid>
-      <Text color={Styles.colors.white}>{value}</Text>
       <TurnDisplay 
-        color={displayColor}
+        color={Styles.colors.black}
         amount={amountFound} 
         fv={turn.fv} 
-        diceSize={calcDiceSize()} 
-        textSize={calcTextSize()}>
+        diceSize={Styles.diceSizes.large} 
+        textSize={Styles.fontSizes.huge}>
       </TurnDisplay>
     </ChallengeGrid>
   }

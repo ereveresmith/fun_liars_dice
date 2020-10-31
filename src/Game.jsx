@@ -230,10 +230,10 @@ const GamePage = ({ settings, onEnd}) => {
 
 
     if (amntFound >= amount) {
-      await printLog(`It was the truth. There are `, fv, amntFound, ' !');
+      await printLog(`It was the truth!`);
       return false;
     } else {
-      await printLog(`It was a lie. There are only`, fv, amntFound, ' ...');
+      await printLog(`It was a lie!`);
       return true;
     }
   }
@@ -704,15 +704,6 @@ const GamePage = ({ settings, onEnd}) => {
   return (
     <Wrapper>
           <UIGrid>
-            <UISection>
-              <Button label={"Settings"} isSecondary onClick={handleClickSettings}></Button>
-              {/* <Button label={"Pause"} isSecondary onClick={handlePauseGame}></Button> */}
-            </UISection>
-            <UISection>
-              <UIText>
-                {amountOfActiveDice()} dice left
-              </UIText>
-            </UISection>
             <BetSubmitter 
               canCall={currentTurn.fv > 0} 
               disabled={!myTurn || isChallenge} 

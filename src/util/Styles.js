@@ -1,14 +1,14 @@
 export const Styles = {
     diceSizes: {
-        medium: "2.5em",
-        large: "3.5em",
+        medium: "2em",
+        large: "2.7em",
         ui: "2em",
     },
     fontSizes: {
         small: "0.5em",
-        medium: "0.7em",
-        large: "1em",
-        huge: "1.2em",
+        medium: "0.8em",
+        large: "1.2em",
+        huge: "1.5em",
     },
     colors: {
         white: 'white',

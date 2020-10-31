@@ -48,7 +48,6 @@ const Wrapper = Styled.div`
   border-bottom: 2px solid ${Styles.colors.grey};
   width: 100%;
   justify-self: center;
-  border-radius: 800px 800px 0 0;
   align-content: end;
   opacity: 0.8;
   justify-content: center;

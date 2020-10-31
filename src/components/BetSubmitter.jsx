@@ -16,7 +16,7 @@ const Wrapper = Styled.div`
   opacity: 0.8;
   display: grid;
   width: 180px;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto;
   align-self: center;
   align-items: center;
   user-select: none;
@@ -28,6 +28,14 @@ const VerticalGrid = Styled.div`
   align-items: center;
   justify-items: center;
 `
+
+const HorizontalGrid = Styled.div`
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-items: center;
+`
+
 const BetSubmitter = (props) => {
   const [fv, setFv] = useState(props.defaultFv);
   const [amount, setAmount] = useState(props.defaultAmount);
@@ -81,16 +89,18 @@ const BetSubmitter = (props) => {
 
   return (
     <Wrapper tabIndex="-1" onKeyPress={handleKeyDown}>
-      <VerticalGrid>
-        <Button isSecondary onClick={handleRaiseAmount}></Button>
-        <HugeText>{amount}</HugeText>
-        <Button isSecondary onClick={handleLowerAmount}></Button>
-      </VerticalGrid>
-      <VerticalGrid>
-        <Button isSecondary onClick={handleRaiseFv}></Button>
-        <Dice fv={fv} size={Styles.diceSizes.ui} visible></Dice>
-        <Button isSecondary onClick={handleLowerFv}></Button>
-      </VerticalGrid>
+      <HorizontalGrid>
+        <VerticalGrid>
+          <Button isSecondary onClick={handleRaiseAmount}></Button>
+          <HugeText>{amount}</HugeText>
+          <Button isSecondary onClick={handleLowerAmount}></Button>
+        </VerticalGrid>
+        <VerticalGrid>
+          <Button isSecondary onClick={handleRaiseFv}></Button>
+          <Dice fv={fv} size={Styles.diceSizes.ui} visible></Dice>
+          <Button isSecondary onClick={handleLowerFv}></Button>
+        </VerticalGrid>
+      </HorizontalGrid>
       <VerticalGrid>
         <Button label="Submit" onClick={handleSubmit}></Button>
         <Button isSecondary label="Liar!" onClick={handleCall}></Button>

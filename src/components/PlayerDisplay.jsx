@@ -69,10 +69,10 @@ const StyledDiv = Styled.div`
 `;
 
 const NameText = Styled.h3`
-  font-size: ${Styles.fontSizes.medium};
+  font-size: ${Styles.fontSizes.large};
+  margin-bottom: 4px;
   font-weight: 900;
   color: ${Styles.colors.purple};
-  padding: 12px 0;
 
   ${props => props.color && `
     color: ${props.color};
@@ -91,7 +91,8 @@ const Divider = Styled.div`
 const HandGrid = Styled.div`
   padding: 2px 8px;
   display: grid;
-  width: 140px;
+  height: 30px;
+  width: 150px;
   grid-gap: 6px;
   justify-content: center;
   justify-items: center;
