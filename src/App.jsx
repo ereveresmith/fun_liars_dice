@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles'
-import Game from './GAME';
-import Settings from './SETTINGS';
+import Game from './Game';
+import Settings from './Settings';
 import Button from './components/Button'
 
 const App = () => {
