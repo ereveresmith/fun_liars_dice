@@ -17,7 +17,7 @@ const UIGrid = Styled.div`
   right: 0;
   height: 100%;
   width: 100%;
-  align-content: end;
+  align-content: center;
   justify-content: center;
 `
 
@@ -31,7 +31,7 @@ const EmptyCell = Styled.div`
 
 const Wrapper = Styled.div`
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 50px;
   justify-items: center;
   align-items: center;
   `
@@ -43,7 +43,6 @@ const GameGrid = Styled.div`
   justify-items: center;
   align-items: center;
   grid-template-columns: auto auto auto;
-  grid-gap: 12px;
 `
 
 const UIText = Styled.h1`
