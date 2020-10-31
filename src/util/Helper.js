@@ -4,7 +4,7 @@
 export const tinyWait = 120;
 export const shortWait = 280;
 export const mediumWait = 460;
-export const longWait = 1200;
+export const longWait = 1400;
 export const massiveWait = 500000;
 
 
@@ -81,7 +81,7 @@ export const mockNames = [
 ]
 
 export const defaultSettings = {
-  handSize: 3,
+  handSize: 5,
   name: "Ethan",
-  amountOfPlayers: 4,
+  amountOfPlayers: 5,
 };

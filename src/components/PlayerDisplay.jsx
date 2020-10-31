@@ -92,7 +92,7 @@ const HandGrid = Styled.div`
   padding: 2px 8px;
   display: grid;
   height: 30px;
-  width: 130px;
+  width: 140px;
   grid-gap: 6px;
   justify-content: center;
   justify-items: center;

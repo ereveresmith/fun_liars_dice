@@ -5,7 +5,7 @@ import Button from './Button';
 import Dice from './Dice';
 
 const HugeText = Styled.h1`
-  font-size: ${Styles.fontSizes.huge};
+  font-size: ${Styles.fontSizes.large};
   color: ${Styles.colors.white};
   text-align: center;
 `
@@ -15,7 +15,7 @@ const Wrapper = Styled.div`
   background-color: ${Styles.colors.darkGrey};
   opacity: 0.8;
   display: grid;
-  height: 90vh;
+  height: 70vh;
   grid-template-columns: auto;
   align-self: center;
   align-items: center;
@@ -90,9 +90,8 @@ const BetSubmitter = (props) => {
   return (
     <Wrapper tabIndex="-1" onKeyPress={handleKeyDown}>
       <VerticalGrid>
-        <Button isSecondary onClick={handleRaiseAmount}></Button>
-        <HugeText>{amount}</HugeText>
-        <Button isSecondary onClick={handleLowerAmount}></Button>
+        <Button label="Submit" onClick={handleSubmit}></Button>
+        <Button isSecondary label="Liar!" onClick={handleCall}></Button>
       </VerticalGrid>
       <VerticalGrid>
         <Button isSecondary onClick={handleRaiseFv}></Button>
@@ -100,8 +99,9 @@ const BetSubmitter = (props) => {
         <Button isSecondary onClick={handleLowerFv}></Button>
       </VerticalGrid>
       <VerticalGrid>
-        <Button label="Submit" onClick={handleSubmit}></Button>
-        <Button isSecondary label="Liar!" onClick={handleCall}></Button>
+        <Button isSecondary onClick={handleRaiseAmount}></Button>
+        <HugeText>{amount}</HugeText>
+        <Button isSecondary onClick={handleLowerAmount}></Button>
       </VerticalGrid>
     </Wrapper>
   );

@@ -31,7 +31,7 @@ const EmptyCell = Styled.div`
 
 const Wrapper = Styled.div`
   display: grid;
-  grid-template-columns: auto 58px;
+  grid-template-columns: auto auto;
   justify-items: center;
   align-items: center;
   `
@@ -537,6 +537,7 @@ const GamePage = ({ settings, onEnd}) => {
     if (checkOutOfDice(lyingPlayer.hand)) {
       playPlayerLoseSound();
       await printLog(`${lyingPlayer.name} is out of the game.`);
+      await timeout(longWait);
     }
     await timeout(longWait);
     await nextRound(lyingPlayer);
