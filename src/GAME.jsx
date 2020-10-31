@@ -734,7 +734,7 @@ const GamePage = ({ settings, onEnd}) => {
           <UIGrid>
             <UISection>
               <Button label={"Settings"} isSecondary onClick={handleClickSettings}></Button>
-              <Button label={"Pause"} isSecondary onClick={handlePauseGame}></Button>
+              {/* <Button label={"Pause"} isSecondary onClick={handlePauseGame}></Button> */}
             </UISection>
             <UISection>
               <UIText>
