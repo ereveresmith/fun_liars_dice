@@ -706,10 +706,7 @@ const GamePage = ({ settings, onEnd}) => {
 
   return (
     <Wrapper>
-      <GameGrid>
-        {renderCells()}
-      </GameGrid>
-      <UIGrid>
+        <UIGrid>
           <BetSubmitter 
             canCall={currentTurn.fv > 0} 
             disabled={!myTurn || isChallenge} 
@@ -718,6 +715,9 @@ const GamePage = ({ settings, onEnd}) => {
             onSubmit={handleClickSubmit}>
           </BetSubmitter>
         </UIGrid>
+      <GameGrid>
+        {renderCells()}
+      </GameGrid>
     </Wrapper>
   );
 }

@@ -16,11 +16,10 @@ const Wrapper = Styled.div`
   opacity: 0.83;
   padding: 4px 0;
   display: grid;
-  width: 99vw;
-  margin-top: 16px;
-  border-radius: 4px;
-  grid-template-columns: 70% auto auto auto;
+  width: 100vw;
+  grid-template-columns: 60% auto auto auto;
   align-self: center;
+  margin-bottom: 8px;
   align-items: center;
   user-select: none;
 `

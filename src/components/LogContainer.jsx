@@ -44,7 +44,7 @@ const StyledSpan = Styled.span`
 `
 
 const Wrapper = Styled.div`
-  height: 80px;  
+  height: 70px;  
   border-bottom: 2px solid ${Styles.colors.grey};
   width: 100%;
   justify-self: center;

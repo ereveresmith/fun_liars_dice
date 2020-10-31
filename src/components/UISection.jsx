@@ -17,7 +17,6 @@ const Wrapper = Styled.div`
   opacity: 0.8;
   border: 2px solid ${Styles.colors.darkGrey};
   display: grid;
-  min-height: 12px;
   grid-template-columns: auto auto;
   justify-items: center;
   align-text: center;

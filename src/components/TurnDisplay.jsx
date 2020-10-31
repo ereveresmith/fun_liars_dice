@@ -9,7 +9,7 @@ const FlexWrapper = Styled.div`
   display: flex;
   justify-content: center;
   margin: 0px 0;
-  height: 100%;
+  height: 30px;
 
   ${props => props.opacity && `
     opacity: ${props.opacity};

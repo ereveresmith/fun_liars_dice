@@ -9,7 +9,7 @@ const BottomGrid = Styled.div`
   align-content: center;
   align-items: center;
   display: grid;
-  height: 70px;
+  height: 60px;
 `
 
 
@@ -51,7 +51,7 @@ const ColoredDiv = Styled.div`
 const Cell = Styled.div`
   display: grid;
   grid-template-rows: auto auto;
-  min-height: 100px;  
+  min-height: 50px;  
   border: 1px solid ${Styles.colors.darkGrey};
   margin: 4px 0;
   transition: background-color 100ms ease-out;
