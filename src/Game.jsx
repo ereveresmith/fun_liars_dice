@@ -13,9 +13,12 @@ import { Sounds, Notes } from './util/Sounds'
 
 const UIGrid = Styled.div`
   display: grid;
-  position: absolute;
   bottom: 0;
   right: 0;
+  height: 100%;
+  width: 100%;
+  align-content: end;
+  justify-content: center;
 `
 
 const EmptyCell = Styled.div`
@@ -28,6 +31,7 @@ const EmptyCell = Styled.div`
 
 const Wrapper = Styled.div`
   display: grid;
+  grid-template-columns: auto 58px;
   justify-items: center;
   align-items: center;
   `
@@ -703,18 +707,18 @@ const GamePage = ({ settings, onEnd}) => {
 
   return (
     <Wrapper>
-          <UIGrid>
-            <BetSubmitter 
-              canCall={currentTurn.fv > 0} 
-              disabled={!myTurn || isChallenge} 
-              defaultFv={defaultFv} 
-              defaultAmount={defaultAmount} 
-              onSubmit={handleClickSubmit}>
-            </BetSubmitter>
-          </UIGrid>
       <GameGrid>
         {renderCells()}
       </GameGrid>
+      <UIGrid>
+          <BetSubmitter 
+            canCall={currentTurn.fv > 0} 
+            disabled={!myTurn || isChallenge} 
+            defaultFv={defaultFv} 
+            defaultAmount={defaultAmount} 
+            onSubmit={handleClickSubmit}>
+          </BetSubmitter>
+        </UIGrid>
     </Wrapper>
   );
 }

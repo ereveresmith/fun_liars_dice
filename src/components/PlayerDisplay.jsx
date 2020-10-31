@@ -92,7 +92,7 @@ const HandGrid = Styled.div`
   padding: 2px 8px;
   display: grid;
   height: 30px;
-  width: 150px;
+  width: 130px;
   grid-gap: 6px;
   justify-content: center;
   justify-items: center;
@@ -118,7 +118,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
       }
   })
 
-  const turnColor = Styles.colors.black;
+  const turnColor = Styles.colors.darkGrey;
 
   const renderTopSection = () => {
     const isColored = isActive | isChallenge;

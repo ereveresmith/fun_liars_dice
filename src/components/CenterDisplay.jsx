@@ -22,11 +22,7 @@ const BottomGrid = Styled.div`
   width: 100%;
   height: 50px;
   transition: background 220ms ease;
-
-  ${props => props.color && `
-    background: ${props.color};
-    color: white;
-  `}
+  opacity: 0.9;
 `
 
 const GridWrapper = Styled.div`
@@ -93,7 +89,7 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
   const renderChallenge = () => {
     return <ChallengeGrid>
       <TurnDisplay 
-        color={Styles.colors.black}
+        color={Styles.colors.darkGrey}
         amount={amountFound} 
         fv={turn.fv} 
         diceSize={Styles.diceSizes.large} 
@@ -111,20 +107,11 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
     )
   }
 
-  let bottomColor = undefined;
-  if (isChallenge) {
-    if (amountFound >= turn.amount) {
-      bottomColor = Styles.colors.green;
-    } else {
-      bottomColor = Styles.colors.red;
-    }
-  }
-
   return (
     <Cell>
       <GridWrapper>
         <LogContainer log={log}></LogContainer>
-        <BottomGrid color={bottomColor}>
+        <BottomGrid>
           {isChallenge ? renderChallenge() : renderTurn()}
         </BottomGrid>
       </GridWrapper>
