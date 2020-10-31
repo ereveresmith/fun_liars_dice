@@ -80,4 +80,8 @@ export const mockNames = [
   'Alec',
 ]
 
-export const defaultSettings = null;
+export const defaultSettings = {
+  handSize: 3,
+  name: "Ethan",
+  amountOfPlayers: 4,
+};

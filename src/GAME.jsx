@@ -21,6 +21,7 @@ const UIGrid = Styled.div`
 const EmptyCell = Styled.div`
   display: grid;
   width: 100%;
+  min-width: 330px;
   border: 1px solid ${Styles.colors.lightGrey};
   opacity: 0;
   height: 100%;
@@ -333,6 +334,14 @@ const GamePage = ({ settings, onEnd}) => {
     await printLog(`${newTurn.player.name}: `, newTurn.fv, newTurn.amount);
     setTurns(turns => [...turns, newTurn]);
     timeout(mediumWait);
+  }
+
+  const handleClickSettings = async () => {
+    onEnd();
+  }
+
+  const handlePauseGame = async () => {
+    setGameSpeed(0);
   }
 
   const handleClickSubmit = async (amount, fv) => {
@@ -723,6 +732,10 @@ const GamePage = ({ settings, onEnd}) => {
   return (
     <Wrapper>
           <UIGrid>
+            <UISection>
+              <Button label={"Settings"} isSecondary onClick={handleClickSettings}></Button>
+              <Button label={"Pause"} isSecondary onClick={handlePauseGame}></Button>
+            </UISection>
             <UISection>
               <UIText>
                 {amountOfActiveDice()} dice left

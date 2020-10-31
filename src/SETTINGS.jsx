@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Button from './components/Button';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
-import { mockPlayers, YOU, randomInt, mockNames, mockBot } from './util/Helper';
+import { mockPlayers, YOU, randomInt, mockNames, mockBot, defaultSettings } from './util/Helper';
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds';
 
@@ -30,9 +30,9 @@ const StyledInput = Styled.input`
   `
 
 const SettingsPage = (props) => {
-  const [amountOfPlayers, setAmountOfPlayers] = useState(4);
-  const [name, setName] = useState("Ethan");
-  const [handSize, setHandSize] = useState(4);
+  const [amountOfPlayers, setAmountOfPlayers] = useState(defaultSettings.amountOfPlayers);
+  const [name, setName] = useState(defaultSettings.name);
+  const [handSize, setHandSize] = useState(defaultSettings.handSize);
 
   const randomName = () => {
     const int = randomInt(mockNames.length);
@@ -101,9 +101,7 @@ const SettingsPage = (props) => {
   return (
     <div>
       <Wrapper>
-        <h1>Ethan's Liar's Dice</h1>
-
-        <h2>Settings</h2>
+        <h1>Tiny Liar's Dice</h1>
         <GridDiv>
           <Label>Your Name:</Label>
           <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
