@@ -21,7 +21,6 @@ const UIGrid = Styled.div`
 const EmptyCell = Styled.div`
   display: grid;
   width: 100%;
-  min-width: 330px;
   border: 1px solid ${Styles.colors.lightGrey};
   opacity: 0;
   height: 100%;
@@ -34,7 +33,6 @@ const Wrapper = Styled.div`
   `
 
 const GameGrid = Styled.div`
-  margin: 8px 0;
   grid-gap: 4px;
   width: 100%;
   display: grid;
@@ -632,9 +630,6 @@ const GamePage = ({ settings, onEnd}) => {
       return <EmptyCell key={`emptyCell${i}`}></EmptyCell>
     }
 
-
-    
-
     const renderedCenterDisplay = () => {
       return <CenterDisplay 
         log={log}
@@ -653,58 +648,35 @@ const GamePage = ({ settings, onEnd}) => {
         break;
       case 2: 
         renderedCells.push(emptyCell(1));
-        renderedCells.push(renderedPlayer(2));
         renderedCells.push(emptyCell(2));
         renderedCells.push(emptyCell(3));
-        renderedCells.push(renderedCenterDisplay());
-        renderedCells.push(emptyCell(4));
-        renderedCells.push(emptyCell(5));
         renderedCells.push(renderedPlayer(1));
-        renderedCells.push(emptyCell(6));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(renderedPlayer(2));
         break;
       case 3: 
         renderedCells.push(emptyCell(1));
-        renderedCells.push(renderedPlayer(3));
-        renderedCells.push(emptyCell(2));
         renderedCells.push(renderedPlayer(2));
-        renderedCells.push(renderedCenterDisplay());
-        renderedCells.push(emptyCell(3));
-        renderedCells.push(emptyCell(5));
+        renderedCells.push(emptyCell(2));
         renderedCells.push(renderedPlayer(1));
-        renderedCells.push(emptyCell(6));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(renderedPlayer(3));
         break;
       case 4: 
-        renderedCells.push(emptyCell(1));
-        renderedCells.push(renderedPlayer(3));
-        renderedCells.push(emptyCell(2));
         renderedCells.push(renderedPlayer(2));
-        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(renderedPlayer(3));
         renderedCells.push(renderedPlayer(4));
-        renderedCells.push(emptyCell(5));
         renderedCells.push(renderedPlayer(1));
-        renderedCells.push(emptyCell(6));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(emptyCell(1));
         break;
       case 5: 
-        renderedCells.push(renderedPlayer(3));
-        renderedCells.push(renderedPlayer(4));
-        renderedCells.push(renderedPlayer(5));
-        renderedCells.push(renderedPlayer(2));
-        renderedCells.push(renderedCenterDisplay());
-        renderedCells.push(emptyCell(1));
-        renderedCells.push(emptyCell(5));
-        renderedCells.push(renderedPlayer(1));
-        renderedCells.push(emptyCell(6));
-        break;
-      case 6: 
-        renderedCells.push(renderedPlayer(3));
-        renderedCells.push(renderedPlayer(4));
-        renderedCells.push(renderedPlayer(5));
-        renderedCells.push(renderedPlayer(2));
-        renderedCells.push(renderedCenterDisplay());
-        renderedCells.push(renderedPlayer(6));
-        renderedCells.push(emptyCell(5));
-        renderedCells.push(renderedPlayer(1));
-        renderedCells.push(emptyCell(6));
+      renderedCells.push(renderedPlayer(2));
+      renderedCells.push(renderedPlayer(3));
+      renderedCells.push(renderedPlayer(4));
+      renderedCells.push(renderedPlayer(1));
+      renderedCells.push(renderedCenterDisplay());
+      renderedCells.push(renderedPlayer(5));
         break;
     }
 

@@ -31,9 +31,8 @@ const StyledSpan = Styled.span`
   opacity: 0.65;
   font-size: ${Styles.fontSizes.medium};
   text-align: center;
-  margin-bottom: 8px;
   display: grid;
-  padding: 8px 0;
+  padding: 4px 0;
   grid-template-columns: auto auto auto;
   justify-content: center;
   transition: opacity ease 2s;
@@ -45,7 +44,7 @@ const StyledSpan = Styled.span`
 `
 
 const Wrapper = Styled.div`
-  height: 150px;  
+  height: 100px;  
   border-bottom: 2px solid ${Styles.colors.grey};
   width: 100%;
   justify-self: center;

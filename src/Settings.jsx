@@ -10,7 +10,7 @@ const Wrapper = Styled.div`
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: 24px;
+  margin: 4px;
   `
 
   const Label = Styled.span`
@@ -21,11 +21,11 @@ const Wrapper = Styled.div`
 
 const GridDiv = Styled.div`
   display: grid;
-  margin: 24px;
+  margin: 8px;
 `
 
 const StyledInput = Styled.input`
-  margin: 8px 0;
+  margin: 4px 0;
   font-size: ${Styles.fontSizes.medium};
   `
 

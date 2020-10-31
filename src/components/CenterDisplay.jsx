@@ -27,7 +27,6 @@ const BottomGrid = Styled.div`
     background: ${props.color};
     color: white;
   `}
-  height: 114px;
   border-radius: 0 0 800px 800px;
 `
 
@@ -58,16 +57,16 @@ const Text = Styled.h2`
 const TurnArrow = Styled.div`
   width: 0; 
   height: 0; 
-  border-left: 1.5em solid transparent;
-  border-right: 1.5em solid transparent;
+  border-left: 0.75em solid transparent;
+  border-right: 0.75em solid transparent;
   align-self: end;
   justify-self: center;
   transform-origin: center;
   transition: all 120ms ease;
-  margin-bottom: 16px;
+  margin-bottom: 2px;
 
   ${props => props.color && `
-    border-bottom: 3em solid ${props.color};
+    border-bottom: 1.5em solid ${props.color};
   `}
 
   ${props => props.angle && `
@@ -76,28 +75,14 @@ const TurnArrow = Styled.div`
 `
 
 const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound }) => {
-  const calcAngle = () => {
-    const offset = 180;
-
+  const calcArrowDirection = () => {
     switch(amountOfPlayers) {
       case 2: 
-        return (turn.nextPlayer.id * 180);
+        return (turn.nextPlayer.id * 180) + 90;
       case 3: 
-        return (turn.nextPlayer.id * 90) + 90;
-      case 4: 
-        return (turn.nextPlayer.id * 90) + 90;
-      case 5: 
-        if (turn.nextPlayer.id === 1) {
-          return offset;
-        } else {
-          return (turn.nextPlayer.id * 45) + offset;
-        }
-      case 6: 
-        if (turn.nextPlayer.id === 1) {
-          return offset;
-        } else {
-          return (turn.nextPlayer.id * 45) + offset;
-        }
+        return (turn.nextPlayer.id * 90) + 180;
+      default: 
+        return (turn.nextPlayer.id * 45) + 225;
     }
 
   }
@@ -112,12 +97,12 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
   const sizeIncreaseSpeed = 0.04;
 
   const calcDiceSize = () => {
-    let val = (amountFound * sizeIncreaseSpeed) + 2.5;
+    let val = (amountFound * sizeIncreaseSpeed) + Styles.diceSizes.medium;
     return `${val}em`;
   }
 
   const calcTextSize = () => {
-    let val = (amountFound * sizeIncreaseSpeed) + 3;
+    let val = (amountFound * sizeIncreaseSpeed) + Styles.fontSizes.medium;
     return `${val}em`;
   }
 
@@ -150,7 +135,7 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
     return (
       <Cell>
         <Text color={turnColor}>{turnText}</Text>
-        <TurnArrow color={turnColor} angle={calcAngle()}></TurnArrow>
+        <TurnArrow color={turnColor} angle={calcArrowDirection()}></TurnArrow>
       </Cell>
     )
   }

@@ -12,17 +12,14 @@ const HugeText = Styled.h1`
 
 const Wrapper = Styled.div`
   z-index: 2;
-  padding: 16px 24px;
   background-color: ${Styles.colors.darkGrey};
   opacity: 0.8;
-  border: 2px solid ${Styles.colors.darkGrey};
   display: grid;
-  width: 300px;
-  grid-template-columns: auto auto auto auto;
+  width: 180px;
+  grid-template-columns: auto auto auto;
   align-self: center;
   align-items: center;
   user-select: none;
-  justify-items: end;
 `
 
 const VerticalGrid = Styled.div`
@@ -91,7 +88,7 @@ const BetSubmitter = (props) => {
       </VerticalGrid>
       <VerticalGrid>
         <Button isSecondary onClick={handleRaiseFv}></Button>
-        <Dice fv={fv} size={Styles.diceSizes.large} visible></Dice>
+        <Dice fv={fv} size={Styles.diceSizes.ui} visible></Dice>
         <Button isSecondary onClick={handleLowerFv}></Button>
       </VerticalGrid>
       <VerticalGrid>

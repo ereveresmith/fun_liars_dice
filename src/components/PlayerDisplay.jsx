@@ -9,7 +9,7 @@ const BottomGrid = Styled.div`
   align-content: center;
   align-items: center;
   display: grid;
-  min-height: 122px;
+  height: 70px;
 `
 
 
@@ -24,7 +24,6 @@ const FadeAnimation = keyframes`
 `;
 
 const LieDisplay = Styled.div`
-  padding: 32px 0;
   font-weight: 900;
   align-self: start;
   font-size: ${Styles.fontSizes.large};
@@ -34,7 +33,6 @@ const LieDisplay = Styled.div`
 `
 
 const TakingTurnDisplay = Styled.div`
-  padding: 24px 0;
   font-weight: 900;
   font-size: 50px;
   animation: ${FadeAnimation} 1.2s linear infinite;
@@ -53,10 +51,9 @@ const ColoredDiv = Styled.div`
 const Cell = Styled.div`
   display: grid;
   grid-template-rows: auto auto;
-  min-height: 240px;
-  min-width: 330px;
+  min-height: 100px;  
   border: 1px solid ${Styles.colors.darkGrey};
-  margin: 12px 0;
+  margin: 4px 0;
   transition: background-color 100ms ease-out;
 
   ${props => props.isOut && `
@@ -92,8 +89,9 @@ const Divider = Styled.div`
 `
 
 const HandGrid = Styled.div`
-  padding: 8px 24px;
+  padding: 2px 8px;
   display: grid;
+  width: 140px;
   grid-gap: 6px;
   justify-content: center;
   justify-items: center;

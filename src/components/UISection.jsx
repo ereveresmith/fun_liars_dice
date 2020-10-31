@@ -12,14 +12,13 @@ const HugeText = Styled.h1`
 
 const Wrapper = Styled.div`
   z-index: 2;
-  padding: 16px 24px;
+  padding: 4px 6px;
   background-color: ${Styles.colors.darkGrey};
   opacity: 0.8;
   border: 2px solid ${Styles.colors.darkGrey};
   display: grid;
-  width: 300px;
   min-height: 12px;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto;
   justify-items: center;
   align-text: center;
 `
