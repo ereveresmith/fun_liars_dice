@@ -13,10 +13,13 @@ const HugeText = Styled.h1`
 const Wrapper = Styled.div`
   z-index: 2;
   background-color: ${Styles.colors.darkGrey};
-  opacity: 0.8;
+  opacity: 0.83;
+  padding: 4px 0;
   display: grid;
-  height: 70vh;
-  grid-template-columns: auto;
+  width: 99vw;
+  margin-top: 16px;
+  border-radius: 4px;
+  grid-template-columns: 70% auto auto auto;
   align-self: center;
   align-items: center;
   user-select: none;
@@ -88,10 +91,13 @@ const BetSubmitter = (props) => {
   }
 
   return (
-    <Wrapper tabIndex="-1" onKeyPress={handleKeyDown}>
+    <Wrapper onKeyPress={handleKeyDown}>
       <VerticalGrid>
-        <Button label="Submit" onClick={handleSubmit}></Button>
-        <Button isSecondary label="Liar!" onClick={handleCall}></Button>
+      </VerticalGrid>
+      <VerticalGrid>
+        <Button isSecondary onClick={handleRaiseAmount}></Button>
+        <HugeText>{amount}</HugeText>
+        <Button isSecondary onClick={handleLowerAmount}></Button>
       </VerticalGrid>
       <VerticalGrid>
         <Button isSecondary onClick={handleRaiseFv}></Button>
@@ -99,9 +105,8 @@ const BetSubmitter = (props) => {
         <Button isSecondary onClick={handleLowerFv}></Button>
       </VerticalGrid>
       <VerticalGrid>
-        <Button isSecondary onClick={handleRaiseAmount}></Button>
-        <HugeText>{amount}</HugeText>
-        <Button isSecondary onClick={handleLowerAmount}></Button>
+        <Button label="Submit" onClick={handleSubmit}></Button>
+        <Button isSecondary label="Liar!" onClick={handleCall}></Button>
       </VerticalGrid>
     </Wrapper>
   );

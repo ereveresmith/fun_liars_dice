@@ -61,7 +61,7 @@ const LogContainer = (props) => {
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current.scrollIntoView({ behavior: "smooth", block: 'end' })
+    bottomRef.current.scrollIntoView({ behavior: "smooth", block: 'start' })
   }, [props.log])
 
 

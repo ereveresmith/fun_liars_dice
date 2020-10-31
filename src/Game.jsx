@@ -13,8 +13,6 @@ import { Sounds, Notes } from './util/Sounds'
 
 const UIGrid = Styled.div`
   display: grid;
-  bottom: 0;
-  right: 0;
   height: 100%;
   width: 100%;
   align-content: center;
@@ -31,7 +29,8 @@ const EmptyCell = Styled.div`
 
 const Wrapper = Styled.div`
   display: grid;
-  grid-template-columns: auto 50px;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto;
   justify-items: center;
   align-items: center;
   `
