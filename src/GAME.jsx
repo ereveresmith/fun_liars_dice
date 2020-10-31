@@ -160,7 +160,7 @@ const GamePage = ({ settings, onEnd}) => {
         amountOfPlayersLeft++;
       }
     }
-
+    //Yo
     return (amountOfPlayersLeft === 1 ? winner : undefined);
   }
 

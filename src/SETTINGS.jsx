@@ -90,6 +90,7 @@ const SettingsPage = (props) => {
     setAmountOfPlayers(e.target.value);
   }
 
+  //yo
   const handleChangeHandSize = (e) => {
     setHandSize(e.target.value);
   }
