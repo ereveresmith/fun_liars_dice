@@ -14,7 +14,8 @@ import { Sounds, Notes } from './util/Sounds'
 const UIGrid = Styled.div`
   display: grid;
   height: 100%;
-  width: 100%;
+  width: 70%;
+  grid-template-columns: auto auto;
   align-content: center;
   justify-content: center;
 `
@@ -40,8 +41,9 @@ const GameGrid = Styled.div`
   width: 90%;
   display: grid;
   justify-items: center;
+  justify-content: center;
   align-items: center;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
 `
 
 const UIText = Styled.h1`
@@ -633,17 +635,6 @@ const GamePage = ({ settings, onEnd}) => {
       return <EmptyCell key={`emptyCell${i}`}></EmptyCell>
     }
 
-    const renderedCenterDisplay = () => {
-      return <CenterDisplay 
-        log={log}
-        amountOfPlayers={settings.players.length}
-        amountFound={calcAmountFound()}
-        key="centerDisplay" 
-        isChallenge={isChallenge} 
-        turn={currentTurn}>
-      </CenterDisplay>
-    }
-
     switch(amountOfPlayers) {
       case 1: 
         break;
@@ -651,35 +642,26 @@ const GamePage = ({ settings, onEnd}) => {
         break;
       case 2: 
         renderedCells.push(renderedPlayer(2));
-        renderedCells.push(renderedCenterDisplay());
         renderedCells.push(renderedPlayer(1));
         break;
       case 3: 
         renderedCells.push(renderedPlayer(3));
-        renderedCells.push(renderedCenterDisplay());
         renderedCells.push(renderedPlayer(1));
 
         renderedCells.push(emptyCell(1));
         renderedCells.push(renderedPlayer(2));
-        renderedCells.push(emptyCell(2));
         break;
       case 4: 
-        renderedCells.push(emptyCell(1));
-        renderedCells.push(renderedCenterDisplay());
         renderedCells.push(renderedPlayer(1));
-
+        renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedPlayer(4));
         renderedCells.push(renderedPlayer(3));
-        renderedCells.push(renderedPlayer(2));
         break;
       case 5: 
-        renderedCells.push(renderedPlayer(5));
-        renderedCells.push(renderedCenterDisplay());
         renderedCells.push(renderedPlayer(1));
-
+        renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedPlayer(4));
         renderedCells.push(renderedPlayer(3));
-        renderedCells.push(renderedPlayer(2));
         break;
     }
 
@@ -706,7 +688,18 @@ const GamePage = ({ settings, onEnd}) => {
 
   return (
     <Wrapper>
-        <UIGrid>
+      <GameGrid>
+        {renderCells()}
+      </GameGrid>
+      <UIGrid>
+          <CenterDisplay 
+            log={log}
+            amountOfPlayers={settings.players.length}
+            amountFound={calcAmountFound()}
+            key="centerDisplay" 
+            isChallenge={isChallenge} 
+            turn={currentTurn}>
+          </CenterDisplay>
           <BetSubmitter 
             canCall={currentTurn.fv > 0} 
             disabled={!myTurn || isChallenge} 
@@ -715,9 +708,6 @@ const GamePage = ({ settings, onEnd}) => {
             onSubmit={handleClickSubmit}>
           </BetSubmitter>
         </UIGrid>
-      <GameGrid>
-        {renderCells()}
-      </GameGrid>
     </Wrapper>
   );
 }

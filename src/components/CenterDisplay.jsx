@@ -111,9 +111,6 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
     <Cell>
       <GridWrapper>
         <LogContainer log={log}></LogContainer>
-        <BottomGrid>
-          {isChallenge ? renderChallenge() : renderTurn()}
-        </BottomGrid>
       </GridWrapper>
     </Cell>
   );

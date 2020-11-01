@@ -48,9 +48,9 @@ const StyledSpan = Styled.span`
 `
 
 const Wrapper = Styled.div`
-  height: 110px;  
-  border-bottom: 2px solid ${Styles.colors.grey};
-  width: 100%;
+  box-shadow: 0 2px 3px ${Styles.colors.darkGrey};
+  height: 130px;  
+  min-width: 160px;
   justify-self: center;
   align-content: end;
   opacity: 0.8;

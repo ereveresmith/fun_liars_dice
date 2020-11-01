@@ -88,10 +88,10 @@ const Divider = Styled.div`
 `
 
 const HandGrid = Styled.div`
-  padding: 2px 8px;
+  padding: 2px 12px;
   display: grid;
   height: 30px;
-  width: 180px;
+  width: 150px;
   grid-gap: 6px;
   justify-content: center;
   justify-items: center;
