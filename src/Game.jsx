@@ -14,8 +14,17 @@ const UIGrid = Styled.div`
   display: grid;
   height: 100%;
   width: 100%;
+
   grid-template-columns: 40% auto;
+  grid-template-rows: auto;
   margin-top: 28px;
+
+  ${props => props.isWidescreen && `
+    grid-template-rows: auto auto;
+    grid-template-columns: auto;
+    margin-top: 0;
+  `}
+
   align-content: center;
   justify-content: center;
 `
@@ -31,6 +40,12 @@ const EmptyCell = Styled.div`
 const Wrapper = Styled.div`
   display: grid;
   grid-template-columns: auto;
+  grid-template-rows: auto auto;
+
+  ${props => props.isWidescreen && `
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+  `}
   grid-template-rows: auto auto;
   justify-items: center;
   align-items: center;
@@ -70,7 +85,7 @@ const GamePage = ({ settings, onEnd}) => {
   const [log, setLog] = useState([]);
   const [gameSpeed, setGameSpeed] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
-
+  const [isWidescreen, setIsWidescreen] = useState(true);
 
   const [playRerollSound] = useSound(Sounds.reroll);
   const [playChallengeSound] = useSound(Sounds.challenge);
@@ -697,11 +712,11 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper isWidescreen={isWidescreen}>
       <GameGrid>
         {renderCells()}
       </GameGrid>
-      <UIGrid>
+      <UIGrid isWidescreen={isWidescreen}>
           <CenterDisplay 
             log={log}
             amountOfPlayers={settings.players.length}

@@ -81,7 +81,7 @@ export const mockNames = [
 ]
 
 export const defaultSettings = {
-  handSize: 5,
-  name: "Ethan",
+  handSize: 3,
+  name: "You",
   amountOfPlayers: 4,
 };
