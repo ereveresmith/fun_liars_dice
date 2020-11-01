@@ -2,27 +2,25 @@ import React, {useState, useEffect} from 'react';
 import Button from './components/Button';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
-import CenterDisplay from './components/CenterDisplay';
 import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
 import { calcBotMove } from './util/Bot';
 import { randomInt, tinyWait, shortWait, mediumWait, longWait, massiveWait, WIDESCREEN_SIZE } from './util/Helper';
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds'
+import LogContainer from './components/LogContainer';
 
 const UIGrid = Styled.div`
   display: grid;
   height: 100%;
   width: 100%;
 
-  grid-template-columns: 40% auto;
+  grid-template-columns: auto auto;
   grid-template-rows: auto;
-  margin-top: 28px;
 
   ${props => props.isWidescreen && `
     grid-template-rows: auto auto;
     grid-template-columns: auto;
-    margin-top: 0;
   `}
 
   align-content: center;
@@ -40,15 +38,19 @@ const EmptyCell = Styled.div`
 const Wrapper = Styled.div`
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto 60px auto;
+  justify-content: center;
 
   ${props => props.isWidescreen && `
-    grid-template-columns: auto auto;
+    grid-template-columns: 70% 3% auto;
     grid-template-rows: auto;
+    justify-content: end;
+
   `}
   grid-template-rows: auto auto;
   justify-items: center;
   align-items: center;
+  align-content: center;
   `
 
 const GameGrid = Styled.div`
@@ -741,15 +743,12 @@ const GamePage = ({ settings, onEnd}) => {
       <GameGrid>
         {renderCells()}
       </GameGrid>
+      <div></div>
       <UIGrid isWidescreen={isWidescreen}>
-          <CenterDisplay 
+          <LogContainer 
             log={log}
-            amountOfPlayers={settings.players.length}
-            amountFound={calcAmountFound()}
-            key="centerDisplay" 
-            isChallenge={isChallenge} 
-            turn={currentTurn}>
-          </CenterDisplay>
+            isTall={isWidescreen}>
+          </LogContainer>
           <BetSubmitter 
             canCall={currentTurn.fv > 0} 
             disabled={!myTurn || isChallenge} 

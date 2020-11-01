@@ -48,9 +48,14 @@ const StyledSpan = Styled.span`
 `
 
 const Wrapper = Styled.div`
-  box-shadow: 0 2px 3px ${Styles.colors.darkGrey};
-  height: 150px;
+  box-shadow: 0 1px 4px ${Styles.colors.darkGrey};
+  height: 140px;
+
+  ${props => props.isTall && `
+    height: 50vh;
+  `}
   width: 100%;
+  min-width: 172px;
   touch-action: manipulation;
   justify-self: center;
   align-content: end;
@@ -62,17 +67,17 @@ const Wrapper = Styled.div`
   align-items: start;
 `
 
-const LogContainer = (props) => {
+const LogContainer = ({log, isTall}) => {
   const bottomRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current.scrollIntoView({ behavior: "smooth", block: 'end' })
-  }, [props.log])
+  }, [log])
 
 
   const renderedLog = () => {
-    const logItems = props.log.map((message, index) => {
-      const isNewest = props.log.length === (index+1);
+    const logItems = log.map((message, index) => {
+      const isNewest = log.length === (index+1);
 
 
       const hasFv = (message.fv !== undefined);
@@ -105,7 +110,7 @@ const LogContainer = (props) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper isTall={isTall}>
       {renderedLog()}
       <ScrollDiv ref={bottomRef}></ScrollDiv>
     </Wrapper>
