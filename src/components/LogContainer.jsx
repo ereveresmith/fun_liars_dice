@@ -32,6 +32,7 @@ const StyledSpan = Styled.span`
   align-items: center;
   color: ${Styles.colors.black};
   opacity: 0.65;
+  margin-bottom: 4px;
   font-size: ${Styles.fontSizes.medium};
   text-align: center;
   display: grid;
@@ -47,7 +48,7 @@ const StyledSpan = Styled.span`
 `
 
 const Wrapper = Styled.div`
-  height: 70px;  
+  height: 110px;  
   border-bottom: 2px solid ${Styles.colors.grey};
   width: 100%;
   justify-self: center;

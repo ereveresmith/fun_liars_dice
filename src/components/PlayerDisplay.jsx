@@ -9,7 +9,7 @@ const BottomGrid = Styled.div`
   align-content: center;
   align-items: center;
   display: grid;
-  height: 48px;
+  height: 58px;
 `
 
 
@@ -91,7 +91,7 @@ const HandGrid = Styled.div`
   padding: 2px 8px;
   display: grid;
   height: 30px;
-  width: 160px;
+  width: 180px;
   grid-gap: 6px;
   justify-content: center;
   justify-items: center;

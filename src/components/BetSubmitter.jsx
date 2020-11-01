@@ -8,7 +8,7 @@ const HugeText = Styled.h1`
   font-size: ${Styles.fontSizes.large};
   color: ${Styles.colors.white};
   text-align: center;
-  min-width: 10px;
+  min-width: 12px;
 `
 
 const Wrapper = Styled.div`

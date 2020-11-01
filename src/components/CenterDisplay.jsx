@@ -20,7 +20,7 @@ const ChallengeGrid = Styled.div`
 const BottomGrid = Styled.div`
   display: grid;
   width: 100%;
-  height: 60px;
+  height: 54px;
   transition: background 220ms ease;
   opacity: 0.9;
 `
