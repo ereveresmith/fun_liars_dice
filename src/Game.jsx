@@ -43,12 +43,18 @@ const Wrapper = Styled.div`
   justify-items: center;
   align-items: center;
   align-content: center;
-  
-  ${props => props.isWidescreen && `
+
+  ${props => props.isWidescreen && !props.isLeftHanded && `
     grid-template-columns: 75% 1% auto;
     grid-template-rows: auto;
     justify-content: end;
 
+  `}
+
+  ${props => props.isWidescreen && props.isLeftHanded && `
+    grid-template-columns: auto 1% 75%;
+    grid-template-rows: auto;
+    justify-content: start;
   `}
   `
 
@@ -97,6 +103,7 @@ const GamePage = ({ settings, onEnd}) => {
   const [gameSpeed, setGameSpeed] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
   const [isWidescreen, setIsWidescreen] = useState(true);
+  const [isLeftHanded, setIsLeftHanded] = useState(true);
 
   const [playRerollSound] = useSound(Sounds.reroll);
   const [playChallengeSound] = useSound(Sounds.challenge);
@@ -737,26 +744,67 @@ const GamePage = ({ settings, onEnd}) => {
     defaultAmount++;
   }
 
-  return (
-    <Wrapper isWidescreen={isWidescreen}>
+  const renderUI = () => {
+    return (
+      <UIGrid isWidescreen={isWidescreen}>
+        {(!isLeftHanded || isWidescreen) && <LogContainer 
+          log={log}
+          isTall={isWidescreen}>
+        </LogContainer>}
+        <BetSubmitter 
+          canCall={currentTurn.fv > 0} 
+          disabled={!myTurn || isChallenge} 
+          defaultFv={defaultFv} 
+          defaultAmount={defaultAmount} 
+          onSubmit={handleClickSubmit}>
+        </BetSubmitter>
+        {isLeftHanded && !isWidescreen && <LogContainer 
+          log={log}
+          isTall={isWidescreen}>
+        </LogContainer>}
+        <Button label={"Switch View"} onClick={handleSwitchView}></Button>
+      </UIGrid>
+    )
+  }
+
+  const handleSwitchView = () => {
+    if (isLeftHanded) {
+      setIsLeftHanded(false);
+    } else {
+      setIsLeftHanded(true);
+    }
+  }
+
+  const renderLeftHandedGame = () => {
+    return (
+      <Wrapper isWidescreen={isWidescreen} isLeftHanded={isLeftHanded}>
+      {!isWidescreen && (<GameGrid>
+        {renderCells()}
+      </GameGrid>)}
+      {!isWidescreen && (<div></div>)}
+      {renderUI()}
+      {isWidescreen && (<div></div>)}
+      {isWidescreen && (<GameGrid>
+        {renderCells()}
+      </GameGrid>)}
+    </Wrapper>
+    )
+  }
+
+  const renderGame = () => {
+    return (
+      <Wrapper isWidescreen={isWidescreen}>
       <GameGrid>
         {renderCells()}
       </GameGrid>
       <div></div>
-      <UIGrid isWidescreen={isWidescreen}>
-          <LogContainer 
-            log={log}
-            isTall={isWidescreen}>
-          </LogContainer>
-          <BetSubmitter 
-            canCall={currentTurn.fv > 0} 
-            disabled={!myTurn || isChallenge} 
-            defaultFv={defaultFv} 
-            defaultAmount={defaultAmount} 
-            onSubmit={handleClickSubmit}>
-          </BetSubmitter>
-        </UIGrid>
+      {renderUI()}
     </Wrapper>
+    )
+  }
+
+  return (
+    isLeftHanded ? renderLeftHandedGame() : renderGame()
   );
 }
 
