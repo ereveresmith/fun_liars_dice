@@ -8,6 +8,7 @@ const HugeText = Styled.h1`
   font-size: ${Styles.fontSizes.large};
   color: ${Styles.colors.white};
   text-align: center;
+  min-width: 10px;
 `
 
 const Wrapper = Styled.div`
@@ -16,10 +17,12 @@ const Wrapper = Styled.div`
   box-shadow: 0 2px 3px ${Styles.colors.black};
   opacity: 0.83;
   padding: 2px 0;
+  grid-gap: 24px;
   margin-bottom: 4px;
   display: grid;
   width: 100vw;
-  grid-template-columns: 50% auto auto auto;
+  justify-content: end;
+  grid-template-columns: auto auto auto;
   align-self: center;
   align-items: center;
   user-select: none;
@@ -33,7 +36,6 @@ const VerticalGrid = Styled.div`
 `
 
 const HorizontalGrid = Styled.div`
-    width: 100px;
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
@@ -93,8 +95,6 @@ const BetSubmitter = (props) => {
 
   return (
     <Wrapper onKeyPress={handleKeyDown}>
-      <HorizontalGrid>
-      </HorizontalGrid>
       <HorizontalGrid>
         <Button isSecondary onClick={handleLowerAmount}></Button>
         <HugeText>{amount}</HugeText>

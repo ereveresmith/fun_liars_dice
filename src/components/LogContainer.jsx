@@ -9,6 +9,9 @@ const DiceWrapper = Styled.div`
   grid-template-columns: auto auto;
 `
 
+const ScrollDiv = Styled.div`
+`
+
 const HugeText = Styled.div`
   font-size: ${Styles.fontSizes.large};
   font-weight: 500;
@@ -61,7 +64,7 @@ const LogContainer = (props) => {
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current.scrollIntoView({ behavior: "smooth", block: 'start' })
+    bottomRef.current.scrollIntoView({ behavior: "smooth", block: 'end' })
   }, [props.log])
 
 
@@ -102,7 +105,7 @@ const LogContainer = (props) => {
   return (
     <Wrapper>
       {renderedLog()}
-      <div ref={bottomRef}></div>
+      <ScrollDiv ref={bottomRef}></ScrollDiv>
     </Wrapper>
   );
 }
