@@ -9,6 +9,7 @@ import { randomInt, tinyWait, shortWait, mediumWait, longWait, massiveWait, WIDE
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds'
 import LogContainer from './components/LogContainer';
+import Switch from './components/Switch';
 
 const UIGrid = Styled.div`
   display: grid;
@@ -757,7 +758,7 @@ const GamePage = ({ settings, onEnd}) => {
     return (
       <div>
         {!isWidescreen && <UILongSection>
-          <Button label={"Toggle Display"} isSecondary onClick={handleSwitchView}></Button>
+          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
         </UILongSection>}
         <UIGrid isWidescreen={isWidescreen}>
         {(!isLeftHanded || isWidescreen) && <LogContainer 
@@ -765,7 +766,7 @@ const GamePage = ({ settings, onEnd}) => {
           isTall={isWidescreen}>
         </LogContainer>}
         {isWidescreen && <UILongSection>
-          <Button label={"Toggle Display"} isSecondary onClick={handleSwitchView}></Button>
+          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
         </UILongSection>}
         <BetSubmitter 
           canCall={currentTurn.fv > 0} 
