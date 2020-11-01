@@ -49,8 +49,9 @@ const StyledSpan = Styled.span`
 
 const Wrapper = Styled.div`
   box-shadow: 0 2px 3px ${Styles.colors.darkGrey};
-  height: 50vh;  
+  height: 150px;
   width: 100%;
+  touch-action: manipulation;
   justify-self: center;
   align-content: end;
   opacity: 0.8;

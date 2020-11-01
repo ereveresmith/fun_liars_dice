@@ -86,4 +86,4 @@ export const defaultSettings = {
   amountOfPlayers: 4,
 };
 
-export const WIDESCREEN_SIZE = 700;
+export const WIDESCREEN_SIZE = 600;

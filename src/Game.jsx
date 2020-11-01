@@ -90,17 +90,12 @@ const GamePage = ({ settings, onEnd}) => {
     player: {id: 0},
     nextPlayer: players[0],
   }
-
-  let initialIsWidescreen = false;
-  if (getWidth() > WIDESCREEN_SIZE) {
-    initialIsWidescreen = true;
-  }
   
   const [turns, setTurns] = useState([initialTurn]);
   const [log, setLog] = useState([]);
   const [gameSpeed, setGameSpeed] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
-  const [isWidescreen, setIsWidescreen] = useState(initialIsWidescreen);
+  const [isWidescreen, setIsWidescreen] = useState(true);
 
   const [playRerollSound] = useSound(Sounds.reroll);
   const [playChallengeSound] = useSound(Sounds.challenge);
@@ -135,7 +130,13 @@ const GamePage = ({ settings, onEnd}) => {
   }, [turns]);
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize);
+
+    let initialIsWidescreen = false;
+    if (getWidth() > WIDESCREEN_SIZE) {
+      initialIsWidescreen = true;
+    }
+    setIsWidescreen(initialIsWidescreen);
   }, [])
 
   const handleResize = (e) => {
