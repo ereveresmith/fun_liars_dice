@@ -16,6 +16,7 @@ const UIGrid = Styled.div`
   height: 100%;
   width: 100%;
   grid-template-columns: 50% 50%;
+  margin-top: 28px;
   align-content: center;
   justify-content: center;
 `
@@ -232,6 +233,8 @@ const GamePage = ({ settings, onEnd}) => {
       })
     }
 
+    await printLog(`Found `, fv, amntFound, 's');
+    await timeout(longWait)
 
     if (amntFound >= amount) {
       await printLog(`It was the truth!`);
@@ -524,7 +527,7 @@ const GamePage = ({ settings, onEnd}) => {
     await timeout(longWait);
     resetHighlight(playersArray);
     setPlayers(playersArray);
-    await timeout(tinyWait);
+    await timeout(shortWait);
     highlightLoser(lyingPlayer.hand);
     setPlayers(playersArray);    
     await timeout(shortWait);
@@ -580,7 +583,7 @@ const GamePage = ({ settings, onEnd}) => {
         if (turns.length > 2 && !isChallenge) {
           isTertiary = (player.id === prevTurn.player.id);
           if (isTertiary) {
-            opacity = 0.4;
+            opacity = 0.8;
             turnToShow =  prevTurn;
           }
           if (turns.length > 3 && !isChallenge) {
@@ -588,7 +591,7 @@ const GamePage = ({ settings, onEnd}) => {
 
             isQuad = (player.id === prevTurn.player.id);
             if (isQuad) {
-              opacity = 0.1;
+              opacity = 0.3;
               turnToShow =  prevTurn;
             }
           }
@@ -660,8 +663,18 @@ const GamePage = ({ settings, onEnd}) => {
       case 5: 
         renderedCells.push(renderedPlayer(1));
         renderedCells.push(renderedPlayer(2));
-        renderedCells.push(renderedPlayer(4));
+        renderedCells.push(renderedPlayer(5));
         renderedCells.push(renderedPlayer(3));
+        renderedCells.push(emptyCell(1));
+        renderedCells.push(renderedPlayer(4));
+        break;
+      case 6: 
+        renderedCells.push(renderedPlayer(1));
+        renderedCells.push(renderedPlayer(2));
+        renderedCells.push(renderedPlayer(6));
+        renderedCells.push(renderedPlayer(3));
+        renderedCells.push(renderedPlayer(5));
+        renderedCells.push(renderedPlayer(4));
         break;
     }
 

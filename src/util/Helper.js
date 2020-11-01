@@ -1,10 +1,10 @@
 
 
 
-export const tinyWait = 120;
-export const shortWait = 280;
+export const tinyWait = 140;
+export const shortWait = 300;
 export const mediumWait = 460;
-export const longWait = 1400;
+export const longWait = 1300;
 export const massiveWait = 500000;
 
 

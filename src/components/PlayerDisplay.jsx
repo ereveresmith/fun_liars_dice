@@ -24,12 +24,10 @@ const FadeAnimation = keyframes`
 `;
 
 const LieDisplay = Styled.div`
-  font-weight: 900;
+  font-weight: 700;
   align-self: start;
-  font-size: ${Styles.fontSizes.large};
+  font-size: ${Styles.fontSizes.huge};
   opacity: 0.65;
-  border: 2px ${Styles.colors.grey};
-  border-radius: 64px;
 `
 
 const TakingTurnDisplay = Styled.div`
