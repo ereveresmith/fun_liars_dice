@@ -18,11 +18,9 @@ const Wrapper = Styled.div`
   background-color: ${Styles.colors.darkGrey};
   box-shadow: 0 2px 3px ${Styles.colors.black};
   opacity: 0.83;
-  padding: 12px 0;
   grid-gap: 4px;
   touch-action: manipulation;
   display: grid;
-  min-height: 160px;
   justify-content: start;
   width: 100%;
   max-width: 270px;

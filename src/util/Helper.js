@@ -85,3 +85,5 @@ export const defaultSettings = {
   name: "You",
   amountOfPlayers: 4,
 };
+
+export const WIDESCREEN_SIZE = 700;

@@ -49,7 +49,7 @@ const StyledSpan = Styled.span`
 
 const Wrapper = Styled.div`
   box-shadow: 0 2px 3px ${Styles.colors.darkGrey};
-  height: 170px;  
+  height: 50vh;  
   width: 100%;
   justify-self: center;
   align-content: end;

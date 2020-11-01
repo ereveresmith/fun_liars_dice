@@ -6,7 +6,7 @@ import CenterDisplay from './components/CenterDisplay';
 import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
 import { calcBotMove } from './util/Bot';
-import { randomInt, tinyWait, shortWait, mediumWait, longWait, massiveWait } from './util/Helper';
+import { randomInt, tinyWait, shortWait, mediumWait, longWait, massiveWait, WIDESCREEN_SIZE } from './util/Helper';
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds'
 
@@ -73,6 +73,16 @@ const UIText = Styled.h1`
 const GamePage = ({ settings, onEnd}) => {
   const [players, setPlayers] = useState(settings.players);
 
+  function getWidth() {
+    return Math.max(
+      document.body.scrollWidth,
+      document.documentElement.scrollWidth,
+      document.body.offsetWidth,
+      document.documentElement.offsetWidth,
+      document.documentElement.clientWidth
+    );
+  }
+
   const initialTurn = {
     number: 0,
     amount: 0,
@@ -80,12 +90,17 @@ const GamePage = ({ settings, onEnd}) => {
     player: {id: 0},
     nextPlayer: players[0],
   }
+
+  let initialIsWidescreen = false;
+  if (getWidth() > WIDESCREEN_SIZE) {
+    initialIsWidescreen = true;
+  }
   
   const [turns, setTurns] = useState([initialTurn]);
   const [log, setLog] = useState([]);
   const [gameSpeed, setGameSpeed] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
-  const [isWidescreen, setIsWidescreen] = useState(true);
+  const [isWidescreen, setIsWidescreen] = useState(initialIsWidescreen);
 
   const [playRerollSound] = useSound(Sounds.reroll);
   const [playChallengeSound] = useSound(Sounds.challenge);
@@ -120,8 +135,17 @@ const GamePage = ({ settings, onEnd}) => {
   }, [turns]);
 
   useEffect(() => {
-    playRerollSound();
-  }, []);
+    window.addEventListener('resize', handleResize)
+  }, [])
+
+  const handleResize = (e) => {
+    let width = e.currentTarget.innerWidth;
+    if (width > WIDESCREEN_SIZE) {
+      setIsWidescreen(true)
+    } else {
+      setIsWidescreen(false)
+    }
+  }
 
   const restartGame = async (settings) => {
     playRerollSound();

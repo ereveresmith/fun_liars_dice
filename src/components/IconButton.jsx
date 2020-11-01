@@ -3,8 +3,7 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
-  padding: 4px 12px;
-  margin: 4px;
+  padding: 2px 8px;
   color: white;
   text-transform: uppercase;
   border: 0;
@@ -32,15 +31,15 @@ const Arrow = Styled.div`
     display: block;
     border-right: 8px solid ${Styles.colors.white};
     border-bottom: 8px solid ${Styles.colors.white};
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     z-index: 3;
-    transform: rotate(45deg);
+    transform: rotate(45deg) translate(-30%, -30%);
     border-color: inherit;
     transition: border 50ms ease-in;
 
     ${props => props.direction === 'up' && `
-      transform: rotate(-135deg);
+      transform: rotate(-135deg) translate(-30%, -30%);
     `}
 `
 
