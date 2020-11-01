@@ -13,13 +13,14 @@ const HugeText = Styled.h1`
 const Wrapper = Styled.div`
   z-index: 2;
   background-color: ${Styles.colors.darkGrey};
+  box-shadow: 0 2px 3px ${Styles.colors.black};
   opacity: 0.83;
-  padding: 4px 0;
+  padding: 2px 0;
+  margin-bottom: 4px;
   display: grid;
   width: 100vw;
-  grid-template-columns: 60% auto auto auto;
+  grid-template-columns: 50% auto auto auto;
   align-self: center;
-  margin-bottom: 8px;
   align-items: center;
   user-select: none;
 `
@@ -32,8 +33,9 @@ const VerticalGrid = Styled.div`
 `
 
 const HorizontalGrid = Styled.div`
+    width: 100px;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     align-items: center;
     justify-items: center;
 `
@@ -91,22 +93,22 @@ const BetSubmitter = (props) => {
 
   return (
     <Wrapper onKeyPress={handleKeyDown}>
-      <VerticalGrid>
-      </VerticalGrid>
-      <VerticalGrid>
-        <Button isSecondary onClick={handleRaiseAmount}></Button>
-        <HugeText>{amount}</HugeText>
+      <HorizontalGrid>
+      </HorizontalGrid>
+      <HorizontalGrid>
         <Button isSecondary onClick={handleLowerAmount}></Button>
-      </VerticalGrid>
-      <VerticalGrid>
-        <Button isSecondary onClick={handleRaiseFv}></Button>
-        <Dice fv={fv} size={Styles.diceSizes.ui} visible></Dice>
+        <HugeText>{amount}</HugeText>
+        <Button isSecondary onClick={handleRaiseAmount}></Button>
+      </HorizontalGrid>
+      <HorizontalGrid>
         <Button isSecondary onClick={handleLowerFv}></Button>
-      </VerticalGrid>
-      <VerticalGrid>
-        <Button label="Submit" onClick={handleSubmit}></Button>
+        <Dice fv={fv} size={Styles.diceSizes.ui} visible></Dice>
+        <Button isSecondary onClick={handleRaiseFv}></Button>
+      </HorizontalGrid>
+      <HorizontalGrid>
         <Button isSecondary label="Liar!" onClick={handleCall}></Button>
-      </VerticalGrid>
+        <Button label="Submit" onClick={handleSubmit}></Button>
+      </HorizontalGrid>
     </Wrapper>
   );
 }

@@ -12,7 +12,6 @@ const HugeText = Styled.h1`
 
 const Wrapper = Styled.div`
   z-index: 2;
-  padding: 4px 6px;
   background-color: ${Styles.colors.darkGrey};
   opacity: 0.8;
   border: 2px solid ${Styles.colors.darkGrey};

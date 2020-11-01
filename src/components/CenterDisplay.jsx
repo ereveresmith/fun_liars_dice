@@ -20,6 +20,7 @@ const ChallengeGrid = Styled.div`
 const BottomGrid = Styled.div`
   display: grid;
   width: 100%;
+  height: 60px;
   transition: background 220ms ease;
   opacity: 0.9;
 `
@@ -69,11 +70,11 @@ const CenterDisplay = ({ turn, isChallenge, amountOfPlayers, log, amountFound })
   const calcArrowDirection = () => {
     switch(amountOfPlayers) {
       case 2: 
-        return (turn.nextPlayer.id * 180) + 90;
+        return (turn.nextPlayer.id * 180) -90;
       case 3: 
-        return (turn.nextPlayer.id * 90) + 180;
+        return (turn.nextPlayer.id * 90);
       default: 
-        return (turn.nextPlayer.id * 45) + 225;
+        return (turn.nextPlayer.id * 45) + 45;
     }
 
   }

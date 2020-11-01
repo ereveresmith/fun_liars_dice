@@ -37,7 +37,7 @@ const Wrapper = Styled.div`
 
 const GameGrid = Styled.div`
   grid-gap: 4px;
-  width: 100%;
+  width: 90%;
   display: grid;
   justify-items: center;
   align-items: center;
@@ -650,36 +650,36 @@ const GamePage = ({ settings, onEnd}) => {
       default:
         break;
       case 2: 
-        renderedCells.push(emptyCell(1));
-        renderedCells.push(emptyCell(2));
-        renderedCells.push(emptyCell(3));
-        renderedCells.push(renderedPlayer(1));
-        renderedCells.push(renderedCenterDisplay());
         renderedCells.push(renderedPlayer(2));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(renderedPlayer(1));
         break;
       case 3: 
+        renderedCells.push(renderedPlayer(3));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(renderedPlayer(1));
+
         renderedCells.push(emptyCell(1));
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(emptyCell(2));
-        renderedCells.push(renderedPlayer(1));
-        renderedCells.push(renderedCenterDisplay());
-        renderedCells.push(renderedPlayer(3));
         break;
       case 4: 
-        renderedCells.push(renderedPlayer(2));
-        renderedCells.push(renderedPlayer(3));
-        renderedCells.push(renderedPlayer(4));
-        renderedCells.push(renderedPlayer(1));
-        renderedCells.push(renderedCenterDisplay());
         renderedCells.push(emptyCell(1));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(renderedPlayer(1));
+
+        renderedCells.push(renderedPlayer(4));
+        renderedCells.push(renderedPlayer(3));
+        renderedCells.push(renderedPlayer(2));
         break;
       case 5: 
-      renderedCells.push(renderedPlayer(2));
-      renderedCells.push(renderedPlayer(3));
-      renderedCells.push(renderedPlayer(4));
-      renderedCells.push(renderedPlayer(1));
-      renderedCells.push(renderedCenterDisplay());
-      renderedCells.push(renderedPlayer(5));
+        renderedCells.push(renderedPlayer(5));
+        renderedCells.push(renderedCenterDisplay());
+        renderedCells.push(renderedPlayer(1));
+
+        renderedCells.push(renderedPlayer(4));
+        renderedCells.push(renderedPlayer(3));
+        renderedCells.push(renderedPlayer(2));
         break;
     }
 

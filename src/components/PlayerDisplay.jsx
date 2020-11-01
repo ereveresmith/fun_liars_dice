@@ -9,7 +9,7 @@ const BottomGrid = Styled.div`
   align-content: center;
   align-items: center;
   display: grid;
-  height: 60px;
+  height: 48px;
 `
 
 
@@ -34,7 +34,7 @@ const LieDisplay = Styled.div`
 
 const TakingTurnDisplay = Styled.div`
   font-weight: 900;
-  font-size: 50px;
+  font-size: 24px;
   animation: ${FadeAnimation} 1.2s linear infinite;
 `
 
@@ -51,7 +51,6 @@ const ColoredDiv = Styled.div`
 const Cell = Styled.div`
   display: grid;
   grid-template-rows: auto auto;
-  min-height: 50px;  
   border: 1px solid ${Styles.colors.darkGrey};
   margin: 4px 0;
   transition: background-color 100ms ease-out;
@@ -92,7 +91,7 @@ const HandGrid = Styled.div`
   padding: 2px 8px;
   display: grid;
   height: 30px;
-  width: 150px;
+  width: 160px;
   grid-gap: 6px;
   justify-content: center;
   justify-items: center;
@@ -106,7 +105,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
   let isOut = true;
 
   const renderedHand = player.hand.map((dice, index) => {
-      const diceSize = dice.visible ? Styles.diceSizes.medium : Styles.diceSizes.small;
+      const diceSize = dice.visible ? Styles.diceSizes.large : Styles.diceSizes.small;
       if (dice.disabled === false) {
         isOut = false;
       }
