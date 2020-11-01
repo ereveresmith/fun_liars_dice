@@ -116,31 +116,33 @@ const GamePage = ({ settings, onEnd}) => {
   const [gameSpeed, setGameSpeed] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
   const [isWidescreen, setIsWidescreen] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
   const [isLeftHanded, setIsLeftHanded] = useState(true);
+  const [globalVolume, setGlobalVolume] = useState(1.0);
+  const [turnPitch, setTurnPitch] = useState(1);
 
-  const [playRerollSound] = useSound(Sounds.reroll);
-  const [playChallengeSound] = useSound(Sounds.challenge);
-  const [playNextRoundSound] = useSound(Sounds.nextRound);
-  const [playFindDiceSound] = useSound(Sounds.findDice);
-  const [playNextTurnSound] = useSound(Sounds.nextTurn);
-  const [playLoseDiceSound] = useSound(Sounds.loseDice);
-  const [playErrorSound] = useSound(Sounds.errorSound);
+  const [playRerollSound] = useSound(Sounds.reroll, { volume: globalVolume});
+  const [playChallengeSound] = useSound(Sounds.challenge, { volume: globalVolume});
+  const [playNextRoundSound] = useSound(Sounds.nextRound, { volume: globalVolume});
+  const [playNextTurnSound] = useSound(Sounds.nextTurn, { volume: globalVolume, playbackRate: turnPitch});
+  const [playLoseDiceSound] = useSound(Sounds.loseDice, { volume: globalVolume});
+  const [playErrorSound] = useSound(Sounds.errorSound, { volume: globalVolume});
 
-  const [playNote0] = useSound(Notes[0]);
-  const [playNote1] = useSound(Notes[1]);
-  const [playNote2] = useSound(Notes[2]);
-  const [playNote3] = useSound(Notes[3]);
-  const [playNote4] = useSound(Notes[4]);
-  const [playNote5] = useSound(Notes[5]);
-  const [playNote6] = useSound(Notes[6]);
-  const [playNote7] = useSound(Notes[7]);
-  const [playNote8] = useSound(Notes[8]);
-  const [playNote9] = useSound(Notes[9]);
-  const [playNote10] = useSound(Notes[10]);
-  const [playNote11] = useSound(Notes[11]);
-  const [playNote12] = useSound(Notes[12]);
-  const [playNote13] = useSound(Notes[13]);
-  const [playNote14] = useSound(Notes[14]);
+  const [playNote0] = useSound(Notes[0], { volume: globalVolume});
+  const [playNote1] = useSound(Notes[1], { volume: globalVolume});
+  const [playNote2] = useSound(Notes[2], { volume: globalVolume});
+  const [playNote3] = useSound(Notes[3], { volume: globalVolume});
+  const [playNote4] = useSound(Notes[4], { volume: globalVolume});
+  const [playNote5] = useSound(Notes[5], { volume: globalVolume});
+  const [playNote6] = useSound(Notes[6], { volume: globalVolume});
+  const [playNote7] = useSound(Notes[7], { volume: globalVolume});
+  const [playNote8] = useSound(Notes[8], { volume: globalVolume});
+  const [playNote9] = useSound(Notes[9], { volume: globalVolume});
+  const [playNote10] = useSound(Notes[10], { volume: globalVolume});
+  const [playNote11] = useSound(Notes[11], { volume: globalVolume});
+  const [playNote12] = useSound(Notes[12], { volume: globalVolume});
+  const [playNote13] = useSound(Notes[13], { volume: globalVolume});
+  const [playNote14] = useSound(Notes[14], { volume: globalVolume});
 
   useEffect(() => {
     const nextPlayer = turns[turns.length-1].nextPlayer;
@@ -249,7 +251,8 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   function timeout(delay) {
-    return new Promise( res => setTimeout(res, delay) );}
+    return new Promise( res => setTimeout(res, delay) );
+  }
 
   const calcBotTurn = async () => {
     const nextPlayer = turns[turns.length -1].nextPlayer;
@@ -405,6 +408,14 @@ const GamePage = ({ settings, onEnd}) => {
     onEnd();
   }
 
+  const handleMute = () => {
+    if (globalVolume < 1) {
+      setGlobalVolume(1);
+    } else {
+      setGlobalVolume(0);
+    }
+  }
+
   const handlePauseGame = async () => {
     setGameSpeed(0);
   }
@@ -474,6 +485,9 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const loopBack = async (ms) => {
+    while(isPaused) {
+      console.log("Paused, not looping back")
+    }
     await timeout(ms);
     await revealNextDice();
   }
@@ -760,8 +774,8 @@ const GamePage = ({ settings, onEnd}) => {
   const renderUIControls = () => {
     return (
       <UILongSection>
-          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
-          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
+          <Switch isDefaultChecked={isPaused} onChange={handlePause}></Switch>
+          <Switch isDefaultChecked={globalVolume === 1} onChange={handleMute}></Switch>
           <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
       </UILongSection>
     )
@@ -798,6 +812,14 @@ const GamePage = ({ settings, onEnd}) => {
       setIsLeftHanded(false);
     } else {
       setIsLeftHanded(true);
+    }
+  }
+
+  const handlePause = () => {
+    if (isPaused) {
+      setIsPaused(false);
+    } else {
+      setIsPaused(true);
     }
   }
 
