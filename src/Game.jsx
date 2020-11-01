@@ -16,7 +16,7 @@ const UIGrid = Styled.div`
   width: 100%;
 
   grid-template-columns: auto auto;
-  grid-template-rows: auto;
+  grid-template-rows: auto auto;
 
   ${props => props.isWidescreen && `
     grid-template-rows: auto auto;
@@ -25,6 +25,15 @@ const UIGrid = Styled.div`
 
   align-content: center;
   justify-content: center;
+`
+
+const UIBottom = Styled.div`
+  background-color: ${Styles.colors.darkGrey};
+  box-shadow: 0 2px 3px ${Styles.colors.black};
+  opacity: 0.83;
+  padding: 4px 0;
+  display: grid;
+  justify-items: center;
 `
 
 const EmptyCell = Styled.div`
@@ -746,7 +755,8 @@ const GamePage = ({ settings, onEnd}) => {
 
   const renderUI = () => {
     return (
-      <UIGrid isWidescreen={isWidescreen}>
+      <div>
+        <UIGrid isWidescreen={isWidescreen}>
         {(!isLeftHanded || isWidescreen) && <LogContainer 
           log={log}
           isTall={isWidescreen}>
@@ -762,8 +772,11 @@ const GamePage = ({ settings, onEnd}) => {
           log={log}
           isTall={isWidescreen}>
         </LogContainer>}
-        <Button label={"Switch View"} onClick={handleSwitchView}></Button>
       </UIGrid>
+      <UIBottom>
+        <Button label={"Toggle Display"} isSecondary onClick={handleSwitchView}></Button>
+      </UIBottom>
+      </div>
     )
   }
 

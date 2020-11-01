@@ -16,9 +16,9 @@ const Wrapper = Styled.div`
   touch-action: manipulation;
   z-index: 2;
   background-color: ${Styles.colors.darkGrey};
-  box-shadow: 0 2px 3px ${Styles.colors.black};
   opacity: 0.83;
-  grid-gap: 8px;
+  box-shadow: 0 2px 3px ${Styles.colors.black};
+  grid-gap: 12px;
   height: 140px;
   touch-action: manipulation;
   display: grid;
