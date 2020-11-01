@@ -3,10 +3,10 @@ export const Styles = {
         small: "1.5em",
         medium: "2em",
         large: "3.2em",
-        ui: "1.8em",
+        ui: "2.5em",
     },
     fontSizes: {
-        small: "0.5em",
+        small: "0.6em",
         medium: "0.8em",
         large: "1.3em",
         huge: "2.6em",

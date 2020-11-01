@@ -99,13 +99,14 @@ const Divider = Styled.div`
 `
 
 const HandGrid = Styled.div`
-  padding: 2px 8px;
+  padding: 2px 10px;
   display: grid;
   height: 30px;
-  width: 158px;
-  grid-gap: 2px;
+  width: 162px;
+  grid-gap: 1px;
   justify-content: center;
   justify-items: center;
+  align-content: center;
 
   ${props => props.columns && `
     grid-template-columns: ${props.columns};

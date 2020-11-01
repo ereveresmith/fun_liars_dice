@@ -2,27 +2,30 @@ import React, {useState, useEffect} from 'react';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import Button from './Button';
+import IconButton from './IconButton';
 import Dice from './Dice';
 
 const HugeText = Styled.h1`
-  font-size: ${Styles.fontSizes.large};
+  font-size: ${Styles.fontSizes.huge};
   color: ${Styles.colors.white};
   text-align: center;
   min-width: 12px;
 `
 
 const Wrapper = Styled.div`
+  touch-action: manipulation;
   z-index: 2;
   background-color: ${Styles.colors.darkGrey};
   box-shadow: 0 2px 3px ${Styles.colors.black};
   opacity: 0.83;
-  padding: 16px 4px;
-  grid-gap: 8px;
-  margin-bottom: 4px;
+  padding: 12px 0;
+  grid-gap: 4px;
+  touch-action: manipulation;
   display: grid;
-  height: 140px;
-  justify-content: center;
+  min-height: 160px;
+  justify-content: start;
   width: 100%;
+  max-width: 270px;
   grid-template-columns: auto auto auto;
   align-self: center;
   align-items: center;
@@ -31,10 +34,9 @@ const Wrapper = Styled.div`
 
 const VerticalGrid = Styled.div`
   display: grid;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto 50px auto;
   align-items: center;
   justify-items: center;
-  height: 110px;
 `
 
 const HorizontalGrid = Styled.div`
@@ -98,19 +100,19 @@ const BetSubmitter = (props) => {
   return (
     <Wrapper onKeyPress={handleKeyDown}>
       <VerticalGrid>
-        <Button isSecondary onClick={handleRaiseAmount}></Button>
+        <IconButton isSecondary onClick={handleRaiseAmount} direction={'up'}></IconButton>
         <HugeText>{amount}</HugeText>
-        <Button isSecondary onClick={handleLowerAmount}></Button>
+        <IconButton isSecondary onClick={handleLowerAmount}></IconButton>
       </VerticalGrid>
       <VerticalGrid>
-        <Button isSecondary onClick={handleRaiseFv}></Button>
+        <IconButton isSecondary onClick={handleRaiseFv} direction={'up'}></IconButton>
         <Dice fv={fv} size={Styles.diceSizes.ui} visible></Dice>
-        <Button isSecondary onClick={handleLowerFv}></Button>
+        <IconButton isSecondary onClick={handleLowerFv}></IconButton>
       </VerticalGrid>
       <VerticalGrid>
-        <Button label="Submit" onClick={handleSubmit}></Button>
+        <Button label="Submit Bet" onClick={handleSubmit}></Button>
         <div></div>
-        <Button isSecondary label="Liar!" onClick={handleCall}></Button>
+        <Button isSecondary label="Call Lie" onClick={handleCall}></Button>
       </VerticalGrid>
     </Wrapper>
   );
