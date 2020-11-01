@@ -6,13 +6,14 @@ const Arrow = Styled.div`
     content: '';
     position: absolute;
     left: 50%;
-    top: -20px;
+    opacity: 0.9;
+    top: -12px;
     display: block;
-    border-right: 5px solid ${Styles.colors.black};
-    border-bottom: 5px solid ${Styles.colors.black};
-    box-shadow: 6px 2px 1px ${Styles.colors.darkGrey};
-    width: 20px;
-    height: 20px;
+    border-right: 2px solid ${Styles.colors.black};
+    border-bottom: 2px solid ${Styles.colors.black};
+    box-shadow: 2px 2px 2px ${Styles.colors.black};
+    width: 16px;
+    height: 16px;
     z-index: 3;
     transform: translate(-50%, -50%) rotate(45deg);
 `
@@ -33,7 +34,7 @@ const Wrapper = Styled.div`
     `}
 
     ${props => props.visible === false && `
-        background: linear-gradient(to bottom right, ${Styles.colors.grey}, ${Styles.colors.white});
+        background: linear-gradient(to bottom right, ${Styles.colors.grey}, ${Styles.colors.lightGrey});
     `}
 
     ${props => props.disabled === true && `
@@ -68,63 +69,63 @@ const Dot = Styled.div`
 `
 
 const renderedDots = (value) => {
-  switch(value) {
-      case 0:
-          return <DotGrid>
-          </DotGrid>
-      case 1:
-          return <DotGrid>
-                  <Dot row={2} column={2}></Dot>
-              </DotGrid>
-      case 2:
-          return <DotGrid>
-                  <Dot row={1} column={1}></Dot>
-                  <Dot row={3} column={3}></Dot>
-              </DotGrid>
-      case 3:
-          return <DotGrid>
-                  <Dot row={1} column={3}></Dot>
-                  <Dot row={2} column={2}></Dot>
-                  <Dot row={3} column={1}></Dot>
-              </DotGrid>
-      case 4:
-          return <DotGrid>
-                  <Dot row={1} column={1}></Dot>
-                  <Dot row={3} column={3}></Dot>
-                  <Dot row={3} column={1}></Dot>
-                  <Dot row={1} column={3}></Dot>
-              </DotGrid>
-      case 5:
-          return <DotGrid>
-              <Dot row={1} column={1}></Dot>
-                  <Dot row={3} column={3}></Dot>
-                  <Dot row={3} column={1}></Dot>
-                  <Dot row={1} column={3}></Dot>
-                  <Dot row={1} column={1}></Dot>
-                  <Dot row={2} column={2}></Dot>
-              </DotGrid>
-      case 6:
-          return <DotGrid>
-                  <Dot row={1} column={1}></Dot>
-                  <Dot row={2} column={1}></Dot>
-                  <Dot row={3} column={1}></Dot>
-                  <Dot row={1} column={3}></Dot>
-                  <Dot row={2} column={3}></Dot>
-                  <Dot row={3} column={3}></Dot>
-              </DotGrid>
-      default:
-          return <DotGrid>
-              </DotGrid>
-  }
+    switch (value) {
+        case 0:
+            return <DotGrid>
+            </DotGrid>
+        case 1:
+            return <DotGrid>
+                <Dot row={2} column={2}></Dot>
+            </DotGrid>
+        case 2:
+            return <DotGrid>
+                <Dot row={1} column={1}></Dot>
+                <Dot row={3} column={3}></Dot>
+            </DotGrid>
+        case 3:
+            return <DotGrid>
+                <Dot row={1} column={3}></Dot>
+                <Dot row={2} column={2}></Dot>
+                <Dot row={3} column={1}></Dot>
+            </DotGrid>
+        case 4:
+            return <DotGrid>
+                <Dot row={1} column={1}></Dot>
+                <Dot row={3} column={3}></Dot>
+                <Dot row={3} column={1}></Dot>
+                <Dot row={1} column={3}></Dot>
+            </DotGrid>
+        case 5:
+            return <DotGrid>
+                <Dot row={1} column={1}></Dot>
+                <Dot row={3} column={3}></Dot>
+                <Dot row={3} column={1}></Dot>
+                <Dot row={1} column={3}></Dot>
+                <Dot row={1} column={1}></Dot>
+                <Dot row={2} column={2}></Dot>
+            </DotGrid>
+        case 6:
+            return <DotGrid>
+                <Dot row={1} column={1}></Dot>
+                <Dot row={2} column={1}></Dot>
+                <Dot row={3} column={1}></Dot>
+                <Dot row={1} column={3}></Dot>
+                <Dot row={2} column={3}></Dot>
+                <Dot row={3} column={3}></Dot>
+            </DotGrid>
+        default:
+            return <DotGrid>
+            </DotGrid>
+    }
 }
 
 const Dice = ({ visible, fv, size, disabled, highlight, hasArrow, highlightColor }) => {
-  return ( 
-      <Wrapper fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight} highlightColor={highlightColor}>
-          {hasArrow && <Arrow></Arrow>}
-          {visible && !disabled && renderedDots(fv)}
-      </Wrapper>   
-  )
+    return (
+        <Wrapper fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight} highlightColor={highlightColor}>
+            {hasArrow && <Arrow></Arrow>}
+            {visible && !disabled && renderedDots(fv)}
+        </Wrapper>
+    )
 }
 
 export default Dice;

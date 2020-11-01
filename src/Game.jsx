@@ -583,7 +583,6 @@ const GamePage = ({ settings, onEnd}) => {
         if (turns.length > 2 && !isChallenge) {
           isTertiary = (player.id === prevTurn.player.id);
           if (isTertiary) {
-            opacity = 0.8;
             turnToShow =  prevTurn;
           }
           if (turns.length > 3 && !isChallenge) {
@@ -591,7 +590,6 @@ const GamePage = ({ settings, onEnd}) => {
 
             isQuad = (player.id === prevTurn.player.id);
             if (isQuad) {
-              opacity = 0.3;
               turnToShow =  prevTurn;
             }
           }

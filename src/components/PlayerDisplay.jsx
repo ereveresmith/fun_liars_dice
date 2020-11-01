@@ -15,11 +15,11 @@ const BottomGrid = Styled.div`
 
 const FadeAnimation = keyframes`
   from {
-    opacity: 0.7;
+    opacity: 0.86;
   }
 
   to {
-    opacity: 0.1;
+    opacity: 0;
   }
 `;
 
@@ -31,9 +31,22 @@ const LieDisplay = Styled.div`
 `
 
 const TakingTurnDisplay = Styled.div`
-  font-weight: 900;
-  font-size: 24px;
-  animation: ${FadeAnimation} 1.2s linear infinite;
+  font-weight: 700;
+  font-size: ${Styles.fontSizes.large};
+  animation: ${FadeAnimation} 3s ease-out infinite;
+`
+
+const Arrow = Styled.div`
+    content: '';
+    display: block;
+    border-right: 2px solid ${Styles.colors.black};
+    border-bottom: 2px solid ${Styles.colors.black};
+    box-shadow: 2px 2px 2px ${Styles.colors.black};
+    width: 16px;
+    height: 16px;
+    margin-left: 50%;
+    z-index: 3;
+    transform: translate(-50%, -50%) rotate(45deg);
 `
 
 const ColoredDiv = Styled.div`
@@ -139,10 +152,15 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
     const lieMessage = "That's bullshit!"
     // const lieMessage = mockLieMessages[rand];
 
+    let waitingMessage = ``
+    if (player.id === 1) {
+      waitingMessage = 'Your Turn'
+    }
+
     if (isActive && isChallenge) {
       activeDisplay = <LieDisplay>{lieMessage}</LieDisplay>
     } else if (isActive) {
-      activeDisplay = <TakingTurnDisplay>...</TakingTurnDisplay>;
+      activeDisplay = <TakingTurnDisplay><Arrow></Arrow>{waitingMessage}</TakingTurnDisplay>;
     } else if (showTurn && !isOut) {
       activeDisplay = <TurnDisplay diceSize={Styles.diceSizes.large} textSize={Styles.fontSizes.huge} color={turnColor} opacity={turnOpacity} amount={turn.amount} fv={turn.fv}></TurnDisplay>
     }
