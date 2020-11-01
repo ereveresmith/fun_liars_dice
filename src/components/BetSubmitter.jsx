@@ -17,7 +17,7 @@ const Wrapper = Styled.div`
   z-index: 2;
   background-color: ${Styles.colors.darkGrey};
   opacity: 0.83;
-  box-shadow: 0 2px 3px ${Styles.colors.black};
+  box-shadow: ${Styles.boxShadows.medium};
   grid-gap: 12px;
   height: 140px;
   touch-action: manipulation;

@@ -22,10 +22,9 @@ const Wrapper = Styled.div`
     position: relative;
     align-self: center;
     display: flex;
-    border: 2px solid ${Styles.colors.darkGrey};
+    border: 2px solid ${Styles.colors.grey};
     border-radius: 4px;
-    background: linear-gradient(to bottom right, ${Styles.colors.lightGrey}, ${Styles.colors.white});
-
+    background-color: ${Styles.colors.white};
     transition: all ease 250ms;
 
     ${props => props.size && `
@@ -34,7 +33,7 @@ const Wrapper = Styled.div`
     `}
 
     ${props => props.visible === false && `
-        background: linear-gradient(to bottom right, ${Styles.colors.grey}, ${Styles.colors.lightGrey});
+        background: linear-gradient(to bottom right, ${Styles.colors.lightGrey}, ${Styles.colors.white});
     `}
 
     ${props => props.disabled === true && `

@@ -14,9 +14,9 @@ export const Styles = {
     colors: {
         white: 'white',
         black: '#262626',
-        lightGrey: '#f5f5f5',
-        grey: '#e6e6e6',
-        darkGrey: '#666666',
+        lightGrey: '#cccccc',
+        grey: '#666666',
+        darkGrey: '#595959',
         purple: '#9999ff',
         darkPurple: '#6666ff',
         blue: '#668cff',
@@ -24,5 +24,9 @@ export const Styles = {
         orange: '#ff9933',
         green: '#5cd65c',
         pink: '#d65cad',
+    },
+    boxShadows: {
+        medium: '0px 1px 2px #1a1a1a',
+        strong: '0 1px 1px #1a1a1a',
     }
 }

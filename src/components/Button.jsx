@@ -9,14 +9,14 @@ const StyledButton = Styled.button`
   text-transform: uppercase;
   font-weight: 600;
   background-color: ${Styles.colors.purple};
-  font-size: ${Styles.fontSizes.small};
-  border: 1px solid ${Styles.colors.grey};
+  font-size: ${Styles.fontSizes.medium};
+  border: 1px solid ${Styles.colors.white};
   cursor: pointer;
   outline: 0;
   transition: background-color 80ms ease-out;
 
   &:hover {
-    background-color: ${Styles.colors.darkPurple};
+    background-color: ${Styles.colors.purple};
     color: ${Styles.colors.white};
   }
 
@@ -30,10 +30,10 @@ const StyledButton = Styled.button`
 
   ${props => props.isSecondary && `
     background: 0;
-    color: ${Styles.colors.grey};
+    color: ${Styles.colors.white};
 
     &:hover {
-      background-color: ${Styles.colors.darkPurple};
+      background-color: ${Styles.colors.purple};
       color: ${Styles.colors.white};
     }
   `}

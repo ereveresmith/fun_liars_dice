@@ -27,9 +27,9 @@ const UIGrid = Styled.div`
   justify-content: center;
 `
 
-const UIBottom = Styled.div`
+const UILongSection = Styled.div`
+  box-shadow: ${Styles.boxShadows.strong};
   background-color: ${Styles.colors.darkGrey};
-  box-shadow: 0 2px 3px ${Styles.colors.black};
   opacity: 0.83;
   padding: 4px 0;
   display: grid;
@@ -47,7 +47,7 @@ const EmptyCell = Styled.div`
 const Wrapper = Styled.div`
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: auto 50px auto;
+  grid-template-rows: auto 24px auto;
   justify-content: center;
   justify-items: center;
   align-items: center;
@@ -756,11 +756,17 @@ const GamePage = ({ settings, onEnd}) => {
   const renderUI = () => {
     return (
       <div>
+        {!isWidescreen && <UILongSection>
+          <Button label={"Toggle Display"} isSecondary onClick={handleSwitchView}></Button>
+        </UILongSection>}
         <UIGrid isWidescreen={isWidescreen}>
         {(!isLeftHanded || isWidescreen) && <LogContainer 
           log={log}
           isTall={isWidescreen}>
         </LogContainer>}
+        {isWidescreen && <UILongSection>
+          <Button label={"Toggle Display"} isSecondary onClick={handleSwitchView}></Button>
+        </UILongSection>}
         <BetSubmitter 
           canCall={currentTurn.fv > 0} 
           disabled={!myTurn || isChallenge} 
@@ -773,9 +779,6 @@ const GamePage = ({ settings, onEnd}) => {
           isTall={isWidescreen}>
         </LogContainer>}
       </UIGrid>
-      <UIBottom>
-        <Button label={"Toggle Display"} isSecondary onClick={handleSwitchView}></Button>
-      </UIBottom>
       </div>
     )
   }

@@ -62,7 +62,7 @@ const ColoredDiv = Styled.div`
 const Cell = Styled.div`
   display: grid;
   grid-template-rows: auto auto;
-  border: 1px solid ${Styles.colors.darkGrey};
+  border: 1px solid ${Styles.colors.grey};
   margin: 4px 0;
   transition: background-color 100ms ease-out;
 
@@ -94,7 +94,7 @@ const NameText = Styled.h3`
 `
 
 const Divider = Styled.div`
-  border-top: 1px solid ${Styles.colors.darkGrey};
+  border-top: 1px solid ${Styles.colors.grey};
   width: 100%;
 `
 
@@ -129,7 +129,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
       }
   })
 
-  const turnColor = Styles.colors.darkGrey;
+  const turnColor = Styles.colors.grey;
 
   const renderTopSection = () => {
     const isColored = isActive | isChallenge;

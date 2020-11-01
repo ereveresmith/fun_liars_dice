@@ -48,7 +48,7 @@ const StyledSpan = Styled.span`
 `
 
 const Wrapper = Styled.div`
-  box-shadow: 0 2px 3px ${Styles.colors.black};
+  box-shadow: ${Styles.boxShadows.medium};
   height: 140px;
 
   ${props => props.isTall && `
