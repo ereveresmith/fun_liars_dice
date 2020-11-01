@@ -45,14 +45,12 @@ export const calcBotMove = (turns, amountOfDice, player) => {
     }
 
     if (randomA > 3) {
-        if (randomB > 3) {
-            move = 'best';
-        }
+        move = 'best';
     } else {
-        if (randomB > 4) {
+        if (randomB > 6) {
             move = 'random';
         } else {
-            if (randomC > 2) {
+            if (randomC > 5) {
                 move = 'addOne';
             } else {
                 move = 'risky';
@@ -60,7 +58,6 @@ export const calcBotMove = (turns, amountOfDice, player) => {
             
         }
     }
-
 
     let riskPercent = 0.35 - (handAmnt * 0.01);
     let newTimeout = randomInt(longWait) + mediumWait;;
@@ -75,20 +72,12 @@ export const calcBotMove = (turns, amountOfDice, player) => {
     }
 
 
+    console.log(`${player.name}: ${move}`)
     switch(move) {
         case 'best':
-            newFv = bestOptionIndex + 1;
-
-
+            newFv = handMap[bestOptionIndex];
             if (newFv <= currentFv) {
                 newAmount++;
-            }
-            break;
-        case 'simple':
-            newFv++;
-            if (newFv > 6) {
-                newAmount++;
-                newFv = 1;
             }
             break;
         case 'random':
@@ -96,11 +85,14 @@ export const calcBotMove = (turns, amountOfDice, player) => {
             newAmount = randomInt(2) + newAmount
             break;
         case 'risky':
-            newFv = bestOptionIndex + 1;
+            newFv = handMap[bestOptionIndex];
             newAmount = randomInt(3) + newAmount
             break;
         case 'addOne':
             newAmount++;
+            if (newFv > 6 || newFv < 1) {
+                newFv = 1;
+            }
             break;
         case 'call':
             newAmount = -1;

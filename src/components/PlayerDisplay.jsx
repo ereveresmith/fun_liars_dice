@@ -99,7 +99,7 @@ const Divider = Styled.div`
 `
 
 const HandGrid = Styled.div`
-  padding: 2px 12px;
+  padding: 2px 4px;
   display: grid;
   height: 30px;
   width: 156px;
