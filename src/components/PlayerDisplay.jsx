@@ -24,9 +24,9 @@ const FadeAnimation = keyframes`
 `;
 
 const LieDisplay = Styled.div`
-  font-weight: 700;
+  font-weight: 600;
   align-self: start;
-  font-size: ${Styles.fontSizes.huge};
+  font-size: ${Styles.fontSizes.large};
   opacity: 0.65;
 `
 

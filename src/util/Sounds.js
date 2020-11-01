@@ -23,7 +23,7 @@ export const Sounds = {
     nextTurn: clickSound,
     findDice: findDiceSound,
     loseDice: loseDiceSound,
-    playerLose: errorSound,
+    errorSound: errorSound,
 }
 
 export const Notes = [

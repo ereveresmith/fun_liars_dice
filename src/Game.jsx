@@ -38,19 +38,18 @@ const EmptyCell = Styled.div`
 const Wrapper = Styled.div`
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: auto 60px auto;
+  grid-template-rows: auto 50px auto;
   justify-content: center;
-
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  
   ${props => props.isWidescreen && `
-    grid-template-columns: 70% 3% auto;
+    grid-template-columns: 75% 1% auto;
     grid-template-rows: auto;
     justify-content: end;
 
   `}
-  grid-template-rows: auto auto;
-  justify-items: center;
-  align-items: center;
-  align-content: center;
   `
 
 const GameGrid = Styled.div`
@@ -105,7 +104,7 @@ const GamePage = ({ settings, onEnd}) => {
   const [playFindDiceSound] = useSound(Sounds.findDice);
   const [playNextTurnSound] = useSound(Sounds.nextTurn);
   const [playLoseDiceSound] = useSound(Sounds.loseDice);
-  const [playPlayerLoseSound] = useSound(Sounds.playerLose);
+  const [playErrorSound] = useSound(Sounds.errorSound);
 
   const [playNote0] = useSound(Notes[0]);
   const [playNote1] = useSound(Notes[1]);
@@ -560,10 +559,12 @@ const GamePage = ({ settings, onEnd}) => {
       lyingPlayer = playersArray[player.id-1];
     } 
     
-    if (lyingPlayer.id !== 1 && playersArray[nextPlayer.id-1].id === 1) { 
-      await timeout(mediumWait);
+    if (lyingPlayer.id === nextPlayer.id) { 
       playNextRoundSound();
+    } else {
+      playErrorSound();
     }
+
 
     await timeout(longWait);
     resetHighlight(playersArray);
@@ -575,11 +576,9 @@ const GamePage = ({ settings, onEnd}) => {
     disableDice(lyingPlayer.hand);
     setPlayers(playersArray);
     await printLog(`${lyingPlayer.name} lost a dice.`);
-    if (lyingPlayer.id === 1) {
-      playLoseDiceSound();
-    }
+    playLoseDiceSound();
+    
     if (checkOutOfDice(lyingPlayer.hand)) {
-      playPlayerLoseSound();
       await printLog(`${lyingPlayer.name} is out of the game.`);
       await timeout(longWait);
     }

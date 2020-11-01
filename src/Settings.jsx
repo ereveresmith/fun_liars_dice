@@ -116,7 +116,7 @@ const SettingsPage = (props) => {
           <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
         </GridDiv>
         <GridDiv>
-          <Label>Hand Size:</Label>
+          <Label>Dice Per Player:</Label>
           <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
         </GridDiv>
         <Button label="Start Game" onClick={handleSubmit}></Button>
