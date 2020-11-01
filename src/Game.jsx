@@ -34,7 +34,10 @@ const UILongSection = Styled.div`
   opacity: 0.83;
   padding: 4px 0;
   display: grid;
-  justify-items: center;
+  justify-items: end;
+  align-items: center;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
 `
 
 const EmptyCell = Styled.div`
@@ -754,20 +757,26 @@ const GamePage = ({ settings, onEnd}) => {
     defaultAmount++;
   }
 
+  const renderUIControls = () => {
+    return (
+      <UILongSection>
+          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
+          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
+          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
+      </UILongSection>
+    )
+  }
+
   const renderUI = () => {
     return (
       <div>
-        {!isWidescreen && <UILongSection>
-          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
-        </UILongSection>}
+        {!isWidescreen && renderUIControls()}
         <UIGrid isWidescreen={isWidescreen}>
         {(!isLeftHanded || isWidescreen) && <LogContainer 
           log={log}
           isTall={isWidescreen}>
         </LogContainer>}
-        {isWidescreen && <UILongSection>
-          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
-        </UILongSection>}
+        {isWidescreen && renderUIControls()}
         <BetSubmitter 
           canCall={currentTurn.fv > 0} 
           disabled={!myTurn || isChallenge} 

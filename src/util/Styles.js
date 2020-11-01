@@ -27,6 +27,6 @@ export const Styles = {
     },
     boxShadows: {
         medium: '0px 1px 2px #1a1a1a',
-        strong: '0 1px 1px #1a1a1a',
+        strong: '0 1px 1px #4d4d4d',
     }
 }
