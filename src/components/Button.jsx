@@ -3,9 +3,8 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
-  padding: 4px;
+  padding: 8px 12px;
   min-width: 42px;
-  min-height: 28px;
   border-radius: 24px;
   margin: 2px;
   color: white;

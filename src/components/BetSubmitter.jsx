@@ -17,7 +17,7 @@ const Wrapper = Styled.div`
   box-shadow: 0 2px 3px ${Styles.colors.black};
   opacity: 0.83;
   padding: 16px 4px;
-  grid-gap: 4px;
+  grid-gap: 8px;
   margin-bottom: 4px;
   display: grid;
   height: 140px;
@@ -34,6 +34,7 @@ const VerticalGrid = Styled.div`
   grid-template-rows: auto auto auto;
   align-items: center;
   justify-items: center;
+  height: 110px;
 `
 
 const HorizontalGrid = Styled.div`
@@ -108,6 +109,7 @@ const BetSubmitter = (props) => {
       </VerticalGrid>
       <VerticalGrid>
         <Button label="Submit" onClick={handleSubmit}></Button>
+        <div></div>
         <Button isSecondary label="Liar!" onClick={handleCall}></Button>
       </VerticalGrid>
     </Wrapper>
