@@ -14,8 +14,8 @@ import { Sounds, Notes } from './util/Sounds'
 const UIGrid = Styled.div`
   display: grid;
   height: 100%;
-  width: 70%;
-  grid-template-columns: auto auto;
+  width: 100%;
+  grid-template-columns: 50% 50%;
   align-content: center;
   justify-content: center;
 `

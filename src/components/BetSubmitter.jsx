@@ -20,6 +20,7 @@ const Wrapper = Styled.div`
   grid-gap: 4px;
   margin-bottom: 4px;
   display: grid;
+  height: 140px;
   justify-content: center;
   width: 100%;
   grid-template-columns: auto auto auto;

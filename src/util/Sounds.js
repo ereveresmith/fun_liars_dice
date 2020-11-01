@@ -3,8 +3,8 @@ import challengeSound from '../media/challenge.wav';
 import nextRoundSound from '../media/nextRound.wav';
 import findDiceSound from '../media/findDice.wav';
 import loseDiceSound from '../media/loseDice.wav';
-import clickSound from '../media/click.wav';
-import errorSound from '../media/error.wav';
+import clickSound from '../media/click.m4a';
+import errorSound from '../media/error.m4a';
 
 import noteD4 from '../media/notes/d4.wav';
 import noteE4 from '../media/notes/e4.wav';
