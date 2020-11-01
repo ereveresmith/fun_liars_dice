@@ -103,6 +103,10 @@ const SettingsPage = (props) => {
     <div>
       <Wrapper>
         <h1>Tiny Liar's Dice</h1>
+        <div>
+          A simple Liar's Dice web game made by Ethan.
+          Beta Test (still a work in progress)
+        </div>
         <GridDiv>
           <Label>Your Name:</Label>
           <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
