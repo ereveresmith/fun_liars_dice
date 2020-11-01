@@ -33,7 +33,7 @@ const LieDisplay = Styled.div`
 const TakingTurnDisplay = Styled.div`
   font-weight: 700;
   font-size: ${Styles.fontSizes.large};
-  animation: ${FadeAnimation} 3s ease-out infinite;
+  animation: ${FadeAnimation} 2s ease-out infinite;
 `
 
 const Arrow = Styled.div`
@@ -99,10 +99,10 @@ const Divider = Styled.div`
 `
 
 const HandGrid = Styled.div`
-  padding: 2px 4px;
+  padding: 2px 8px;
   display: grid;
   height: 30px;
-  width: 156px;
+  width: 158px;
   grid-gap: 2px;
   justify-content: center;
   justify-items: center;
