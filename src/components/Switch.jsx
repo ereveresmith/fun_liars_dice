@@ -15,6 +15,11 @@ vertical-align: middle;
 border: ${Styles.colors.lightGrey} solid 1px;
 border-radius: 100px;
 cursor: pointer;
+
+&:focus {
+    outline: ${Styles.colors.purple} solid 1px;
+}
+
 &:after {
   position: absolute;
   top: 1px;

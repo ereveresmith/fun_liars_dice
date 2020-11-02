@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faVolumeMute } from '@fortawesome/free-solid-svg-icons'
+import { faVolumeUp } from '@fortawesome/free-solid-svg-icons'
+import { faPause } from '@fortawesome/free-solid-svg-icons'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
 
 const StyledButton = Styled.button`
   padding: 2px 8px;
@@ -12,6 +17,7 @@ const StyledButton = Styled.button`
   outline: 0;
   transition: background-color 80ms ease-out;
   background: 0;
+  width: 34px;
 
   &:hover {
     border-color: ${Styles.colors.purple};
@@ -26,27 +32,39 @@ const StyledButton = Styled.button`
   }
 `;
 
-const Arrow = Styled.div`
-    content: '';
-    display: block;
-    border-right: 8px solid ${Styles.colors.white};
-    border-bottom: 8px solid ${Styles.colors.white};
-    width: 22px;
-    height: 22px;
-    z-index: 3;
-    transform: rotate(45deg) translate(-30%, -30%);
-    border-color: inherit;
-    transition: border 50ms ease-in;
+const IconButton = ({ onClick, isDefaultActive, icon }) => {
+  const [isActive, setIsActive] = useState(isDefaultActive);
 
-    ${props => props.direction === 'up' && `
-      transform: rotate(-135deg) translate(-30%, -30%);
-    `}
-`
+  const handleClick = () => {
+    if (isActive) {
+      setIsActive(false)
+    } else {
+      setIsActive(true)
+    }
+    onClick();
+  }
 
-const IconButton = ({ onClick, direction }) => {
+  let activeIcon;
+
+  switch(icon) {
+    case "volume":
+      activeIcon = faVolumeMute;
+      if (isActive) {
+        activeIcon = faVolumeUp;
+      }
+      break;
+    case "play":
+      activeIcon = faPlay;
+      if (isActive) {
+        activeIcon = faPause;
+      }
+      break;
+  }
+
+
   return (
-    <StyledButton className="Button" onClick={onClick}>
-      <Arrow direction={direction}></Arrow>
+    <StyledButton className="Button" onClick={handleClick}>
+      <FontAwesomeIcon icon={activeIcon} />   
     </StyledButton>
   );
 }

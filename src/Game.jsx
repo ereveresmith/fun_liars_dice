@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import Button from './components/Button';
+import IconButton from './components/IconButton';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
 import PlayerDisplay from './components/PlayerDisplay';
@@ -32,12 +32,17 @@ const UILongSection = Styled.div`
   box-shadow: ${Styles.boxShadows.strong};
   background-color: ${Styles.colors.darkGrey};
   opacity: 0.83;
-  padding: 4px 0;
+  padding: 4px 8px;
+
+  ${props => !props.isWidescreen && `
+    border-radius: 8px 8px 0 0;
+  `}
   display: grid;
   justify-items: end;
   align-items: center;
+  justify-content: end;
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto;
 `
 
 const EmptyCell = Styled.div`
@@ -51,6 +56,7 @@ const EmptyCell = Styled.div`
 const Wrapper = Styled.div`
   display: grid;
   grid-template-columns: auto;
+  margin-top: 8px;
   grid-template-rows: auto 24px auto;
   justify-content: center;
   justify-items: center;
@@ -485,9 +491,6 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const loopBack = async (ms) => {
-    while(isPaused) {
-      console.log("Paused, not looping back")
-    }
     await timeout(ms);
     await revealNextDice();
   }
@@ -773,9 +776,9 @@ const GamePage = ({ settings, onEnd}) => {
 
   const renderUIControls = () => {
     return (
-      <UILongSection>
-          <Switch isDefaultChecked={isPaused} onChange={handlePause}></Switch>
-          <Switch isDefaultChecked={globalVolume === 1} onChange={handleMute}></Switch>
+      <UILongSection isWidescreen={isWidescreen}>
+          {/* <IconButton isDefaultActive={isPaused} icon={'play'} onClick={handlePause}></IconButton> */}
+          <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
           <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
       </UILongSection>
     )

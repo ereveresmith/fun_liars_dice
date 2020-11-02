@@ -3,6 +3,7 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import Button from './Button';
 import IconButton from './IconButton';
+import ArrowButton from './ArrowButton';
 import Dice from './Dice';
 
 const HugeText = Styled.h1`
@@ -98,19 +99,18 @@ const BetSubmitter = (props) => {
   return (
     <Wrapper onKeyPress={handleKeyDown}>
       <VerticalGrid>
-        <IconButton isSecondary onClick={handleRaiseAmount} direction={'up'}></IconButton>
+        <ArrowButton isSecondary onClick={handleRaiseAmount} direction={'up'}></ArrowButton>
         <HugeText>{amount}</HugeText>
-        <IconButton isSecondary onClick={handleLowerAmount}></IconButton>
+        <ArrowButton isSecondary onClick={handleLowerAmount}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>
-        <IconButton isSecondary onClick={handleRaiseFv} direction={'up'}></IconButton>
+        <ArrowButton isSecondary onClick={handleRaiseFv} direction={'up'}></ArrowButton>
         <Dice fv={fv} size={Styles.diceSizes.ui} visible></Dice>
-        <IconButton isSecondary onClick={handleLowerFv}></IconButton>
+        <ArrowButton isSecondary onClick={handleLowerFv}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>
-        <Button label="Submit Bet" onClick={handleSubmit}></Button>
-        <div></div>
-        <Button isSecondary label="Call Lie" onClick={handleCall}></Button>
+        <Button label="Bet" onClick={handleSubmit}></Button>
+        <Button isSecondary label="Call" onClick={handleCall}></Button>
       </VerticalGrid>
     </Wrapper>
   );
