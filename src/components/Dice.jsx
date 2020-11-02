@@ -33,7 +33,7 @@ const Wrapper = Styled.div`
     `}
 
     ${props => props.visible === false && `
-        background: linear-gradient(to bottom right, ${Styles.colors.lightGrey}, ${Styles.colors.white});
+        background: linear-gradient(to bottom right, ${Styles.colors.grey}, ${Styles.colors.white});
     `}
 
     ${props => props.disabled === true && `

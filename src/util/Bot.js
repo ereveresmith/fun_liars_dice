@@ -2,8 +2,14 @@ import { randomInt, tinyWait, shortWait, mediumWait, longWait } from '../util/He
     
 export const calcBotMove = (turns, amountOfDice, player) => {
     const currentTurn = turns[turns.length - 1];
-    const currentFv = currentTurn.fv;
-    const currentAmount = currentTurn.amount;
+    let currentFv = currentTurn.fv;
+    let currentAmount = currentTurn.amount;
+    if (currentAmount == 0) {
+        currentAmount = currentAmount + 1;
+    }
+    if (currentFv == 0) {
+        currentFv = currentFv + 1;
+    }
 
     let newFv = currentFv + 1;
     let newAmount = currentAmount;
@@ -34,14 +40,6 @@ export const calcBotMove = (turns, amountOfDice, player) => {
         if (handMap[i] > handMap[bestOptionIndex]) {
             bestOptionIndex = i;
         }
-    }
-    
-    if (newAmount === 0) {
-        newAmount = 1;
-    }
-
-    if (currentFv === 0) {
-        newFv = 1;
     }
 
     if (randomA > 3) {

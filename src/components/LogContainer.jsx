@@ -55,7 +55,8 @@ const Wrapper = Styled.div`
     height: 33vh;
   `}
   width: 100%;
-  min-width: 148px;
+  min-width: 168px;
+  max-width: 290px;
   touch-action: manipulation;
   background-color: ${Styles.colors.white};
   justify-self: center;

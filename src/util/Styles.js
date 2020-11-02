@@ -1,8 +1,8 @@
 export const Styles = {
     diceSizes: {
-        small: "1.5em",
+        small: "1.3em",
         medium: "2em",
-        large: "3.2em",
+        large: "3.1em",
         ui: "2.5em",
     },
     fontSizes: {

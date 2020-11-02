@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Button from './components/Button';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
-import { mockPlayers, YOU, randomInt, mockNames, mockBot, defaultSettings } from './util/Helper';
+import { randomInt, mockNames, defaultSettings } from './util/Helper';
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds';
 
@@ -33,6 +33,7 @@ const SettingsPage = (props) => {
   const [amountOfPlayers, setAmountOfPlayers] = useState(defaultSettings.amountOfPlayers);
   const [name, setName] = useState(defaultSettings.name);
   const [handSize, setHandSize] = useState(defaultSettings.handSize);
+  const [handicap, setHandicap] = useState(defaultSettings.handicap);
 
   const randomName = () => {
     const int = randomInt(mockNames.length);
@@ -50,22 +51,28 @@ const SettingsPage = (props) => {
 
   const generatePlayers = () => {
     let players = [];
-    let hand = [];
-
-    for (let i = 0; i< handSize; i++) {
-      const diceObj = {
-        fv: 0,
-        visible: true,
-        disabled: false,
-        highlight: false,
-        hasArrow: false,
-        found: false,
-        highlightColor: Styles.colors.green,
-      }
-      hand.push(diceObj);
-    }
 
     for (let i = 0; i < amountOfPlayers; i++) {
+      let hand = [];
+
+      let newHandSize = handSize;
+      if (i === 0 ) {
+        newHandSize = newHandSize + handicap;
+      }
+
+      for (let k = 0; k < newHandSize; k++) {
+        const diceObj = {
+          fv: 0,
+          visible: true,
+          disabled: false,
+          highlight: false,
+          hasArrow: false,
+          found: false,
+          highlightColor: Styles.colors.green,
+        }
+        hand.push(diceObj);
+      }
+
       players.push({
         name: (i==0) ? name : randomName(), 
         id: i+1, 
@@ -90,7 +97,10 @@ const SettingsPage = (props) => {
     setAmountOfPlayers(e.target.value);
   }
 
-  //yo
+  const handleChangeHandicap = (e) => {
+    setHandicap(e.target.value);
+  }
+
   const handleChangeHandSize = (e) => {
     setHandSize(e.target.value);
   }
@@ -118,6 +128,10 @@ const SettingsPage = (props) => {
         <GridDiv>
           <Label>Dice Per Player:</Label>
           <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
+        </GridDiv>
+        <GridDiv>
+          <Label>Player Handicap:</Label>
+          <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
         </GridDiv>
         <Button label="Start Game" onClick={handleSubmit}></Button>
       </Wrapper>
