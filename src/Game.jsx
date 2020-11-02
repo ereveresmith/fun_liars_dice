@@ -37,10 +37,15 @@ const UILongSection = Styled.div`
   ${props => !props.isWidescreen && `
     border-radius: 8px 8px 0 0;
   `}
-  display: grid;
   justify-items: end;
-  align-items: center;
   justify-content: end;
+
+  ${props => props.isLeftHanded && `
+    justify-items: start;
+    justify-content: start;
+  `}
+  display: grid;
+  align-items: center;
   display: grid;
   grid-template-columns: auto auto;
 `
@@ -56,23 +61,24 @@ const EmptyCell = Styled.div`
 const Wrapper = Styled.div`
   display: grid;
   grid-template-columns: auto;
-  margin-top: 8px;
   grid-template-rows: auto 24px auto;
   justify-content: center;
   justify-items: center;
   align-items: center;
   align-content: center;
+  margin: 8px 0;
 
-  ${props => props.isWidescreen && !props.isLeftHanded && `
+  ${props => props.isWidescreen &&`
     grid-template-columns: 75% 1% auto;
     grid-template-rows: auto;
     justify-content: end;
-
+    margin: 0;
   `}
 
   ${props => props.isWidescreen && props.isLeftHanded && `
     grid-template-columns: auto 1% 75%;
     grid-template-rows: auto;
+    margin: 0;
     justify-content: start;
   `}
   `
@@ -86,15 +92,6 @@ const GameGrid = Styled.div`
   align-items: center;
   grid-template-columns: auto auto;
 `
-
-const UIText = Styled.h1`
-  color: white;
-  font-weight: 700;
-  font-size: ${Styles.fontSizes.medium};
-  margin: 0;
-`
-
-
 
 const GamePage = ({ settings, onEnd}) => {
   const [players, setPlayers] = useState(settings.players);
@@ -123,7 +120,7 @@ const GamePage = ({ settings, onEnd}) => {
   const [isChallenge, setIsChallenge] = useState(false);
   const [isWidescreen, setIsWidescreen] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
-  const [isLeftHanded, setIsLeftHanded] = useState(true);
+  const [isLeftHanded, setIsLeftHanded] = useState(false);
   const [globalVolume, setGlobalVolume] = useState(1.0);
   const [turnPitch, setTurnPitch] = useState(1);
 
@@ -776,10 +773,9 @@ const GamePage = ({ settings, onEnd}) => {
 
   const renderUIControls = () => {
     return (
-      <UILongSection isWidescreen={isWidescreen}>
-          {/* <IconButton isDefaultActive={isPaused} icon={'play'} onClick={handlePause}></IconButton> */}
-          <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
-          <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
+      <UILongSection isWidescreen={isWidescreen} isLeftHanded={isLeftHanded}>
+        <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
+        <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
       </UILongSection>
     )
   }

@@ -12,11 +12,12 @@ export const Styles = {
         huge: "2.6em",
     },
     colors: {
+        pale: '#f3f1f1',
         white: 'white',
         black: '#262626',
         lightGrey: '#cccccc',
         grey: '#666666',
-        darkGrey: '#595959',
+        darkGrey: 'white',
         purple: '#9999ff',
         darkPurple: '#6666ff',
         blue: '#668cff',

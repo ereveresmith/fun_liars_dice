@@ -8,8 +8,7 @@ import { faPause } from '@fortawesome/free-solid-svg-icons'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 
 const StyledButton = Styled.button`
-  padding: 2px 8px;
-  color: white;
+  color: ${Styles.colors.white};
   text-transform: uppercase;
   border: 0;
   font-weight: 700;
@@ -17,18 +16,11 @@ const StyledButton = Styled.button`
   outline: 0;
   transition: background-color 80ms ease-out;
   background: 0;
-  width: 34px;
+  width: 46px;
+  font-size: ${Styles.fontSizes.large};
 
   &:hover {
-    border-color: ${Styles.colors.purple};
-  }
-
-  &:active {
-    border-color: ${Styles.colors.darkPurple};
-  }
-
-  &:focus {
-    outline: 1px ${Styles.colors.purple} solid;
+    color: ${Styles.colors.lightGrey};
   }
 `;
 

@@ -9,6 +9,7 @@ const BottomGrid = Styled.div`
   align-content: center;
   align-items: center;
   display: grid;
+  background-color: ${Styles.colors.white};
   height: 58px;
 `
 
@@ -64,6 +65,7 @@ const Cell = Styled.div`
   grid-template-rows: auto auto;
   border: 1px solid ${Styles.colors.grey};
   margin: 4px 0;
+  background-color: ${Styles.colors.white};
   transition: background-color 100ms ease-out;
 
   ${props => props.isOut && `

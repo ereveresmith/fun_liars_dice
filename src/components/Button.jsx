@@ -10,18 +10,15 @@ const StyledButton = Styled.button`
   font-weight: 600;
   background-color: ${Styles.colors.purple};
   font-size: ${Styles.fontSizes.medium};
+  min-width: 52px;
   border: 1px solid ${Styles.colors.white};
   cursor: pointer;
   outline: 0;
   transition: background-color 80ms ease-out;
 
   &:hover {
-    background-color: ${Styles.colors.purple};
-    color: ${Styles.colors.white};
-  }
-
-  &:active {
     background-color: ${Styles.colors.darkPurple};
+    color: ${Styles.colors.white};
   }
 
   &:focus {
@@ -33,7 +30,7 @@ const StyledButton = Styled.button`
     color: ${Styles.colors.white};
 
     &:hover {
-      background-color: ${Styles.colors.purple};
+      background-color: ${Styles.colors.darkPurple};
       color: ${Styles.colors.white};
     }
   `}

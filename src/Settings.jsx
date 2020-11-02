@@ -14,7 +14,7 @@ const Wrapper = Styled.div`
   `
 
   const Label = Styled.span`
-    font-size: ${Styles.fontSizes.medium};
+    font-size: ${Styles.fontSizes.large};
     align-self: center;
     text-align: left;
   `

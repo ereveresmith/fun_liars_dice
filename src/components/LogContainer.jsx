@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import Styled from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
@@ -30,7 +30,7 @@ const HugeText = Styled.div`
 const StyledSpan = Styled.span`
   overflow: hidden;
   align-items: center;
-  color: ${Styles.colors.black};
+  color: ${Styles.colors.white};
   opacity: 0.65;
   margin-bottom: 4px;
   font-size: ${Styles.fontSizes.medium};
@@ -57,6 +57,7 @@ const Wrapper = Styled.div`
   width: 100%;
   min-width: 172px;
   touch-action: manipulation;
+  background-color: ${Styles.colors.darkGrey};
   justify-self: center;
   align-content: end;
   opacity: 0.8;
@@ -67,7 +68,7 @@ const Wrapper = Styled.div`
   align-items: start;
 `
 
-const LogContainer = ({log, isTall}) => {
+const LogContainer = ({ log, isTall }) => {
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -77,7 +78,7 @@ const LogContainer = ({log, isTall}) => {
 
   const renderedLog = () => {
     const logItems = log.map((message, index) => {
-      const isNewest = log.length === (index+1);
+      const isNewest = log.length === (index + 1);
 
 
       const hasFv = (message.fv !== undefined);
@@ -96,12 +97,12 @@ const LogContainer = ({log, isTall}) => {
         return actionDiv;
       }
 
-      let logMessage = <StyledSpan 
+      let logMessage = <StyledSpan
         isNewest={isNewest}
         key={`message${index}`}>
-          {message.value}
-          {actionDisplay()}
-          {message.value2}
+        {message.value}
+        {actionDisplay()}
+        {message.value2}
       </StyledSpan>;
       return logMessage;
     })
