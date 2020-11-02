@@ -49,10 +49,10 @@ const StyledSpan = Styled.span`
 
 const Wrapper = Styled.div`
   box-shadow: ${Styles.boxShadows.medium};
-  height: 140px;
+  height: 120px;
 
   ${props => props.isTall && `
-    height: 33vh;
+    height: 40vh;
   `}
   width: 100%;
   min-width: 168px;

@@ -3,7 +3,7 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
-  padding: 2px 8px;
+  padding: 4px 12px;
   color: ${Styles.colors.grey};
   text-transform: uppercase;
   border: 0;
@@ -30,8 +30,8 @@ const StyledButton = Styled.button`
 const Arrow = Styled.div`
     content: '';
     display: block;
-    border-right: 8px solid ${Styles.colors.grey};
-    border-bottom: 8px solid ${Styles.colors.grey};
+    border-right: 6px solid ${Styles.colors.grey};
+    border-bottom: 6px solid ${Styles.colors.grey};
     width: 22px;
     height: 22px;
     z-index: 3;

@@ -8,7 +8,7 @@ import { faPause } from '@fortawesome/free-solid-svg-icons'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 
 const StyledButton = Styled.button`
-  color: ${Styles.colors.lightGrey};
+  color: ${Styles.colors.grey};
   text-transform: uppercase;
   border: 0;
   font-weight: 700;
@@ -16,11 +16,10 @@ const StyledButton = Styled.button`
   outline: 0;
   transition: background-color 80ms ease-out;
   background: 0;
-  width: 46px;
   font-size: ${Styles.fontSizes.large};
 
   &:hover {
-    color: ${Styles.colors.black};
+    color: ${Styles.colors.darkGrey};
   }
 `;
 

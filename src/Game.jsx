@@ -5,7 +5,7 @@ import { Styles } from './util/Styles';
 import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
 import { calcBotMove } from './util/Bot';
-import { randomInt, tinyWait, shortWait, mediumWait, longWait, massiveWait, WIDESCREEN_SIZE } from './util/Helper';
+import { randomInt, tinyWait, shortWait, mediumWait, longWait, massiveWait, WIDESCREEN_SIZE } from './util/Defaults';
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds'
 import LogContainer from './components/LogContainer';
@@ -59,6 +59,7 @@ const EmptyCell = Styled.div`
 
 const Wrapper = Styled.div`
   display: grid;
+  height: 100vh;
   grid-template-columns: auto;
   grid-template-rows: auto 24px auto;
   justify-content: center;
@@ -68,14 +69,14 @@ const Wrapper = Styled.div`
   margin: 8px 0;
 
   ${props => props.isWidescreen &&`
-    grid-template-columns: 75% 1% auto;
+    grid-template-columns: 63% 1% auto;
     grid-template-rows: auto;
     justify-content: end;
     margin: 0;
   `}
 
   ${props => props.isWidescreen && props.isLeftHanded && `
-    grid-template-columns: auto 1% 75%;
+    grid-template-columns: auto 1% 63%;
     grid-template-rows: auto;
     margin: 0;
     justify-content: start;

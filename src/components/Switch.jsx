@@ -12,12 +12,12 @@ box-sizing: border-box;
 min-width: 44px;
 height: 22px;
 vertical-align: middle;
-border: ${Styles.colors.lightGrey} solid 1px;
+border: ${Styles.colors.grey} solid 1px;
 border-radius: 100px;
 cursor: pointer;
 
 &:hover {
-    background-color: ${Styles.colors.lightGrey};
+    background-color: ${Styles.colors.grey};
 }
 
 &:focus {
@@ -35,10 +35,11 @@ cursor: pointer;
   transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
   content: ' ';
 }
-background-color: ${Styles.colors.lightGrey};
+background-color: ${Styles.colors.grey};
 
 &:hover {
-    background-color: ${Styles.colors.grey};
+    transition: background-color 50ms ease-out;
+    background-color: ${Styles.colors.darkGrey};
 }
 
 ${({isChecked}) => isChecked ? `

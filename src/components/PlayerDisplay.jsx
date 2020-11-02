@@ -3,7 +3,7 @@ import Styled, { keyframes } from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
 import TurnDisplay from '../components/TurnDisplay';
-import { randomInt, mockLieMessages } from '../util/Helper';
+import { randomInt, mockLieMessages } from '../util/Defaults';
 
 const BottomGrid = Styled.div`
   align-content: center;
@@ -16,11 +16,11 @@ const BottomGrid = Styled.div`
 
 const FadeAnimation = keyframes`
   from {
-    opacity: 0.86;
+    opacity: 0.8;
   }
 
   to {
-    opacity: 0;
+    opacity: 0.0;
   }
 `;
 
@@ -34,7 +34,7 @@ const LieDisplay = Styled.div`
 const TakingTurnDisplay = Styled.div`
   font-weight: 900;
   font-size: ${Styles.fontSizes.large};
-  animation: ${FadeAnimation} 1s ease-out infinite;
+  animation: ${FadeAnimation} 1.3s ease-out infinite;
 `
 
 const Arrow = Styled.div`

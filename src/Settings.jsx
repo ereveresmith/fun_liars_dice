@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Button from './components/Button';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
-import { randomInt, mockNames, defaultSettings } from './util/Helper';
+import { randomInt, mockNames, defaultSettings } from './util/Defaults';
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds';
 
@@ -56,8 +56,9 @@ const SettingsPage = (props) => {
       let hand = [];
 
       let newHandSize = handSize;
-      if (i === 0 ) {
+      if (i == 0) {
         newHandSize = newHandSize + handicap;
+        console.log("setting new hand size to " + newHandSize)
       }
 
       for (let k = 0; k < newHandSize; k++) {
@@ -94,19 +95,31 @@ const SettingsPage = (props) => {
   }
 
   const handleChangePlayers = (e) => {
-    setAmountOfPlayers(e.target.value);
+    let val = parseInt(e.target.value);
+    if (val > 0 && val < 7) {
+      setAmountOfPlayers(val);
+    }
   }
 
   const handleChangeHandicap = (e) => {
-    setHandicap(e.target.value);
+    let val = parseInt(e.target.value);
+    if (val >= 0 && val < 6) {
+      setHandicap(val);
+    }
   }
 
   const handleChangeHandSize = (e) => {
-    setHandSize(e.target.value);
+    let val = parseInt(e.target.value);
+    if (val > 0 && val < 6) {
+      setHandSize(val);
+    }
   }
 
   const handleChangeName = (e) => {
-    setName(e.target.value);
+    let val = e.target.value;
+    if (val.length > 0 && val.length < 14) {
+      setName(val);
+    }
   }
 
   return (
