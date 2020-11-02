@@ -29,8 +29,8 @@ const UIGrid = Styled.div`
 `
 
 const UILongSection = Styled.div`
-  box-shadow: ${Styles.boxShadows.strong};
-  background-color: ${Styles.colors.darkGrey};
+  box-shadow: ${Styles.boxShadows.medium};
+  background-color: ${Styles.colors.white};
   opacity: 0.83;
   padding: 4px 8px;
 

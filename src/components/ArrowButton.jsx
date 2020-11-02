@@ -4,33 +4,34 @@ import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
   padding: 2px 8px;
-  color: ${Styles.colors.white};
+  color: ${Styles.colors.black};
   text-transform: uppercase;
   border: 0;
   font-weight: 700;
   cursor: pointer;
+  opacity: 0.8;
   outline: 0;
   transition: background-color 80ms ease-out;
   background: 0;
 
   &:hover {
-    border-color: ${Styles.colors.purple};
+    border-color: ${Styles.colors.darkGrey};
   }
 
   &:active {
-    border-color: ${Styles.colors.darkPurple};
+    border-color: ${Styles.colors.black};
   }
 
   &:focus {
-    outline: 1px ${Styles.colors.purple} solid;
+    outline: 1px ${Styles.colors.black} solid;
   }
 `;
 
 const Arrow = Styled.div`
     content: '';
     display: block;
-    border-right: 8px solid ${Styles.colors.white};
-    border-bottom: 8px solid ${Styles.colors.white};
+    border-right: 8px solid ${Styles.colors.grey};
+    border-bottom: 8px solid ${Styles.colors.grey};
     width: 22px;
     height: 22px;
     z-index: 3;

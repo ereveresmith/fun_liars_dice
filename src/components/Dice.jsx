@@ -22,7 +22,7 @@ const Wrapper = Styled.div`
     position: relative;
     align-self: center;
     display: flex;
-    border: 2px solid ${Styles.colors.grey};
+    border: 2px solid ${Styles.colors.darkGrey};
     border-radius: 4px;
     background-color: ${Styles.colors.white};
     transition: all ease 250ms;

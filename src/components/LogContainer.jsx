@@ -30,7 +30,7 @@ const HugeText = Styled.div`
 const StyledSpan = Styled.span`
   overflow: hidden;
   align-items: center;
-  color: ${Styles.colors.white};
+  color: ${Styles.colors.black};
   opacity: 0.65;
   margin-bottom: 4px;
   font-size: ${Styles.fontSizes.medium};
@@ -57,7 +57,7 @@ const Wrapper = Styled.div`
   width: 100%;
   min-width: 172px;
   touch-action: manipulation;
-  background-color: ${Styles.colors.darkGrey};
+  background-color: ${Styles.colors.white};
   justify-self: center;
   align-content: end;
   opacity: 0.8;

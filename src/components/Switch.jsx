@@ -16,6 +16,10 @@ border: ${Styles.colors.lightGrey} solid 1px;
 border-radius: 100px;
 cursor: pointer;
 
+&:hover {
+    background-color: ${Styles.colors.lightGrey};
+}
+
 &:focus {
     outline: ${Styles.colors.purple} solid 1px;
 }
@@ -31,9 +35,13 @@ cursor: pointer;
   transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
   content: ' ';
 }
+background-color: ${Styles.colors.lightGrey};
+
+&:hover {
+    background-color: ${Styles.colors.grey};
+}
 
 ${({isChecked}) => isChecked ? `
-  background-color: ${Styles.colors.grey};
   transition: background-color 0.28s ease-in;
   &:after {
     left: 100%;
@@ -41,7 +49,6 @@ ${({isChecked}) => isChecked ? `
     transform: translateX(-100%);
   }
 ` : `
-  background-color: ${Styles.colors.grey};
   transition: background-color 0.3s ease-out;
   &:after {
     top: 1px;

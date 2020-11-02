@@ -8,7 +8,7 @@ import Dice from './Dice';
 
 const HugeText = Styled.h1`
   font-size: ${Styles.fontSizes.huge};
-  color: ${Styles.colors.white};
+  color: ${Styles.colors.black};
   text-align: center;
   min-width: 12px;
 `
@@ -16,7 +16,7 @@ const HugeText = Styled.h1`
 const Wrapper = Styled.div`
   touch-action: manipulation;
   z-index: 2;
-  background-color: ${Styles.colors.darkGrey};
+  background-color: ${Styles.colors.white};
   opacity: 0.83;
   box-shadow: ${Styles.boxShadows.medium};
   grid-gap: 12px;

@@ -3,15 +3,14 @@ import Styled from 'styled-components';
 import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
-  padding: 8px 8px;
+  padding: 4px 12px;
   border-radius: 24px;
-  color: white;
-  text-transform: uppercase;
-  font-weight: 600;
-  background-color: ${Styles.colors.purple};
+  color: ${Styles.colors.black};
+  font-weight: 500;
+  background-color: ${Styles.colors.white};
   font-size: ${Styles.fontSizes.medium};
   min-width: 52px;
-  border: 1px solid ${Styles.colors.white};
+  border: 1px solid ${Styles.colors.black};
   cursor: pointer;
   outline: 0;
   transition: background-color 80ms ease-out;
@@ -27,7 +26,7 @@ const StyledButton = Styled.button`
 
   ${props => props.isSecondary && `
     background: 0;
-    color: ${Styles.colors.white};
+    color: ${Styles.colors.black};
 
     &:hover {
       background-color: ${Styles.colors.darkPurple};

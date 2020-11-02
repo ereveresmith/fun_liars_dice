@@ -6,8 +6,8 @@ export const Styles = {
         ui: "2.5em",
     },
     fontSizes: {
-        small: "0.6em",
-        medium: "0.8em",
+        small: "0.7em",
+        medium: "0.9em",
         large: "1.3em",
         huge: "2.6em",
     },
@@ -16,8 +16,8 @@ export const Styles = {
         white: 'white',
         black: '#262626',
         lightGrey: '#cccccc',
-        grey: '#666666',
-        darkGrey: 'white',
+        grey: '#999999',
+        darkGrey: '#666666',
         purple: '#9999ff',
         darkPurple: '#6666ff',
         blue: '#668cff',
@@ -28,6 +28,5 @@ export const Styles = {
     },
     boxShadows: {
         medium: '0px 1px 2px #1a1a1a',
-        strong: '0 1px 1px #4d4d4d',
     }
 }
