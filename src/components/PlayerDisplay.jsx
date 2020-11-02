@@ -32,16 +32,16 @@ const LieDisplay = Styled.div`
 `
 
 const TakingTurnDisplay = Styled.div`
-  font-weight: 700;
+  font-weight: 900;
   font-size: ${Styles.fontSizes.large};
-  animation: ${FadeAnimation} 2s ease-out infinite;
+  animation: ${FadeAnimation} 1s ease-out infinite;
 `
 
 const Arrow = Styled.div`
     content: '';
     display: block;
-    border-right: 2px solid ${Styles.colors.black};
-    border-bottom: 2px solid ${Styles.colors.black};
+    border-right: 4px solid ${Styles.colors.black};
+    border-bottom: 4px solid ${Styles.colors.black};
     box-shadow: 2px 2px 2px ${Styles.colors.black};
     width: 16px;
     height: 16px;
@@ -104,7 +104,7 @@ const HandGrid = Styled.div`
   padding: 2px 10px;
   display: grid;
   height: 38px;
-  width: 162px;
+  min-width: 132px;
   grid-gap: 1px;
   justify-content: center;
   justify-items: center;

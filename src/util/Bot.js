@@ -59,7 +59,7 @@ export const calcBotMove = (turns, amountOfDice, player) => {
         }
     }
 
-    let riskPercent = 0.35 - (handAmnt * 0.01);
+    let riskPercent = 0.32 - (handAmnt * 0.01);
     let newTimeout = randomInt(longWait) + mediumWait;;
     const isSafe = newAmount < ((amountOfDice * riskPercent) / 2.7);
     const isRisky = newAmount >= (amountOfDice * riskPercent)

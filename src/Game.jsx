@@ -53,7 +53,6 @@ const UILongSection = Styled.div`
 const EmptyCell = Styled.div`
   display: grid;
   width: 100%;
-  border: 1px solid ${Styles.colors.lightGrey};
   opacity: 0;
   height: 100%;
 `
@@ -212,7 +211,7 @@ const GamePage = ({ settings, onEnd}) => {
       }
       rerollDice();
       setTurns([newTurn]);
-      setLog([]);
+      // setLog([]);
       await printLog("Starting new round");
       await timeout(longWait);
     }
@@ -716,37 +715,43 @@ const GamePage = ({ settings, onEnd}) => {
       default:
         break;
       case 2: 
+        renderedCells.push(emptyCell(1));
+        renderedCells.push(emptyCell(2));
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedPlayer(1));
         break;
       case 3: 
+        renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedPlayer(3));
-        renderedCells.push(renderedPlayer(1));
 
         renderedCells.push(emptyCell(1));
-        renderedCells.push(renderedPlayer(2));
+        renderedCells.push(renderedPlayer(1));
         break;
       case 4: 
-        renderedCells.push(renderedPlayer(1));
-        renderedCells.push(renderedPlayer(2));
-        renderedCells.push(renderedPlayer(4));
         renderedCells.push(renderedPlayer(3));
+        renderedCells.push(renderedPlayer(4));
+        renderedCells.push(renderedPlayer(2));
+        renderedCells.push(renderedPlayer(1));
         break;
       case 5: 
-        renderedCells.push(renderedPlayer(1));
+        renderedCells.push(renderedPlayer(3));
+        renderedCells.push(renderedPlayer(4));
+
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedPlayer(5));
-        renderedCells.push(renderedPlayer(3));
+
         renderedCells.push(emptyCell(1));
-        renderedCells.push(renderedPlayer(4));
+        renderedCells.push(renderedPlayer(1));
         break;
       case 6: 
-        renderedCells.push(renderedPlayer(1));
-        renderedCells.push(renderedPlayer(2));
-        renderedCells.push(renderedPlayer(6));
-        renderedCells.push(renderedPlayer(3));
-        renderedCells.push(renderedPlayer(5));
         renderedCells.push(renderedPlayer(4));
+        renderedCells.push(renderedPlayer(5));
+
+        renderedCells.push(renderedPlayer(3));
+        renderedCells.push(renderedPlayer(6));
+        
+        renderedCells.push(renderedPlayer(2));
+        renderedCells.push(renderedPlayer(1));
         break;
     }
 

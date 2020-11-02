@@ -55,7 +55,7 @@ const Wrapper = Styled.div`
     height: 33vh;
   `}
   width: 100%;
-  min-width: 162px;
+  min-width: 148px;
   touch-action: manipulation;
   background-color: ${Styles.colors.white};
   justify-self: center;
@@ -90,7 +90,7 @@ const LogContainer = ({ log, isTall }) => {
         if (hasFv) {
           actionDiv = <DiceWrapper>
             <HugeText isNewest={isNewest}>{message.amount}</HugeText>
-            <Dice fv={message.fv} size={Styles.diceSizes.medium} visible></Dice>
+            <Dice fv={message.fv} size={Styles.diceSizes.small} visible></Dice>
           </DiceWrapper>
         }
 
