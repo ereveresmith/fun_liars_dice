@@ -52,10 +52,10 @@ const Wrapper = Styled.div`
   height: 140px;
 
   ${props => props.isTall && `
-    height: 40vh;
+    height: 33vh;
   `}
   width: 100%;
-  min-width: 172px;
+  min-width: 162px;
   touch-action: manipulation;
   background-color: ${Styles.colors.white};
   justify-self: center;

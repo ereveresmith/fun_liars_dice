@@ -4,6 +4,7 @@ import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
   padding: 4px 12px;
+  margin: 4px;
   border-radius: 24px;
   color: ${Styles.colors.black};
   font-weight: 500;

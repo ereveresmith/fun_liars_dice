@@ -4,7 +4,7 @@ import { Styles } from '../util/Styles'
 
 const StyledButton = Styled.button`
   padding: 2px 8px;
-  color: ${Styles.colors.black};
+  color: ${Styles.colors.grey};
   text-transform: uppercase;
   border: 0;
   font-weight: 700;

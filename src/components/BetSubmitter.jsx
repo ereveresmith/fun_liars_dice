@@ -8,7 +8,7 @@ import Dice from './Dice';
 
 const HugeText = Styled.h1`
   font-size: ${Styles.fontSizes.huge};
-  color: ${Styles.colors.black};
+  color: ${Styles.colors.darkGrey};
   text-align: center;
   min-width: 12px;
 `
