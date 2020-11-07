@@ -103,7 +103,7 @@ export const defaultSettings = {
   handSize: 3,
   name: "You",
   amountOfPlayers: 4,
-  handicap: 2,
+  handicap: 0,
 };
 
 export const WIDESCREEN_SIZE = 600;

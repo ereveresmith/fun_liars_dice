@@ -124,6 +124,7 @@ const GamePage = ({ settings, onEnd}) => {
   const [isPaused, setIsPaused] = useState(false);
   const [isLeftHanded, setIsLeftHanded] = useState(false);
   const [isShowingModal, setIsShowingModal] = useState(false);
+  const [isWin, setIsWin] = useState(false);
   const [globalVolume, setGlobalVolume] = useState(1.0);
   const [turnPitch, setTurnPitch] = useState(1);
 
@@ -206,6 +207,10 @@ const GamePage = ({ settings, onEnd}) => {
     const winner = checkWinner();
     if (winner !== undefined) {
       await printLog(`${winner.name} has won the game!`);
+      timeout(longWait)
+      setIsWin(true);
+      setIsShowingModal(true);
+
     } else {
       const newTurn = {
         number: 0,
@@ -627,6 +632,10 @@ const GamePage = ({ settings, onEnd}) => {
     if (checkOutOfDice(lyingPlayer.hand)) {
       await printLog(`${lyingPlayer.name} is out of the game.`);
       await timeout(longWait);
+      if (lyingPlayer.id === 1) {
+        setIsShowingModal(true);
+        return;
+      }
     }
     await timeout(longWait);
     await nextRound(lyingPlayer);
@@ -857,19 +866,24 @@ const GamePage = ({ settings, onEnd}) => {
     )
   }
 
-  const modalTitle = 'You Lost!'
+
+
+
   const renderModalContent = (win) => {
 
     let modalText = "You ran out of dice. Try again."
+    let modalTitle = 'You Lost!'
 
 
     if (win) {
+      modalTitle = "You Won!!!!"
       modalText = "You won the game!!!!!! Great job."
     }
 
 
     return (
       <div>
+        <h1>{modalTitle}</h1>
           {modalText}
         <Button label={"New Game"} onClick={handleClickSettings}></Button>
       </div>
@@ -879,8 +893,8 @@ const GamePage = ({ settings, onEnd}) => {
   const renderGame = () => {
     return (
       <Wrapper isWidescreen={isWidescreen}>
-        {isShowingModal && <Modal title={modalTitle} active={isShowingModal}>
-          {renderModalContent(true)}
+        {isShowingModal && <Modal active={isShowingModal}>
+          {renderModalContent(isWin)}
         </Modal>}
       <GameGrid>
         {renderCells()}
