@@ -1,6 +1,6 @@
 import { randomInt, tinyWait, shortWait, mediumWait, longWait } from './Defaults';
     
-export const calcBotMove = (turns, amountOfDice, player) => {
+export const calcBotMove = (turns, totalAmntOfDice, player) => {
     const currentTurn = turns[turns.length - 1];
     let currentFv = currentTurn.fv;
     let currentAmount = currentTurn.amount;
@@ -15,13 +15,15 @@ export const calcBotMove = (turns, amountOfDice, player) => {
     let newAmount = currentAmount;
     let move = 'addOne';
 
-    let randomA = randomInt(10);
+    let randomA = randomInt(15);
     let randomB = randomInt(10);
     let randomC = randomInt(10);
 
     const myHand = player.hand;
     let handAmnt = 0;
 
+
+    //stores the AMOUNT of each dice
     const handMap = [
         0, 0, 0, 0, 0, 0,
     ]
@@ -37,59 +39,65 @@ export const calcBotMove = (turns, amountOfDice, player) => {
     let bestOptionIndex = 0;
 
     for (let i = 0; i < handMap.length; i++) {
-        if (handMap[i] > handMap[bestOptionIndex]) {
+        if (handMap[i] >= handMap[bestOptionIndex]) {
             bestOptionIndex = i;
         }
     }
 
-    if (randomA > 3) {
+    if (randomA > 5) {
         move = 'best';
     } else {
         if (randomB > 6) {
-            move = 'random';
+            move = 'lie';
         } else {
-            if (randomC > 5) {
-                move = 'addOne';
-            } else {
-                move = 'risky';
-            }
-            
+            move = 'addOne'; 
         }
     }
 
-    let riskPercent = 0.32 - (handAmnt * 0.01);
-    let newTimeout = randomInt(longWait) + mediumWait;;
-    const isSafe = newAmount < ((amountOfDice * riskPercent) / 2.7);
-    const isRisky = newAmount >= (amountOfDice * riskPercent)
 
-    if (isSafe) {
-        newTimeout = randomInt(mediumWait) + mediumWait;
-    } else if (isRisky) {
+    let amountOfFvs = handMap[currentFv-1];
+    let updatedAmount = currentAmount - amountOfFvs;
+    let riskScore = updatedAmount / totalAmntOfDice;
+
+    let missingDice = player.hand.length - handAmnt;
+
+    let randomOffset = randomInt(15) / 100;
+    let missingDiceOffset = 0 - (missingDice * 0.03);
+    console.log(missingDiceOffset)
+    let riskThreshold = 0.26 + randomOffset + missingDiceOffset;
+
+    
+
+
+    console.log("thresh: " + riskThreshold)
+    if (riskScore >= riskThreshold && currentAmount > 0 && currentFv > 0) {
         move = 'call'
-        newTimeout = randomInt(longWait) + mediumWait;
     }
-
-
     console.log(`${player.name}: ${move}`)
+
     switch(move) {
         case 'best':
-            newFv = handMap[bestOptionIndex];
+            newFv = bestOptionIndex + 1;
             if (newFv <= currentFv) {
                 newAmount++;
             }
+            if (randomC > 9 && missingDice == 0) {
+                newAmount = newAmount + 1;
+            }
             break;
-        case 'random':
+        case 'lie':
             newFv = randomInt(5) + 1;
-            newAmount = randomInt(2) + newAmount
-            break;
-        case 'risky':
-            newFv = handMap[bestOptionIndex];
-            newAmount = randomInt(3) + newAmount
+            if (newFv <= currentFv) {
+                newAmount = newAmount + 1;
+            } else if (randomC > 5) {
+                newAmount = newAmount + 1;
+            }
             break;
         case 'addOne':
-            newAmount++;
-            if (newFv > 6 || newFv < 1) {
+            newFv = currentFv + 1;
+            if (newFv > 6) {
                 newFv = 1;
+                newAmount++;
             }
             break;
         case 'call':
@@ -105,6 +113,7 @@ export const calcBotMove = (turns, amountOfDice, player) => {
             break; 
     }
 
+    let newTimeout = randomInt(longWait) + mediumWait;;
 
     return {
         amount: newAmount, 

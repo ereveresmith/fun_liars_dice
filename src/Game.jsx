@@ -92,7 +92,6 @@ const EmptyCell = Styled.div`
 
 const Wrapper = Styled.div`
   display: grid;
-  height: 100vh;
   grid-template-columns: auto;
   grid-template-rows: auto 24px auto;
   justify-content: center;
@@ -102,6 +101,7 @@ const Wrapper = Styled.div`
   margin: 8px 0;
 
   ${props => props.isWidescreen && `
+    height: 100vh;
     grid-template-columns: 63% 1% auto;
     grid-template-rows: auto;
     justify-content: end;
@@ -173,7 +173,6 @@ const GamePage = ({ settings, onEnd }) => {
 
   useEffect(() => {
     const handleResize = (e) => {
-      console.log("Resizing")
       let width = e.currentTarget.innerWidth;
       if (width > WIDESCREEN_SIZE) {
         setIsWidescreen(true)
@@ -203,7 +202,7 @@ const GamePage = ({ settings, onEnd }) => {
       setIsShowingModal(false);
       setIsWin(false);
       setIsChallenge(false);
-      rerollDice();
+      rerollDice(true);
       const initialTurn = {
         number: 0,
         amount: 0,
@@ -236,13 +235,12 @@ const GamePage = ({ settings, onEnd }) => {
           newHandSize = newHandSize + settings.handicap;
         }
 
-
-        const newFv = randomInt(5) + 1;
-  
         for (let k = 0; k < newHandSize; k++) {
+          const newFv = randomInt(5) + 1;
+
           const diceObj = {
             fv: newFv,
-            visible: isVisible,
+            visible: true,
             disabled: false,
             highlight: false,
             hasArrow: false,
@@ -268,7 +266,6 @@ const GamePage = ({ settings, onEnd }) => {
       setIsShowingModal(false);
       setIsWin(false);
       setIsChallenge(false);
-      console.log(newPlayers)
       setPlayers(newPlayers)
 
       const initialTurn = {
@@ -296,7 +293,6 @@ const GamePage = ({ settings, onEnd }) => {
     if (checkOutOfDice(currentPlayer.hand)) {
       nextPlayer = calcNextPlayer(currentPlayer);
     }
-    console.log('NEXT ROUND')
     setIsChallenge(false);
 
     const winner = checkWinner();
@@ -339,7 +335,6 @@ const GamePage = ({ settings, onEnd }) => {
   }
 
   const calcNextPlayer = (currentPlayer) => {
-    console.log("calcing next player")
     let playerIndex = currentPlayer.id;
     if (playerIndex >= players.length) {
       playerIndex = 0;
@@ -495,7 +490,6 @@ const GamePage = ({ settings, onEnd }) => {
   }
 
   const nextTurn = async (amount, fv, currentPlayer) => {
-    console.log("next turn")
     const currentTurn = turns[turns.length - 1];
     playNextTurnSound();
     const nextPlayer = calcNextPlayer(currentPlayer);
@@ -760,7 +754,6 @@ const GamePage = ({ settings, onEnd }) => {
   }
 
   const renderedPlayer = (playerNumber) => {
-    console.log("rendering a player")
     const currentTurn = turns[turns.length - 1];
     let turnToShow = currentTurn;
 
@@ -830,7 +823,6 @@ const GamePage = ({ settings, onEnd }) => {
   }
 
   const renderCells = () => {
-    console.log("rendering cells")
     const amountOfPlayers = players.length;
     const renderedCells = [];
     const currentTurn = turns[turns.length - 1];
@@ -998,7 +990,6 @@ const GamePage = ({ settings, onEnd }) => {
   }
 
   const renderGame = () => {
-    console.log("rendering game")
     return (
       <Wrapper isWidescreen={isWidescreen}>
         {isShowingModal && <Modal active={isShowingModal}>
