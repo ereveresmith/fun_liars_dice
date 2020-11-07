@@ -10,6 +10,7 @@ import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds'
 import LogContainer from './components/LogContainer';
 import Switch from './components/Switch';
+import { Modal } from './components/Modal'
 
 const UIGrid = Styled.div`
   display: grid;
@@ -121,6 +122,7 @@ const GamePage = ({ settings, onEnd}) => {
   const [isWidescreen, setIsWidescreen] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [isLeftHanded, setIsLeftHanded] = useState(false);
+  const [isShowingModal, setIsShowingModal] = useState(false);
   const [globalVolume, setGlobalVolume] = useState(1.0);
   const [turnPitch, setTurnPitch] = useState(1);
 
@@ -148,6 +150,7 @@ const GamePage = ({ settings, onEnd}) => {
   const [playNote14] = useSound(Notes[14], { volume: globalVolume});
 
   useEffect(() => {
+    console.log("Turns")
     const nextPlayer = turns[turns.length-1].nextPlayer;
 
     if (nextPlayer.id !== 1) {
@@ -174,16 +177,16 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }
 
-  const restartGame = async (settings) => {
-    playRerollSound();
-    setPlayers(settings.players);
-    setTurns([initialTurn]);
-    rerollDice();
-    await printLog('Starting a new game');
-    setIsChallenge(false);
-  }
-
   useEffect(() => {
+    const restartGame = async (settings) => {
+      playRerollSound();
+      setPlayers(settings.players);
+      setTurns([initialTurn]);
+      rerollDice();
+      await printLog('Starting a new game');
+      setIsChallenge(false);
+    }
+
     restartGame(settings);
   }, [settings])
 
@@ -409,6 +412,14 @@ const GamePage = ({ settings, onEnd}) => {
 
   const handleClickSettings = async () => {
     onEnd();
+  }
+
+  const handleShowModal = () => {
+    if (isShowingModal === true) {
+      setIsShowingModal(false);
+    } else {
+      setIsShowingModal(true);
+    }
   }
 
   const handleMute = () => {
@@ -780,6 +791,7 @@ const GamePage = ({ settings, onEnd}) => {
   const renderUIControls = () => {
     return (
       <UILongSection isWidescreen={isWidescreen} isLeftHanded={isLeftHanded}>
+        <IconButton isDefaultActive={isShowingModal} icon={'volume'} onClick={handleShowModal}></IconButton>
         <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
         <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
       </UILongSection>
@@ -844,9 +856,16 @@ const GamePage = ({ settings, onEnd}) => {
     )
   }
 
+  const showLoseModal = () => {
+    isShowingModal(true);
+  }
+
+  const modalTitle = 'You Lost!'
+
   const renderGame = () => {
     return (
       <Wrapper isWidescreen={isWidescreen}>
+        {isShowingModal && <Modal title={modalTitle} active={isShowingModal}></Modal>}
       <GameGrid>
         {renderCells()}
       </GameGrid>

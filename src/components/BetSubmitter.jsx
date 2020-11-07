@@ -62,19 +62,19 @@ const BetSubmitter = (props) => {
 
   const handleRaiseAmount = () => {
     if(amount + 1 <= 99) {
-      setAmount(amount + 1)
+      setAmount(c => c + 1)
     }
   }
 
   const handleLowerFv = () => {
     if(fv - 1 > 0) {
-      setFv(fv - 1)
+      setFv(c => c - 1)
     }
   }
 
   const handleRaiseFv = () => {
     if(fv + 1 <= 6) {
-      setFv(fv + 1)
+      setFv(c => c + 1)
     }
   }
 
