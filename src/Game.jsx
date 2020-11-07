@@ -13,6 +13,13 @@ import Switch from './components/Switch';
 import { Modal } from './components/Modal'
 import Button from './components/Button';
 
+const ModalGrid = Styled.div`
+  display: grid;
+  grid-template-rows: auto auto 50%;
+  justify-content: center;
+  justify-items: center;
+`
+
 const UIGrid = Styled.div`
   display: grid;
   height: 100%;
@@ -207,7 +214,7 @@ const GamePage = ({ settings, onEnd}) => {
     const winner = checkWinner();
     if (winner !== undefined) {
       await printLog(`${winner.name} has won the game!`);
-      timeout(longWait)
+      timeout(mediumWait)
       setIsWin(true);
       setIsShowingModal(true);
 
@@ -882,11 +889,11 @@ const GamePage = ({ settings, onEnd}) => {
 
 
     return (
-      <div>
+      <ModalGrid>
         <h1>{modalTitle}</h1>
           {modalText}
         <Button label={"New Game"} onClick={handleClickSettings}></Button>
-      </div>
+      </ModalGrid>
     )
   }
 

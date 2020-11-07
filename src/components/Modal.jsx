@@ -15,7 +15,9 @@ const Background = styled.div`
   transition: 0.8s;
   ${({active}) => active && css`
     opacity: 0.5;
-    display: block;
+    display: grid;
+    justify-items: center;
+    justify-content: center;
   `}
 `;
 
@@ -40,8 +42,10 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-rows: auto 1fr auto;
   background-color: ${Styles.colors.white};
-  min-width: 480px;
-  z-index: 1000;
+  min-width: 440px;
+  min-height: 180px;
+  height: 25vh;
+  z-index: 5;
   border-radius: 16px;
   box-sizing: border-box;
   padding: 16px;
@@ -53,21 +57,10 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const Title = styled.h1`
-  color: rgba(0, 0, 0, 0.87);
-  font-weight: 500;
-  line-height: 40px;
-  font-size: ${Styles.fontSizes.m5};
-  margin: 0;
-`;
-
 export const Modal= ({
-  title,
   active = false,
   children,
-  minHeight,
   closeOnBlur,
-  minWidth,
   closeCallback,
 }) => {
   const [isActive, setIsActive] = useState(active);
@@ -89,10 +82,7 @@ export const Modal= ({
     <Fragment>
       <Container active={isActive}>
         <Wrapper>
-          <Header>
-            <Title>{title}</Title>
-          </Header>
-        {children}
+            {children}
         </Wrapper>
       </Container>
       <Background active={isActive} onClick={handleBlur} data-testid="modal-background" />
