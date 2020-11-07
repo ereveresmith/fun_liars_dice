@@ -229,7 +229,6 @@ const GamePage = ({ settings, onEnd }) => {
         let hand = [];
   
         let newHandSize = parseInt(settings.handSize);
-        console.log(newHandSize)
         let isVisible = false;
 
         if (i == 0) {
@@ -317,8 +316,10 @@ const GamePage = ({ settings, onEnd }) => {
       }      
       setTurns([newTurn]);
       rerollDice();
-      setWaitingForTurn(true);
-      await printLog("Starting new round");
+      setWaitingForTurn(true);      
+      await printLog("");
+      await printLog("");
+      await printLog("Starting a new round");
       await timeout(longWait);
       // setLog([]);
     }
@@ -998,7 +999,6 @@ const GamePage = ({ settings, onEnd }) => {
 
   const renderGame = () => {
     console.log("rendering game")
-    console.log(players)
     return (
       <Wrapper isWidescreen={isWidescreen}>
         {isShowingModal && <Modal active={isShowingModal}>
