@@ -42,9 +42,8 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-rows: auto 1fr auto;
   background-color: ${Styles.colors.white};
-  min-width: 440px;
   min-height: 180px;
-  height: 25vh;
+  max-height: 30vh;
   z-index: 5;
   border-radius: 16px;
   box-sizing: border-box;

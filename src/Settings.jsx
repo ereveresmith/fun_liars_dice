@@ -17,6 +17,7 @@ const Wrapper = Styled.div`
     font-size: ${Styles.fontSizes.large};
     align-self: center;
     text-align: left;
+    font-weight: 500;
   `
 
 const GridDiv = Styled.div`
@@ -26,7 +27,8 @@ const GridDiv = Styled.div`
 
 const StyledInput = Styled.input`
   margin: 4px 0;
-  font-size: ${Styles.fontSizes.medium};
+  font-size: ${Styles.fontSizes.large};
+  font-weight: 300;
   `
 
 const SettingsPage = (props) => {
@@ -95,31 +97,23 @@ const SettingsPage = (props) => {
   }
 
   const handleChangePlayers = (e) => {
-    let val = parseInt(e.target.value);
-    if (val > 0 && val < 7) {
-      setAmountOfPlayers(val);
-    }
+    let val = e.target.value;
+    setAmountOfPlayers(val);
   }
 
   const handleChangeHandicap = (e) => {
-    let val = parseInt(e.target.value);
-    if (val >= 0 && val < 6) {
-      setHandicap(val);
-    }
+    let val = e.target.value;
+    setHandicap(val);
   }
 
   const handleChangeHandSize = (e) => {
-    let val = parseInt(e.target.value);
-    if (val > 0 && val < 6) {
-      setHandSize(val);
-    }
+    let val = e.target.value;
+    setHandSize(val);
   }
 
   const handleChangeName = (e) => {
     let val = e.target.value;
-    if (val.length > 0 && val.length < 14) {
-      setName(val);
-    }
+    setName(val);
   }
 
   return (

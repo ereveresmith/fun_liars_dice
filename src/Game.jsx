@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import IconButton from './components/IconButton';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
@@ -13,9 +13,18 @@ import Switch from './components/Switch';
 import { Modal } from './components/Modal'
 import Button from './components/Button';
 
+const DoubleGrid = Styled.div`
+  grid-template-columns: auto auto;
+  display: grid;
+`
+
+const ModalText = Styled.div`
+  padding: 8px 0;
+`
+
 const ModalGrid = Styled.div`
   display: grid;
-  grid-template-rows: auto auto 50%;
+  grid-template-rows: auto auto 50px auto;
   justify-content: center;
   justify-items: center;
 `
@@ -77,7 +86,7 @@ const Wrapper = Styled.div`
   align-content: center;
   margin: 8px 0;
 
-  ${props => props.isWidescreen &&`
+  ${props => props.isWidescreen && `
     grid-template-columns: 63% 1% auto;
     grid-template-rows: auto;
     justify-content: end;
@@ -102,7 +111,7 @@ const GameGrid = Styled.div`
   grid-template-columns: auto auto;
 `
 
-const GamePage = ({ settings, onEnd}) => {
+const GamePage = ({ settings, onEnd }) => {
   const [players, setPlayers] = useState(settings.players);
 
   function getWidth() {
@@ -119,14 +128,16 @@ const GamePage = ({ settings, onEnd}) => {
     number: 0,
     amount: 0,
     fv: 0,
-    player: {id: 0},
+    player: { id: 0 },
     nextPlayer: players[0],
   }
-  
+
   const [turns, setTurns] = useState([initialTurn]);
   const [log, setLog] = useState([]);
   const [gameSpeed, setGameSpeed] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
+  const [shouldRestart, setShouldRestart] = useState(true);
+
   const [isWidescreen, setIsWidescreen] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [isLeftHanded, setIsLeftHanded] = useState(false);
@@ -135,32 +146,32 @@ const GamePage = ({ settings, onEnd}) => {
   const [globalVolume, setGlobalVolume] = useState(1.0);
   const [turnPitch, setTurnPitch] = useState(1);
 
-  const [playRerollSound] = useSound(Sounds.reroll, { volume: globalVolume});
-  const [playChallengeSound] = useSound(Sounds.challenge, { volume: globalVolume});
-  const [playNextRoundSound] = useSound(Sounds.nextRound, { volume: globalVolume});
-  const [playNextTurnSound] = useSound(Sounds.nextTurn, { volume: globalVolume, playbackRate: turnPitch});
-  const [playLoseDiceSound] = useSound(Sounds.loseDice, { volume: globalVolume});
-  const [playErrorSound] = useSound(Sounds.errorSound, { volume: globalVolume});
+  const [playRerollSound] = useSound(Sounds.reroll, { volume: globalVolume });
+  const [playChallengeSound] = useSound(Sounds.challenge, { volume: globalVolume });
+  const [playNextRoundSound] = useSound(Sounds.nextRound, { volume: globalVolume });
+  const [playNextTurnSound] = useSound(Sounds.nextTurn, { volume: globalVolume, playbackRate: turnPitch });
+  const [playLoseDiceSound] = useSound(Sounds.loseDice, { volume: globalVolume });
+  const [playErrorSound] = useSound(Sounds.errorSound, { volume: globalVolume });
 
-  const [playNote0] = useSound(Notes[0], { volume: globalVolume});
-  const [playNote1] = useSound(Notes[1], { volume: globalVolume});
-  const [playNote2] = useSound(Notes[2], { volume: globalVolume});
-  const [playNote3] = useSound(Notes[3], { volume: globalVolume});
-  const [playNote4] = useSound(Notes[4], { volume: globalVolume});
-  const [playNote5] = useSound(Notes[5], { volume: globalVolume});
-  const [playNote6] = useSound(Notes[6], { volume: globalVolume});
-  const [playNote7] = useSound(Notes[7], { volume: globalVolume});
-  const [playNote8] = useSound(Notes[8], { volume: globalVolume});
-  const [playNote9] = useSound(Notes[9], { volume: globalVolume});
-  const [playNote10] = useSound(Notes[10], { volume: globalVolume});
-  const [playNote11] = useSound(Notes[11], { volume: globalVolume});
-  const [playNote12] = useSound(Notes[12], { volume: globalVolume});
-  const [playNote13] = useSound(Notes[13], { volume: globalVolume});
-  const [playNote14] = useSound(Notes[14], { volume: globalVolume});
+  const [playNote0] = useSound(Notes[0], { volume: globalVolume });
+  const [playNote1] = useSound(Notes[1], { volume: globalVolume });
+  const [playNote2] = useSound(Notes[2], { volume: globalVolume });
+  const [playNote3] = useSound(Notes[3], { volume: globalVolume });
+  const [playNote4] = useSound(Notes[4], { volume: globalVolume });
+  const [playNote5] = useSound(Notes[5], { volume: globalVolume });
+  const [playNote6] = useSound(Notes[6], { volume: globalVolume });
+  const [playNote7] = useSound(Notes[7], { volume: globalVolume });
+  const [playNote8] = useSound(Notes[8], { volume: globalVolume });
+  const [playNote9] = useSound(Notes[9], { volume: globalVolume });
+  const [playNote10] = useSound(Notes[10], { volume: globalVolume });
+  const [playNote11] = useSound(Notes[11], { volume: globalVolume });
+  const [playNote12] = useSound(Notes[12], { volume: globalVolume });
+  const [playNote13] = useSound(Notes[13], { volume: globalVolume });
+  const [playNote14] = useSound(Notes[14], { volume: globalVolume });
 
   useEffect(() => {
     console.log("Turns")
-    const nextPlayer = turns[turns.length-1].nextPlayer;
+    const nextPlayer = turns[turns.length - 1].nextPlayer;
 
     if (nextPlayer.id !== 1) {
       calcBotTurn();
@@ -188,19 +199,25 @@ const GamePage = ({ settings, onEnd}) => {
 
   useEffect(() => {
     const restartGame = async (settings) => {
-      playRerollSound();
       setPlayers(settings.players);
-      setTurns([initialTurn]);
-      rerollDice();
-      await printLog('Starting a new game');
+      setIsShowingModal(false);
+      setIsWin(false);
       setIsChallenge(false);
+      setTurns([initialTurn]);
+      rerollDice(true);
+      setLog([]);
+      rerollDice(true);
+      setShouldRestart(false);
+      await printLog('Starting a new game');
     }
 
-    restartGame(settings);
-  }, [settings])
+    if (shouldRestart) {
+      restartGame(settings);
+    }
+  }, [settings, shouldRestart])
 
   const printLog = async (value, fv, amount, value2) => {
-    setLog(log => [...log, {value: value, fv: fv, amount: amount, value2: value2}]);
+    setLog(log => [...log, { value: value, fv: fv, amount: amount, value2: value2 }]);
     timeout(shortWait);
   }
 
@@ -213,9 +230,9 @@ const GamePage = ({ settings, onEnd}) => {
 
     const winner = checkWinner();
     if (winner !== undefined) {
-      await printLog(`${winner.name} has won the game!`);
-      timeout(mediumWait)
+      await printLog(`${winner.name} won the game!`);
       setIsWin(true);
+      await timeout(longWait)
       setIsShowingModal(true);
 
     } else {
@@ -223,7 +240,7 @@ const GamePage = ({ settings, onEnd}) => {
         number: 0,
         amount: 0,
         fv: 0,
-        player: {id: 0},
+        player: { id: 0 },
         nextPlayer: nextPlayer,
       }
       rerollDice();
@@ -270,11 +287,11 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   function timeout(delay) {
-    return new Promise( res => setTimeout(res, delay) );
+    return new Promise(res => setTimeout(res, delay));
   }
 
   const calcBotTurn = async () => {
-    const nextPlayer = turns[turns.length -1].nextPlayer;
+    const nextPlayer = turns[turns.length - 1].nextPlayer;
     const bet = calcBotMove(turns, amountOfActiveDice(), nextPlayer);
     await timeout(bet.timeout);
     submitBet(bet.amount, bet.fv, nextPlayer);
@@ -328,44 +345,44 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const playNextNote = (num, isChord) => {
-    switch(num) {
-      case 0: 
+    switch (num) {
+      case 0:
         playNote0();
         break;
-      case 1: 
+      case 1:
         playNote1();
         break;
-      case 2: 
+      case 2:
         playNote2();
         if (isChord) {
           playNote0();
         }
-        break;      
-      case 3: 
+        break;
+      case 3:
         playNote3();
         if (isChord) {
           playNote1();
         }
-        break;      
-      case 4: 
+        break;
+      case 4:
         playNote4();
         if (isChord) {
           playNote2();
         }
-        break;      
-      case 5: 
+        break;
+      case 5:
         playNote5();
         if (isChord) {
           playNote3();
         }
         break;
-      case 6: 
+      case 6:
         playNote6();
         if (isChord) {
           playNote4();
         }
         break;
-      default: 
+      default:
         playNote6();
         if (isChord) {
           playNote4();
@@ -374,7 +391,8 @@ const GamePage = ({ settings, onEnd}) => {
     }
   }
 
-  const rerollDice = () => {
+  const rerollDice = (enabled) => {
+    playRerollSound();
     const playersArray = [...players];
     const newPlayers = [];
 
@@ -386,7 +404,7 @@ const GamePage = ({ settings, onEnd}) => {
         return {
           fv: newFv,
           visible: visible,
-          disabled: dice.disabled,
+          disabled: enabled ? false : dice.disabled,
           highlight: false,
           highlightColor: Styles.colors.red,
           hasArrow: false,
@@ -399,7 +417,6 @@ const GamePage = ({ settings, onEnd}) => {
       newPlayers.push(playerClone);
     })
 
-    playRerollSound();
     setPlayers(newPlayers);
   }
 
@@ -423,8 +440,12 @@ const GamePage = ({ settings, onEnd}) => {
     timeout(mediumWait);
   }
 
-  const handleClickSettings = async () => {
+  const handleClickSettings = () => {
     onEnd();
+  }
+  
+  const handleRestartGame = () => {
+    setShouldRestart(true);
   }
 
   const handleShowModal = () => {
@@ -454,7 +475,7 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   const checkOutOfDice = (hand) => {
-    for(let i = 0; i < hand.length; i++) {
+    for (let i = 0; i < hand.length; i++) {
       if (hand[i].disabled === false) {
         return false;
       }
@@ -465,10 +486,10 @@ const GamePage = ({ settings, onEnd}) => {
 
   const amountOfActiveDice = () => {
     let amount = 0;
-    for(let i = 0; i < players.length; i++) {
+    for (let i = 0; i < players.length; i++) {
       let hand = players[i].hand;
 
-      for(let k = 0; k < hand.length; k++) {
+      for (let k = 0; k < hand.length; k++) {
         if (hand[k].disabled === false) {
           amount++;
         }
@@ -533,10 +554,10 @@ const GamePage = ({ settings, onEnd}) => {
           hand[y].hasArrow = true;
 
           if (y > 0) {
-            hand[y-1].hasArrow = false;
+            hand[y - 1].hasArrow = false;
           } else {
             if (i > 0) {
-              const handToUpdate =  playersArray[i - 1].hand;
+              const handToUpdate = playersArray[i - 1].hand;
               handToUpdate.forEach((dice) => {
                 dice.hasArrow = false;
               })
@@ -568,14 +589,14 @@ const GamePage = ({ settings, onEnd}) => {
 
           if (isLyingFv) {
             let isEnough = (amountFound >= amount);
-            playNextNote(amountFound-1, isEnough);
+            playNextNote(amountFound - 1, isEnough);
           }
 
 
-          const isBotChallenge = (currentTurn.player.id !== 1 && currentTurn.nextPlayer.id !==1)
+          const isBotChallenge = (currentTurn.player.id !== 1 && currentTurn.nextPlayer.id !== 1)
           let loopBackTime = tinyWait;
 
-          if(isLyingFv){
+          if (isLyingFv) {
             loopBackTime = loopBackTime * 2;
           }
 
@@ -600,7 +621,7 @@ const GamePage = ({ settings, onEnd}) => {
     setIsChallenge(true);
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
-    await printLog(`${nextPlayer.name}: That's a lie!`); 
+    await printLog(`${nextPlayer.name}: That's a lie!`);
     await timeout(longWait);
     await revealNextDice();
   }
@@ -610,14 +631,14 @@ const GamePage = ({ settings, onEnd}) => {
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
     const playersArray = [...players];
-    let lyingPlayer = playersArray[nextPlayer.id-1];
+    let lyingPlayer = playersArray[nextPlayer.id - 1];
 
     const isLying = await checkIsLying();
     if (isLying === true) {
-      lyingPlayer = playersArray[player.id-1];
-    } 
-    
-    if (lyingPlayer.id === nextPlayer.id) { 
+      lyingPlayer = playersArray[player.id - 1];
+    }
+
+    if (lyingPlayer.id === nextPlayer.id) {
       playNextRoundSound();
     } else {
       playErrorSound();
@@ -629,17 +650,18 @@ const GamePage = ({ settings, onEnd}) => {
     setPlayers(playersArray);
     await timeout(shortWait);
     highlightLoser(lyingPlayer.hand);
-    setPlayers(playersArray);    
+    setPlayers(playersArray);
     await timeout(shortWait);
     disableDice(lyingPlayer.hand);
     setPlayers(playersArray);
     await printLog(`${lyingPlayer.name} lost a dice.`);
     playLoseDiceSound();
-    
+
     if (checkOutOfDice(lyingPlayer.hand)) {
       await printLog(`${lyingPlayer.name} is out of the game.`);
-      await timeout(longWait);
+      await timeout(mediumWait);
       if (lyingPlayer.id === 1) {
+        await timeout(longWait);
         setIsShowingModal(true);
         return;
       }
@@ -685,14 +707,14 @@ const GamePage = ({ settings, onEnd}) => {
         if (turns.length > 2 && !isChallenge) {
           isTertiary = (player.id === prevTurn.player.id);
           if (isTertiary) {
-            turnToShow =  prevTurn;
+            turnToShow = prevTurn;
           }
           if (turns.length > 3 && !isChallenge) {
             const prevTurn = turns[turns.length - 3];
 
             isQuad = (player.id === prevTurn.player.id);
             if (isQuad) {
-              turnToShow =  prevTurn;
+              turnToShow = prevTurn;
             }
           }
         }
@@ -700,7 +722,7 @@ const GamePage = ({ settings, onEnd}) => {
 
       const isShowingTurn = (isSecondary || isTertiary || isQuad);
       const isShowingChallenge = (isChallenge && (player.id === currentTurn.player.id | player.id === currentTurn.nextPlayer.id))
-      
+
       return (
         <PlayerDisplay
           isChallenge={isShowingChallenge}
@@ -711,7 +733,8 @@ const GamePage = ({ settings, onEnd}) => {
           isActive={isActive}
           player={player}>
         </PlayerDisplay>
-    )};
+      )
+    };
   }
 
   const calcAmountFound = () => {
@@ -738,31 +761,31 @@ const GamePage = ({ settings, onEnd}) => {
       return <EmptyCell key={`emptyCell${i}`}></EmptyCell>
     }
 
-    switch(amountOfPlayers) {
-      case 1: 
+    switch (amountOfPlayers) {
+      case 1:
         break;
       default:
         break;
-      case 2: 
+      case 2:
         renderedCells.push(emptyCell(1));
         renderedCells.push(emptyCell(2));
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedPlayer(1));
         break;
-      case 3: 
+      case 3:
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedPlayer(3));
 
         renderedCells.push(emptyCell(1));
         renderedCells.push(renderedPlayer(1));
         break;
-      case 4: 
+      case 4:
         renderedCells.push(renderedPlayer(3));
         renderedCells.push(renderedPlayer(4));
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedPlayer(1));
         break;
-      case 5: 
+      case 5:
         renderedCells.push(renderedPlayer(3));
         renderedCells.push(renderedPlayer(4));
 
@@ -772,13 +795,13 @@ const GamePage = ({ settings, onEnd}) => {
         renderedCells.push(emptyCell(1));
         renderedCells.push(renderedPlayer(1));
         break;
-      case 6: 
+      case 6:
         renderedCells.push(renderedPlayer(4));
         renderedCells.push(renderedPlayer(5));
 
         renderedCells.push(renderedPlayer(3));
         renderedCells.push(renderedPlayer(6));
-        
+
         renderedCells.push(renderedPlayer(2));
         renderedCells.push(renderedPlayer(1));
         break;
@@ -798,7 +821,7 @@ const GamePage = ({ settings, onEnd}) => {
   }
 
   let defaultFv = currentTurn.fv + 1;
-  if (defaultFv  < 1) {
+  if (defaultFv < 1) {
     defaultFv++;
   } else if (defaultFv > 6) {
     defaultFv = 1;
@@ -808,7 +831,6 @@ const GamePage = ({ settings, onEnd}) => {
   const renderUIControls = () => {
     return (
       <UILongSection isWidescreen={isWidescreen} isLeftHanded={isLeftHanded}>
-        <IconButton isDefaultActive={isShowingModal} icon={'volume'} onClick={handleShowModal}></IconButton>
         <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
         <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
       </UILongSection>
@@ -820,23 +842,23 @@ const GamePage = ({ settings, onEnd}) => {
       <div>
         {!isWidescreen && renderUIControls()}
         <UIGrid isWidescreen={isWidescreen}>
-        {(!isLeftHanded || isWidescreen) && <LogContainer 
-          log={log}
-          isTall={isWidescreen}>
-        </LogContainer>}
-        {isWidescreen && renderUIControls()}
-        <BetSubmitter 
-          canCall={currentTurn.fv > 0} 
-          disabled={!myTurn || isChallenge} 
-          defaultFv={defaultFv} 
-          defaultAmount={defaultAmount} 
-          onSubmit={handleClickSubmit}>
-        </BetSubmitter>
-        {isLeftHanded && !isWidescreen && <LogContainer 
-          log={log}
-          isTall={isWidescreen}>
-        </LogContainer>}
-      </UIGrid>
+          {(!isLeftHanded || isWidescreen) && <LogContainer
+            log={log}
+            isTall={isWidescreen}>
+          </LogContainer>}
+          {isWidescreen && renderUIControls()}
+          <BetSubmitter
+            canCall={currentTurn.fv > 0}
+            disabled={!myTurn || isChallenge}
+            defaultFv={defaultFv}
+            defaultAmount={defaultAmount}
+            onSubmit={handleClickSubmit}>
+          </BetSubmitter>
+          {isLeftHanded && !isWidescreen && <LogContainer
+            log={log}
+            isTall={isWidescreen}>
+          </LogContainer>}
+        </UIGrid>
       </div>
     )
   }
@@ -860,16 +882,16 @@ const GamePage = ({ settings, onEnd}) => {
   const renderLeftHandedGame = () => {
     return (
       <Wrapper isWidescreen={isWidescreen} isLeftHanded={isLeftHanded}>
-      {!isWidescreen && (<GameGrid>
-        {renderCells()}
-      </GameGrid>)}
-      {!isWidescreen && (<div></div>)}
-      {renderUI()}
-      {isWidescreen && (<div></div>)}
-      {isWidescreen && (<GameGrid>
-        {renderCells()}
-      </GameGrid>)}
-    </Wrapper>
+        {!isWidescreen && (<GameGrid>
+          {renderCells()}
+        </GameGrid>)}
+        {!isWidescreen && (<div></div>)}
+        {renderUI()}
+        {isWidescreen && (<div></div>)}
+        {isWidescreen && (<GameGrid>
+          {renderCells()}
+        </GameGrid>)}
+      </Wrapper>
     )
   }
 
@@ -878,21 +900,25 @@ const GamePage = ({ settings, onEnd}) => {
 
   const renderModalContent = (win) => {
 
-    let modalText = "You ran out of dice. Try again."
-    let modalTitle = 'You Lost!'
+    let modalText = "You have been removed from the game. Try again next time."
+    let modalTitle = 'You are out of dice...'
 
 
     if (win) {
-      modalTitle = "You Won!!!!"
-      modalText = "You won the game!!!!!! Great job."
+      modalTitle = "You Won!"
+      modalText = "Great work. A gold coin has been added to your wallet."
     }
 
 
     return (
       <ModalGrid>
         <h1>{modalTitle}</h1>
-          {modalText}
-        <Button label={"New Game"} onClick={handleClickSettings}></Button>
+        <ModalText>{modalText}</ModalText>
+        <div></div>
+        <DoubleGrid>
+          <Button label={"Rematch"} primary onClick={handleRestartGame}></Button>
+          <Button label={"New Game"} onClick={handleClickSettings}></Button>
+        </DoubleGrid>
       </ModalGrid>
     )
   }
@@ -903,12 +929,12 @@ const GamePage = ({ settings, onEnd}) => {
         {isShowingModal && <Modal active={isShowingModal}>
           {renderModalContent(isWin)}
         </Modal>}
-      <GameGrid>
-        {renderCells()}
-      </GameGrid>
-      <div></div>
-      {renderUI()}
-    </Wrapper>
+        <GameGrid>
+          {renderCells()}
+        </GameGrid>
+        <div></div>
+        {renderUI()}
+      </Wrapper>
     )
   }
 
