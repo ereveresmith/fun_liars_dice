@@ -70,7 +70,7 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
 
 
     console.log("thresh: " + riskThreshold)
-    if (riskScore >= riskThreshold && currentAmount > 0 && currentFv > 0) {
+    if (riskScore >= riskThreshold && currentTurn.amount > 0 && currentTurn.fv > 0) {
         move = 'call'
     }
     console.log(`${player.name}: ${move}`)

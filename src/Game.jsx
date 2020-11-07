@@ -240,7 +240,7 @@ const GamePage = ({ settings, onEnd }) => {
 
           const diceObj = {
             fv: newFv,
-            visible: true,
+            visible: isVisible,
             disabled: false,
             highlight: false,
             hasArrow: false,
@@ -300,6 +300,7 @@ const GamePage = ({ settings, onEnd }) => {
       await printLog(`${winner.name} won the game!`);
       setIsWin(true);
       await timeout(longWait)
+      playNextRoundSound();
       setIsShowingModal(true);
 
     } else {
@@ -518,14 +519,6 @@ const GamePage = ({ settings, onEnd }) => {
     setShouldRestart(true);
   }
 
-  const handleShowModal = () => {
-    if (isShowingModal === true) {
-      setIsShowingModal(false);
-    } else {
-      setIsShowingModal(true);
-    }
-  }
-
   const handleMute = () => {
     if (globalVolume < 1) {
       setGlobalVolume(1);
@@ -708,13 +701,6 @@ const GamePage = ({ settings, onEnd }) => {
       lyingPlayer = playersArray[player.id - 1];
     }
 
-    if (lyingPlayer.id === nextPlayer.id) {
-      playNextRoundSound();
-    } else {
-      playErrorSound();
-    }
-
-
     await timeout(longWait);
     resetHighlight(playersArray);
     setPlayers(playersArray);
@@ -732,6 +718,7 @@ const GamePage = ({ settings, onEnd }) => {
       await timeout(mediumWait);
       if (lyingPlayer.id === 1) {
         await timeout(longWait);
+        playErrorSound();
         setIsShowingModal(true);
         return;
       }
