@@ -153,7 +153,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
   const renderBottomSection = () => {
     let activeDisplay = null;  
     let rand = randomInt(mockLieMessages.length);
-    const lieMessage = "That's bullshit!"
+    const lieMessage = "That's a lie!"
     // const lieMessage = mockLieMessages[rand];
 
     let waitingMessage = ``

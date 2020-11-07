@@ -45,6 +45,10 @@ const StyledSpan = Styled.span`
     opacity: .97;
     font-weight: 600;
   `}
+
+  ${props => props.hasBorder && `
+    border-top: ${Styles.colors.grey} 2px solid;
+  `}
 `
 
 const Wrapper = Styled.div`
@@ -83,7 +87,6 @@ const LogContainer = ({ log, isTall }) => {
 
 
       const hasFv = (message.fv !== undefined);
-      const hasAmount = (message.amount !== undefined);
 
       const actionDisplay = () => {
         let actionDiv = null;
@@ -99,6 +102,7 @@ const LogContainer = ({ log, isTall }) => {
       }
 
       let logMessage = <StyledSpan
+        hasBorder={message.firstTurn}
         isNewest={isNewest}
         key={`message${index}`}>
         {message.value}

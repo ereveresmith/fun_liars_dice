@@ -11,6 +11,7 @@ import { Sounds, Notes } from './util/Sounds'
 import LogContainer from './components/LogContainer';
 import Switch from './components/Switch';
 import { Modal } from './components/Modal'
+import Button from './components/Button';
 
 const UIGrid = Styled.div`
   display: grid;
@@ -587,7 +588,7 @@ const GamePage = ({ settings, onEnd}) => {
     setIsChallenge(true);
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
-    await printLog(`${nextPlayer.name}: That's bullshit!`); 
+    await printLog(`${nextPlayer.name}: That's a lie!`); 
     await timeout(longWait);
     await revealNextDice();
   }
@@ -856,16 +857,31 @@ const GamePage = ({ settings, onEnd}) => {
     )
   }
 
-  const showLoseModal = () => {
-    isShowingModal(true);
-  }
-
   const modalTitle = 'You Lost!'
+  const renderModalContent = (win) => {
+
+    let modalText = "You ran out of dice. Try again."
+
+
+    if (win) {
+      modalText = "You won the game!!!!!! Great job."
+    }
+
+
+    return (
+      <div>
+          {modalText}
+        <Button label={"New Game"} onClick={handleClickSettings}></Button>
+      </div>
+    )
+  }
 
   const renderGame = () => {
     return (
       <Wrapper isWidescreen={isWidescreen}>
-        {isShowingModal && <Modal title={modalTitle} active={isShowingModal}></Modal>}
+        {isShowingModal && <Modal title={modalTitle} active={isShowingModal}>
+          {renderModalContent(true)}
+        </Modal>}
       <GameGrid>
         {renderCells()}
       </GameGrid>
