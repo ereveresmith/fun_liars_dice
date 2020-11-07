@@ -37,61 +37,12 @@ const SettingsPage = (props) => {
   const [handSize, setHandSize] = useState(defaultSettings.handSize);
   const [handicap, setHandicap] = useState(defaultSettings.handicap);
 
-  const randomName = () => {
-    const int = randomInt(mockNames.length);
-    return mockNames[int];
-  }
-
-  const colorsArray = [
-    Styles.colors.purple,
-    Styles.colors.orange,
-    Styles.colors.blue,
-    Styles.colors.pink,
-    Styles.colors.orange,
-    Styles.colors.blue,
-  ]
-
-  const generatePlayers = () => {
-    let players = [];
-
-    for (let i = 0; i < amountOfPlayers; i++) {
-      let hand = [];
-
-      let newHandSize = handSize;
-      if (i == 0) {
-        newHandSize = newHandSize + handicap;
-        console.log("setting new hand size to " + newHandSize)
-      }
-
-      for (let k = 0; k < newHandSize; k++) {
-        const diceObj = {
-          fv: 0,
-          visible: true,
-          disabled: false,
-          highlight: false,
-          hasArrow: false,
-          found: false,
-          highlightColor: Styles.colors.green,
-        }
-        hand.push(diceObj);
-      }
-
-      players.push({
-        name: (i==0) ? name : randomName(), 
-        id: i+1, 
-        hand: hand, 
-        color: colorsArray[i],
-      })
-    }
-
-    return players;
-  }
-
   const handleSubmit = () => {
-    const generatedPlayers = generatePlayers();
-
     const gameSettings = {
-      players: [...generatedPlayers]
+      amountOfPlayers: amountOfPlayers,
+      name: name,
+      handSize: handSize,
+      handicap: handicap,
     }
     props.onSubmit(gameSettings);
   }
