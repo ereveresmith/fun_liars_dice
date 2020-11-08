@@ -480,10 +480,6 @@ const GamePage = ({ settings, onEnd }) => {
     }
   }
 
-  const handlePauseGame = async () => {
-    setGameSpeed(0);
-  }
-
   const handleClickSubmit = async (amount, fv) => {
     if (isValidBet(amount, fv)) {
       submitBet(amount, fv, players[0]);

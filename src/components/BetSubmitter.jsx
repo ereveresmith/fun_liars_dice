@@ -38,13 +38,6 @@ const VerticalGrid = Styled.div`
   justify-items: center;
 `
 
-const HorizontalGrid = Styled.div`
-    display: grid;
-    grid-template-columns: auto auto auto;
-    align-items: center;
-    justify-items: center;
-`
-
 const BetSubmitter = (props) => {
   const [fv, setFv] = useState(props.defaultFv);
   const [amount, setAmount] = useState(props.defaultAmount);

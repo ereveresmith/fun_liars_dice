@@ -98,10 +98,6 @@ const renderUIControls = () => {
     onSwitchView();
   }
 
-  const handleClickSubmit = () => {
-    onSubmit();
-  }
-
   const smallUI = () => {
     return (<UIOuterGrid>
     {renderUIControls()}
@@ -115,7 +111,7 @@ const renderUIControls = () => {
         disabled={!myTurn || isChallenge}
         defaultFv={defaultFv}
         defaultAmount={defaultAmount}
-        onSubmit={handleClickSubmit}>
+        onSubmit={onSubmit}>
       </BetSubmitter>
       {isLeftHanded && <LogContainer
         log={log}
@@ -138,7 +134,7 @@ const renderUIControls = () => {
           disabled={!myTurn || isChallenge}
           defaultFv={defaultFv}
           defaultAmount={defaultAmount}
-          onSubmit={handleClickSubmit}>
+          onSubmit={onSubmit}>
         </BetSubmitter>
       </UIGrid>
       </UIOuterGrid>)
