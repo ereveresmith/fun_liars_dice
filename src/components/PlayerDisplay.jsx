@@ -32,6 +32,9 @@ const LieDisplay = Styled.div`
 `
 
 const TakingTurnDisplay = Styled.div`
+  display: block;
+  position: relative;
+  z-index: 1;
   font-weight: 900;
   font-size: ${Styles.fontSizes.large};
   animation: ${FadeAnimation} 1.3s ease-out infinite;
@@ -103,13 +106,17 @@ const Divider = Styled.div`
 const HandGrid = Styled.div`
   padding: 2px 10px;
   display: grid;
-  height: 38px;
+  min-height: 38px;
   justify-content: center;
   width: 180px;
   grid-gap: 1px;
   justify-content: center;
   justify-items: center;
   align-content: center;
+
+  ${props => props.rows && `
+    grid-template-rows: ${props.rows};
+  `}
 
   ${props => props.columns && `
     grid-template-columns: ${props.columns};
@@ -138,14 +145,28 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
     const isColored = isActive | isChallenge;
 
     let generatedColumns = '';
+    let generatedRows = 'auto';
+    let maxColumns = false;
+
     for (let i = 0; i < player.hand.length; i++) {
-      generatedColumns = generatedColumns + ' auto';
+      if (((i+1) % 5) === 0) {
+        generatedRows = generatedRows + ' auto';
+        maxColumns = true;
+      } else if (!maxColumns) {
+        generatedColumns = generatedColumns + ' auto';
+      }
+      else break;
     }
+
+    console.log(generatedColumns)
+    console.log(generatedRows)
+    console.log("     ")
+
 
     return (
       <ColoredDiv color={player.color} isColored={isColored}>
         <NameText color={player.color} isColored={isColored}>{player.name}</NameText>
-        <HandGrid columns={generatedColumns}>{renderedHand}</HandGrid>
+        <HandGrid columns={generatedColumns} rows={generatedRows}>{renderedHand}</HandGrid>
       </ColoredDiv>
     )
   }

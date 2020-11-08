@@ -91,7 +91,7 @@ const SettingsPage = (props) => {
           <Label>Player Handicap:</Label>
           <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
         </GridDiv>
-        <Button label="Start Game" onClick={handleSubmit}></Button>
+        <Button label="Start Game" primary onClick={handleSubmit}></Button>
       </Wrapper>
     </div>
   );

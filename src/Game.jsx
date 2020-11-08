@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import IconButton from './components/IconButton';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PlayerDisplay from './components/PlayerDisplay';
 import BetSubmitter from './components/BetSubmitter';
 import { calcBotMove } from './util/Bot';
@@ -12,7 +13,7 @@ import LogContainer from './components/LogContainer';
 import Switch from './components/Switch';
 import { Modal } from './components/Modal'
 import Button from './components/Button';
-import { faCoins } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faXRay } from '@fortawesome/free-solid-svg-icons';
 
 const randomName = () => {
   const int = randomInt(mockNames.length);
@@ -28,20 +29,9 @@ const colorsArray = [
   Styles.colors.blue,
 ]
 
-const DoubleGrid = Styled.div`
-  grid-template-columns: auto auto;
+const UIOuterGrid = Styled.div`
   display: grid;
-`
-
-const ModalText = Styled.div`
-  padding: 8px 0;
-`
-
-const ModalGrid = Styled.div`
-  display: grid;
-  grid-template-rows: auto auto 50px auto;
-  justify-content: center;
-  justify-items: center;
+  align-self: baseline;
 `
 
 const UIGrid = Styled.div`
@@ -80,7 +70,7 @@ const UILongSection = Styled.div`
   display: grid;
   align-items: center;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto auto auto;
 `
 
 const EmptyCell = Styled.div`
@@ -97,7 +87,7 @@ const Wrapper = Styled.div`
   justify-content: center;
   justify-items: center;
   align-items: center;
-  align-content: center;
+  align-content: start;
   margin: 8px 0;
 
   ${props => props.isWidescreen && `
@@ -141,6 +131,8 @@ const GamePage = ({ settings, onEnd }) => {
   const [isLeftHanded, setIsLeftHanded] = useState(false);
   const [isShowingModal, setIsShowingModal] = useState(false);
   const [isWin, setIsWin] = useState(false);
+  const [isShowingModalButton, setIsShowingModalButton] = useState(false);
+
 
 
   //Sound Hooks
@@ -224,15 +216,15 @@ const GamePage = ({ settings, onEnd }) => {
   useEffect(() => {
     const generatePlayers = () => {
       const newPlayers = [];
-        for (let i = 0; i < settings.amountOfPlayers; i++) {
+      for (let i = 0; i < settings.amountOfPlayers; i++) {
         let hand = [];
-  
+
         let newHandSize = parseInt(settings.handSize);
         let isVisible = false;
 
         if (i == 0) {
           isVisible = true;
-          newHandSize = newHandSize + settings.handicap;
+          newHandSize = newHandSize + parseInt(settings.handicap);
         }
 
         for (let k = 0; k < newHandSize; k++) {
@@ -249,15 +241,15 @@ const GamePage = ({ settings, onEnd }) => {
           }
           hand.push(diceObj);
         }
-  
+
         newPlayers.push({
-          name: (i==0) ? settings.name : randomName(), 
-          id: i+1, 
-          hand: hand, 
+          name: (i == 0) ? settings.name : randomName(),
+          id: i + 1,
+          hand: hand,
           color: colorsArray[i],
         })
       }
-  
+
       return newPlayers;
     }
 
@@ -281,7 +273,7 @@ const GamePage = ({ settings, onEnd }) => {
       await printLog('Starting a new game');
     }
 
-      startGame(settings);
+    startGame(settings);
   }, [settings])
 
   const printLog = (value, fv, amount, value2) => {
@@ -310,10 +302,10 @@ const GamePage = ({ settings, onEnd }) => {
         fv: 0,
         player: { id: 0 },
         nextPlayer: nextPlayer,
-      }      
+      }
       setTurns([newTurn]);
       rerollDice();
-      setWaitingForTurn(true);      
+      setWaitingForTurn(true);
       await printLog("");
       await printLog("");
       await printLog("Starting a new round");
@@ -514,7 +506,7 @@ const GamePage = ({ settings, onEnd }) => {
   const handleClickSettings = () => {
     onEnd();
   }
-  
+
   const handleRestartGame = () => {
     setShouldRestart(true);
   }
@@ -707,7 +699,7 @@ const GamePage = ({ settings, onEnd }) => {
     let lyingPlayer = playersArray[nextPlayer.id - 1];
 
     const isLying = await checkIsLying();
-    await timeout(longWait)
+    await timeout(mediumWait)
 
     if (isLying === true) {
       lyingPlayer = playersArray[player.id - 1];
@@ -751,7 +743,7 @@ const GamePage = ({ settings, onEnd }) => {
       await nextTurn(amount, fv, nextPlayer);
     }
   }
-  
+
   const calcRemainingPlayers = () => {
     let amountOfPlayersLeft = 0;
     for (let i = 0; i < players.length; i++) {
@@ -896,6 +888,7 @@ const GamePage = ({ settings, onEnd }) => {
   const renderUIControls = () => {
     return (
       <UILongSection isWidescreen={isWidescreen} isLeftHanded={isLeftHanded}>
+        {isShowingModalButton && <Button label={"Finish"} onClick={handleShowModal}></Button>}
         <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
         <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
       </UILongSection>
@@ -923,7 +916,7 @@ const GamePage = ({ settings, onEnd }) => {
       defaultAmount++;
     }
     return (
-      <div>
+      <UIOuterGrid>
         {!isWidescreen && renderUIControls()}
         <UIGrid isWidescreen={isWidescreen}>
           {(!isLeftHanded || isWidescreen) && <LogContainer
@@ -943,7 +936,7 @@ const GamePage = ({ settings, onEnd }) => {
             isTall={isWidescreen}>
           </LogContainer>}
         </UIGrid>
-      </div>
+      </UIOuterGrid>
     )
   }
 
@@ -979,34 +972,45 @@ const GamePage = ({ settings, onEnd }) => {
     )
   }
 
-  const renderModalContent = (win) => {
+  const renderedModal = (win) => {
     let modalText = "You have been removed from the game. Try again next time."
     let modalTitle = 'You are out of dice...'
+    let activeIcon = faXRay;
 
     if (win) {
       modalTitle = "You Won!"
       modalText = "Great work. A gold coin has been added to your wallet."
+      activeIcon = faCoins;
     }
 
     return (
-      <ModalGrid>
-        <h1>{modalTitle}</h1>
-        <ModalText>{modalText}</ModalText>
-        <div></div>
-        <DoubleGrid>
-          <Button label={"Rematch"} primary onClick={handleRestartGame}></Button>
-          <Button label={"New Game"} onClick={handleClickSettings}></Button>
-        </DoubleGrid>
-      </ModalGrid>
+      <Modal 
+        active={isShowingModal} 
+        onClose={handleHideModal}   
+        title={modalTitle}
+        icon={activeIcon}
+        text={modalText}>
+          <Button label={"Rematch"} onClick={handleRestartGame}></Button>
+          <Button label={"Leave Game"} primary onClick={handleClickSettings}></Button>
+      </Modal>
     )
   }
+
+  const handleHideModal = () => {
+    setIsShowingModal(false);
+    setIsShowingModalButton(true);
+  }
+
+  const handleShowModal = () => {
+    setIsShowingModal(true);
+    setIsShowingModalButton(false);
+  }
+
 
   const renderGame = () => {
     return (
       <Wrapper isWidescreen={isWidescreen}>
-        {isShowingModal && <Modal active={isShowingModal}>
-          {renderModalContent(isWin)}
-        </Modal>}
+        {renderedModal(isWin)}
         <GameGrid>
           {renderCells()}
         </GameGrid>

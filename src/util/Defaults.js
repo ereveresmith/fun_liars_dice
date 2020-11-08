@@ -6,6 +6,15 @@ export const shortWait = 300;
 export const mediumWait = 460;
 export const longWait = 1300;
 export const massiveWait = 500000;
+export const WIDESCREEN_SIZE = 640;
+
+export const defaultSettings = {
+  handSize: 1,
+  name: "You",
+  amountOfPlayers: 2,
+  handicap: 0,
+};
+
 
 
 export const randomInt = (max) => {
@@ -78,6 +87,25 @@ export const mockNames = [
   'Ann',
   'Chelsea',
   'Donald',
+  'Raul',
+  'Lars',
+  'Ludwig',
+  'Rod',
+  'Mick',
+  'Stephen',
+  'Alyssa',
+  'Elmo',
+  'Murtry',
+  'Tumbleton',
+  'Rusty',
+  'Buck',
+  'Clay',
+  'Shai',
+  'George',
+  'Emma',
+  'Max',
+  'Richter',
+  'Jan',
   'Joe',
   'Dillon',
   'Jose',
@@ -99,11 +127,3 @@ export const mockNames = [
   'Alec',
 ]
 
-export const defaultSettings = {
-  handSize: 4,
-  name: "You",
-  amountOfPlayers: 4,
-  handicap: 0,
-};
-
-export const WIDESCREEN_SIZE = 600;

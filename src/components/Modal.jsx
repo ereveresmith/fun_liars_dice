@@ -1,8 +1,30 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import styled, { css } from 'styled-components';
+import Styled, { css } from 'styled-components';
 import { Styles } from '../util/Styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const Background = styled.div`
+const IconWrapper = Styled.div`
+  font-size: 44px;
+  padding: 16px;
+  opacity: 0.8;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+`
+
+const DoubleGrid = Styled.div`
+  grid-template-columns: auto auto;
+  display: grid;
+  justify-content: space-between;
+  justify-items: space-between;
+`
+
+const ModalText = Styled.div`
+  padding: 8px 0;
+  max-width: 300px;
+`
+
+const Background = Styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -12,24 +34,25 @@ const Background = styled.div`
   z-index: 4;
   display: none;
   opacity: 0;
-  transition: 0.8s;
+  transition: 1s all ease-in;
   ${({active}) => active && css`
-    opacity: 0.5;
+    opacity: 0.8;
     display: grid;
     justify-items: center;
     justify-content: center;
   `}
 `;
 
-const Container = styled.div`
+const Container = Styled.div`
   position: absolute;
   top: 0;
   width: 100%;
+  min-width: 200px;
   height: 100%;
   align-items: center;
   height: 100%;
   justify-content: center;
-  opacity: 0.5;
+  opacity: 0.8;
   display: none;
 
   ${({ active }) => active && css`
@@ -38,29 +61,26 @@ const Container = styled.div`
   `}
 `;
 
-const Wrapper = styled.div`
+const Wrapper = Styled.div`
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto auto auto;
   background-color: ${Styles.colors.white};
-  min-height: 180px;
-  max-height: 30vh;
-  z-index: 5;
+  min-height: 160px;
+  z-index: 50;
   border-radius: 16px;
   box-sizing: border-box;
-  padding: 16px;
-`;
-
-const Header = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 30px;
-  align-items: center;
+  justify-content: center;
+  align-content: center;
+  padding: 8px 24px;
 `;
 
 export const Modal= ({
   active = false,
+  title,
+  text,
   children,
-  closeOnBlur,
-  closeCallback,
+  icon,
+  onClose,
 }) => {
   const [isActive, setIsActive] = useState(active);
 
@@ -70,18 +90,34 @@ export const Modal= ({
 
   const handleClose = () => {
     setIsActive(false);
-    closeCallback && closeCallback();
+    onClose();
   };
 
   const handleBlur = () => {
-    closeOnBlur && handleClose();
+    handleClose();
   };
+
+  const renderedIcon = () => {
+    let elem = <div></div>
+    if (icon) {
+      elem = <IconWrapper>
+        <FontAwesomeIcon icon={icon}/>
+      </IconWrapper>   
+    }
+
+    return elem;
+  }
 
   return (
     <Fragment>
       <Container active={isActive}>
         <Wrapper>
+          <h2>{title}</h2>
+          <ModalText>{text}</ModalText>
+          {renderedIcon()}
+          <DoubleGrid>
             {children}
+          </DoubleGrid>
         </Wrapper>
       </Container>
       <Background active={isActive} onClick={handleBlur} data-testid="modal-background" />

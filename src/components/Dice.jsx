@@ -6,6 +6,7 @@ const Arrow = Styled.div`
     content: '';
     position: absolute;
     left: 50%;
+    z-index: 6;
     opacity: 0.9;
     top: -12px;
     display: block;
