@@ -5,7 +5,7 @@ import Game from './Game';
 import Settings from './Settings';
 import Button from './components/Button'
 import { Modal } from './components/Modal';
-import { faXRay } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 const App = () => {
   const [page, setPage] = useState('settings');
@@ -65,7 +65,7 @@ const App = () => {
         active={isShowingModal} 
         onClose={handleCancelModal}
         title={"Are you sure?"}
-        icon={faXRay}
+        icon={faExclamationCircle}
         text={"This will end your current game."}>
           <Button label={"Cancel"} onClick={handleCancelModal}></Button>
           <Button label={"Leave Game"} primary onClick={handleConfirmGoHome}></Button>

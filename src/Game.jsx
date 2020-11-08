@@ -13,7 +13,7 @@ import LogContainer from './components/LogContainer';
 import Switch from './components/Switch';
 import { Modal } from './components/Modal'
 import Button from './components/Button';
-import { faCoins, faXRay } from '@fortawesome/free-solid-svg-icons';
+import { faSmileBeam, faSadCry } from '@fortawesome/free-solid-svg-icons';
 
 const randomName = () => {
   const int = randomInt(mockNames.length);
@@ -975,12 +975,12 @@ const GamePage = ({ settings, onEnd }) => {
   const renderedModal = (win) => {
     let modalText = "You have been removed from the game. Try again next time."
     let modalTitle = 'You are out of dice...'
-    let activeIcon = faXRay;
+    let activeIcon = faSadCry;
 
     if (win) {
       modalTitle = "You Won!"
       modalText = "Great work. A gold coin has been added to your wallet."
-      activeIcon = faCoins;
+      activeIcon = faSmileBeam;
     }
 
     return (
