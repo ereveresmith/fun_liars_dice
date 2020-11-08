@@ -4,15 +4,17 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
     const currentTurn = turns[turns.length - 1];
     let currentFv = currentTurn.fv;
     let currentAmount = currentTurn.amount;
+
+    let newFv = currentFv;
+    let newAmount = currentAmount;
+
     if (currentAmount == 0) {
-        currentAmount = currentAmount + 1;
+        newAmount = currentAmount + 1;
     }
     if (currentFv == 0) {
-        currentFv = currentFv + 1;
+        newFv = currentFv + 1;
     }
 
-    let newFv = currentFv + 1;
-    let newAmount = currentAmount;
     let move = 'addOne';
 
     let randomA = randomInt(15);
@@ -44,7 +46,7 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
         }
     }
 
-    if (randomA > 5) {
+    if (randomA > 3) {
         move = 'best';
     } else {
         if (randomB > 6) {
@@ -55,21 +57,20 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
     }
 
 
-    let amountOfFvs = handMap[currentFv-1];
+    let amountOfFvs = handMap[newFv-1];
     let updatedAmount = currentAmount - amountOfFvs;
     let riskScore = updatedAmount / totalAmntOfDice;
 
     let missingDice = player.hand.length - handAmnt;
 
     let randomOffset = randomInt(15) / 100;
-    let missingDiceOffset = 0 - (missingDice * 0.03);
-    console.log(missingDiceOffset)
-    let riskThreshold = 0.26 + randomOffset + missingDiceOffset;
+    let missingDiceOffset = 0 - (missingDice * 0.05);
+    let riskThreshold = 0.24 + randomOffset + missingDiceOffset;
 
     
 
 
-    console.log("thresh: " + riskThreshold)
+    // console.log("thresh: " + riskThreshold)
     if (riskScore >= riskThreshold && currentTurn.amount > 0 && currentTurn.fv > 0) {
         move = 'call'
     }
@@ -77,16 +78,25 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
 
     switch(move) {
         case 'best':
-            newFv = bestOptionIndex + 1;
-            if (newFv <= currentFv) {
-                newAmount++;
-            }
-            if (randomC > 9 && missingDice == 0) {
-                newAmount = newAmount + 1;
+            if (randomB > 7 && currentFv !== 0) {
+                console.log("train")
+                newFv = currentFv;
+                if (newFv <= currentFv && newAmount == currentAmount) {
+                    newAmount++;
+                }
+            } else {
+                console.log("my hand")
+                newFv = bestOptionIndex + 1;
+                if (newFv <= currentFv && newAmount == currentAmount) {
+                    newAmount++;
+                }
+                if (randomC > 8 && missingDice == 0) {
+                    newAmount = newAmount + 1;
+                }
             }
             break;
         case 'lie':
-            newFv = randomInt(5) + 1;
+            newFv = randomInt(6) + 1;
             if (newFv <= currentFv) {
                 newAmount = newAmount + 1;
             } else if (randomC > 5) {
@@ -94,7 +104,9 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
             }
             break;
         case 'addOne':
-            newFv = currentFv + 1;
+            let extra = randomInt(1) + 1;
+            console.log(extra)
+            newFv = currentFv + extra;
             if (newFv > 6) {
                 newFv = 1;
                 newAmount++;

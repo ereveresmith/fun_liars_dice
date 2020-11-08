@@ -236,7 +236,7 @@ const GamePage = ({ settings, onEnd }) => {
         }
 
         for (let k = 0; k < newHandSize; k++) {
-          const newFv = randomInt(5) + 1;
+          const newFv = randomInt(6) + 1;
 
           const diceObj = {
             fv: newFv,
@@ -468,7 +468,7 @@ const GamePage = ({ settings, onEnd }) => {
 
     playersArray.forEach((player) => {
       const newHand = player.hand.map((dice) => {
-        const newFv = randomInt(5) + 1;
+        const newFv = randomInt(6) + 1;
         let visible = false;
 
         return {
@@ -628,6 +628,7 @@ const GamePage = ({ settings, onEnd }) => {
           }
 
           foundInvisible = true;
+          //TODO: make this immutable
           player.hand = hand;
 
           const isLyingFv = (hand[y].fv === fv);
@@ -679,12 +680,21 @@ const GamePage = ({ settings, onEnd }) => {
     }
   }
 
+  const hidePlayerDice = () => {
+    const player = players[0];
+    const hand = player.hand;
+    for (let i = 0; i < hand.length; i++) {
+      hand[i].visible = false;
+    }
+  }
+
   const startChallenge = async () => {
     playChallengeSound();
     setIsChallenge(true);
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
     await printLog(`${nextPlayer.name}: That's a lie!`);
+    hidePlayerDice();
     await timeout(longWait);
     await revealNextDice();
   }
@@ -697,6 +707,8 @@ const GamePage = ({ settings, onEnd }) => {
     let lyingPlayer = playersArray[nextPlayer.id - 1];
 
     const isLying = await checkIsLying();
+    await timeout(longWait)
+
     if (isLying === true) {
       lyingPlayer = playersArray[player.id - 1];
     }
@@ -739,6 +751,18 @@ const GamePage = ({ settings, onEnd }) => {
       await nextTurn(amount, fv, nextPlayer);
     }
   }
+  
+  const calcRemainingPlayers = () => {
+    let amountOfPlayersLeft = 0;
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
+      if (checkOutOfDice(player.hand) === false) {
+        amountOfPlayersLeft++;
+      }
+    }
+
+    return amountOfPlayersLeft;
+  }
 
   const renderedPlayer = (playerNumber) => {
     const currentTurn = turns[turns.length - 1];
@@ -750,6 +774,7 @@ const GamePage = ({ settings, onEnd }) => {
     } else {
       let opacity = 1;
       const isActive = (player.id === currentTurn.nextPlayer.id);
+      const remainingPlayers = calcRemainingPlayers();
       let isSecondary = false;
       let isTertiary = false;
       let isQuad = false;
@@ -761,12 +786,12 @@ const GamePage = ({ settings, onEnd }) => {
         if (isSecondary) {
           turnToShow = currentTurn;
         }
-        if (turns.length > 2 && !isChallenge) {
+        if (turns.length > 2 && !isChallenge && remainingPlayers > 2) {
           isTertiary = (player.id === prevTurn.player.id);
           if (isTertiary) {
             turnToShow = prevTurn;
           }
-          if (turns.length > 3 && !isChallenge) {
+          if (turns.length > 3 && !isChallenge && remainingPlayers > 3) {
             const prevTurn = turns[turns.length - 3];
 
             isQuad = (player.id === prevTurn.player.id);
