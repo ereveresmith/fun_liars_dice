@@ -2,18 +2,15 @@ import React, { useState, useEffect } from 'react';
 import IconButton from './components/IconButton';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PlayerDisplay from './components/PlayerDisplay';
-import BetSubmitter from './components/BetSubmitter';
 import { calcBotMove } from './util/Bot';
-import { randomInt, tinyWait, shortWait, mediumWait, mockNames, longWait, WIDESCREEN_SIZE } from './util/Defaults';
+import { randomInt, tinyWait, shortWait, mediumWait, mockNames, longWait, WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE } from './util/Defaults';
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds'
-import LogContainer from './components/LogContainer';
-import Switch from './components/Switch';
 import { Modal } from './components/Modal'
 import Button from './components/Button';
 import { faSmileBeam, faSadCry } from '@fortawesome/free-solid-svg-icons';
+import UserInterface from './components/UserInterface';
 
 const randomName = () => {
   const int = randomInt(mockNames.length);
@@ -28,50 +25,6 @@ const colorsArray = [
   Styles.colors.orange,
   Styles.colors.blue,
 ]
-
-const UIOuterGrid = Styled.div`
-  display: grid;
-  align-self: baseline;
-`
-
-const UIGrid = Styled.div`
-  display: grid;
-  height: 100%;
-  width: 100%;
-
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
-
-  ${props => props.isWidescreen && `
-    grid-template-rows: auto auto;
-    grid-template-columns: auto;
-  `}
-
-  align-content: center;
-  justify-content: center;
-`
-
-const UILongSection = Styled.div`
-  box-shadow: ${Styles.boxShadows.medium};
-  background-color: ${Styles.colors.white};
-  opacity: 0.83;
-  padding: 4px 8px;
-
-  ${props => !props.isWidescreen && `
-    border-radius: 8px 8px 0 0;
-  `}
-  justify-items: end;
-  justify-content: end;
-
-  ${props => props.isLeftHanded && `
-    justify-items: start;
-    justify-content: start;
-  `}
-  display: grid;
-  align-items: center;
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
-`
 
 const EmptyCell = Styled.div`
   display: grid;
@@ -90,15 +43,15 @@ const Wrapper = Styled.div`
   align-content: start;
   margin: 8px 0;
 
-  ${props => props.isWidescreen && `
+  ${props => (props.screenSize === 'medium' || props.screenSize === 'large') && `
     height: 100vh;
     grid-template-columns: 63% 1% auto;
     grid-template-rows: auto;
-    justify-content: end;
+    justify-content: space-around;
     margin: 0;
   `}
 
-  ${props => props.isWidescreen && props.isLeftHanded && `
+  ${props => props.screenSize === 'medium' && props.screenSize === 'large' && props.isLeftHanded && `
     grid-template-columns: auto 1% 63%;
     grid-template-rows: auto;
     margin: 0;
@@ -108,12 +61,13 @@ const Wrapper = Styled.div`
 
 const GameGrid = Styled.div`
   grid-gap: 4px;
-  width: 90%;
   display: grid;
   justify-items: center;
   justify-content: center;
   align-items: center;
   grid-template-columns: auto auto;
+  justify-self: start;
+  align-self: start;
 `
 
 
@@ -126,7 +80,7 @@ const GamePage = ({ settings, onEnd }) => {
   const [isChallenge, setIsChallenge] = useState(false);
   const [shouldRestart, setShouldRestart] = useState(true);
   const [waitingForTurn, setWaitingForTurn] = useState(false);
-  const [isWidescreen, setIsWidescreen] = useState(true);
+  const [screenSize, setScreenSize] = useState('medium');
   const [isPaused, setIsPaused] = useState(false);
   const [isLeftHanded, setIsLeftHanded] = useState(false);
   const [isShowingModal, setIsShowingModal] = useState(false);
@@ -164,13 +118,21 @@ const GamePage = ({ settings, onEnd }) => {
   }, [waitingForTurn]);
 
   useEffect(() => {
+    const calcSize = (width) =>{
+      if (width > SUPER_WIDESCREEN_SIZE) {
+        console.log('large!')
+        setScreenSize('large')
+      } else if (width > WIDESCREEN_SIZE) {
+        setScreenSize('medium')
+        console.log('medium!')
+      } else {
+        setScreenSize('small')
+        console.log('small!')
+      }
+    }
     const handleResize = (e) => {
       let width = e.currentTarget.innerWidth;
-      if (width > WIDESCREEN_SIZE) {
-        setIsWidescreen(true)
-      } else {
-        setIsWidescreen(false)
-      }
+      calcSize(width);
     }
     window.addEventListener('resize', handleResize);
     function getWidth() {
@@ -182,11 +144,8 @@ const GamePage = ({ settings, onEnd }) => {
         document.documentElement.clientWidth
       );
     }
-    let initialIsWidescreen = false;
-    if (getWidth() > WIDESCREEN_SIZE) {
-      initialIsWidescreen = true;
-    }
-    setIsWidescreen(initialIsWidescreen);
+    let width = getWidth();
+    calcSize(width);
   }, [])
 
   useEffect(() => {
@@ -884,60 +843,23 @@ const GamePage = ({ settings, onEnd }) => {
     return renderedCells;
   }
 
-
-  const renderUIControls = () => {
-    return (
-      <UILongSection isWidescreen={isWidescreen} isLeftHanded={isLeftHanded}>
-        {isShowingModalButton && <Button label={"Finish"} onClick={handleShowModal}></Button>}
-        <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
-        <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
-      </UILongSection>
-    )
-  }
-
   const renderUI = () => {
     if (turns.length < 1) {
       return;
     }
-    const currentTurn = turns[turns.length - 1];
-    const nextPlayer = currentTurn.nextPlayer;
-    const myTurn = (nextPlayer.id === 1);
-
-    let defaultAmount = currentTurn.amount;
-    if (defaultAmount < 1) {
-      defaultAmount++;
-    }
-
-    let defaultFv = currentTurn.fv + 1;
-    if (defaultFv < 1) {
-      defaultFv++;
-    } else if (defaultFv > 6) {
-      defaultFv = 1;
-      defaultAmount++;
-    }
-    return (
-      <UIOuterGrid>
-        {!isWidescreen && renderUIControls()}
-        <UIGrid isWidescreen={isWidescreen}>
-          {(!isLeftHanded || isWidescreen) && <LogContainer
-            log={log}
-            isTall={isWidescreen}>
-          </LogContainer>}
-          {isWidescreen && renderUIControls()}
-          <BetSubmitter
-            canCall={currentTurn.fv > 0}
-            disabled={!myTurn || isChallenge}
-            defaultFv={defaultFv}
-            defaultAmount={defaultAmount}
-            onSubmit={handleClickSubmit}>
-          </BetSubmitter>
-          {isLeftHanded && !isWidescreen && <LogContainer
-            log={log}
-            isTall={isWidescreen}>
-          </LogContainer>}
-        </UIGrid>
-      </UIOuterGrid>
-    )
+    return <UserInterface 
+      turns={turns}
+      screenSize={screenSize}
+      log={log}
+      isLeftHanded={isLeftHanded}
+      isChallenge={isChallenge}
+      onSubmit={handleClickSubmit}
+      isShowingModalButton={isShowingModalButton}
+      onShowModal={handleShowModal}
+      globalVolume={globalVolume}
+      onMute={handleMute}
+      onSwitchView={handleSwitchView}
+    ></UserInterface>
   }
 
   const handleSwitchView = () => {
@@ -958,16 +880,25 @@ const GamePage = ({ settings, onEnd }) => {
 
   const renderLeftHandedGame = () => {
     return (
-      <Wrapper isWidescreen={isWidescreen} isLeftHanded={isLeftHanded}>
-        {!isWidescreen && (<GameGrid>
-          {renderCells()}
-        </GameGrid>)}
-        {!isWidescreen && (<div></div>)}
+      <Wrapper screenSize={screenSize} isLeftHanded={isLeftHanded}>
         {renderUI()}
-        {isWidescreen && (<div></div>)}
-        {isWidescreen && (<GameGrid>
+        <div></div>
+        <GameGrid screenSize={screenSize}>
           {renderCells()}
-        </GameGrid>)}
+        </GameGrid>)
+      </Wrapper>
+    )
+  }
+
+  const renderGame = () => {
+    return (
+      <Wrapper screenSize={screenSize}>
+        {renderedModal(isWin)}
+        <GameGrid screenSize={screenSize}>
+          {renderCells()}
+        </GameGrid>
+        <div></div>
+        {renderUI()}
       </Wrapper>
     )
   }
@@ -1004,20 +935,6 @@ const GamePage = ({ settings, onEnd }) => {
   const handleShowModal = () => {
     setIsShowingModal(true);
     setIsShowingModalButton(false);
-  }
-
-
-  const renderGame = () => {
-    return (
-      <Wrapper isWidescreen={isWidescreen}>
-        {renderedModal(isWin)}
-        <GameGrid>
-          {renderCells()}
-        </GameGrid>
-        <div></div>
-        {renderUI()}
-      </Wrapper>
-    )
   }
 
   let renderedGame = <div></div>

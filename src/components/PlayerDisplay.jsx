@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Styled, { keyframes } from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
@@ -157,11 +157,6 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
       }
       else break;
     }
-
-    console.log(generatedColumns)
-    console.log(generatedRows)
-    console.log("     ")
-
 
     return (
       <ColoredDiv color={player.color} isColored={isColored}>

@@ -44,6 +44,12 @@ const SettingsPage = (props) => {
       handSize: handSize,
       handicap: handicap,
     }
+
+    localStorage['amount_of_players'] = amountOfPlayers;
+    localStorage['name'] = name;
+    localStorage['hand_size'] = handSize;
+    localStorage['handicap'] = handicap;
+
     props.onSubmit(gameSettings);
   }
 

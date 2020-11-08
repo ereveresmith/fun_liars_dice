@@ -6,13 +6,14 @@ export const shortWait = 300;
 export const mediumWait = 460;
 export const longWait = 1300;
 export const massiveWait = 500000;
-export const WIDESCREEN_SIZE = 640;
+export const WIDESCREEN_SIZE = 620;
+export const SUPER_WIDESCREEN_SIZE = 910;
 
 export const defaultSettings = {
-  handSize: 1,
-  name: "You",
-  amountOfPlayers: 2,
-  handicap: 0,
+  handSize: localStorage['hand_size'] || 4,
+  name: localStorage['name'] || "You",
+  amountOfPlayers: localStorage['amount_of_players'] || 4,
+  handicap: localStorage['handicap'] || 0,
 };
 
 
