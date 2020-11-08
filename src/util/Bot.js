@@ -1,4 +1,5 @@
-import { randomInt, tinyWait, shortWait, mediumWait, longWait } from './Defaults';
+import { tinyWait, shortWait, mediumWait, longWait } from './Defaults';
+import { randomInt } from './Helper';
     
 export const calcBotMove = (turns, totalAmntOfDice, player) => {
     const currentTurn = turns[turns.length - 1];

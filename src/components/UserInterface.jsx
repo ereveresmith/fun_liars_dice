@@ -75,8 +75,6 @@ const UserInterface = ({ turns, screenSize, log, isLeftHanded, isChallenge, onSu
     defaultAmount++;
   }
   let isSmall = (screenSize === "small")
-  console.log("IS SMALL: " + isSmall  )
-
 
 const renderUIControls = () => {
   return (

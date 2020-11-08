@@ -3,7 +3,8 @@ import Styled, { keyframes } from 'styled-components';
 import { Styles } from '../util/Styles';
 import Dice from '../components/Dice';
 import TurnDisplay from '../components/TurnDisplay';
-import { randomInt, mockLieMessages } from '../util/Defaults';
+import { mockLieMessages } from '../util/Defaults';
+import { randomInt } from '../util/Helper';
 
 const BottomGrid = Styled.div`
   align-content: center;

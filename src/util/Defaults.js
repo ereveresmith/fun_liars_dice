@@ -16,12 +16,6 @@ export const defaultSettings = {
   handicap: localStorage['handicap'] || 0,
 };
 
-
-
-export const randomInt = (max) => {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
 export const mockLieMessages = [
   "That's a lie!",
   "No way...",

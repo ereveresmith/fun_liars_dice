@@ -4,7 +4,9 @@ import Styled from 'styled-components';
 import { Styles } from './util/Styles';
 import PlayerDisplay from './components/PlayerDisplay';
 import { calcBotMove } from './util/Bot';
-import { randomInt, tinyWait, shortWait, mediumWait, mockNames, longWait, WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE } from './util/Defaults';
+import { tinyWait, shortWait, mediumWait, mockNames, longWait, WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE } from './util/Defaults';
+import { randomInt } from './util/Helper';
+
 import useSound from 'use-sound';
 import { Sounds, Notes } from './util/Sounds'
 import { Modal } from './components/Modal'
