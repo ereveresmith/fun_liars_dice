@@ -53,7 +53,7 @@ const Wrapper = Styled.div`
     margin: 0;
   `}
 
-  ${props => props.screenSize === 'medium' && props.screenSize === 'large' && props.isLeftHanded && `
+  ${props => (props.screenSize === 'medium' || props.screenSize === 'large') && props.isLeftHanded && `
     grid-template-columns: auto 1% 63%;
     grid-template-rows: auto;
     margin: 0;
@@ -877,13 +877,17 @@ const GamePage = ({ settings, onEnd }) => {
   }
 
   const renderLeftHandedGame = () => {
+    const isSmall = (screenSize === "small")
+
     return (
       <Wrapper screenSize={screenSize} isLeftHanded={isLeftHanded}>
-        {renderUI()}
-        <div></div>
+        {!isSmall && renderUI()}
+        {!isSmall && <div></div>}
         <GameGrid screenSize={screenSize}>
           {renderCells()}
-        </GameGrid>)
+        </GameGrid>
+        {isSmall && <div></div>}
+        {isSmall && renderUI()}
       </Wrapper>
     )
   }
