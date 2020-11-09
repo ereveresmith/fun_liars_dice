@@ -12,6 +12,12 @@ const InlineGrid = Styled.div`
   grid-template-columns: auto auto auto auto;
 `
 
+const StyledH1 = Styled.h1`
+  align-self: center;
+  opacity: 0.8;
+  margin: 0;
+`
+
 const Wrapper = Styled.div`
   display: grid;
   justify-items: center;
@@ -41,6 +47,7 @@ const StyledInput = Styled.input`
   margin: 4px 0;
   font-size: ${Styles.fontSizes.medium};
   font-weight: 300;
+  max-width: 100px;
 `
 
 const SettingsGrid = Styled.div`
@@ -111,12 +118,9 @@ const SettingsPage = (props) => {
   return (
     <div>
       <Wrapper>
-        <h1>T I N Y</h1>
         <InlineGrid>
           <Dice visible size={Styles.diceSizes.large} fv={7}></Dice>
-          <Dice visible size={Styles.diceSizes.large} fv={8}></Dice>
-          <Dice visible size={Styles.diceSizes.large} fv={9}></Dice>
-          <Dice visible size={Styles.diceSizes.large} fv={10}></Dice>
+          <StyledH1>TINY Liar's Dice</StyledH1>
         </InlineGrid>
         <TopText>
           Pick some settings and jump into a game of Liar's Dice (Perudo):
