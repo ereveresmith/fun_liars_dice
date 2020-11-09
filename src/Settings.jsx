@@ -1,16 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import Button from './components/Button';
 import Switch from './components/Switch';
-
+import Dice from './components/Dice';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
 import { defaultSettings } from './util/Defaults';
+
+const InlineGrid = Styled.div`
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: auto auto auto auto;
+`
 
 const Wrapper = Styled.div`
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: 4px 20%;
+  margin: 4px 5%;
 `
 
 const Label = Styled.span`
@@ -104,9 +110,16 @@ const SettingsPage = (props) => {
 
   return (
     <div>
-      <Wrapper> 
+      <Wrapper>
+        <h1>T I N Y</h1>
+        <InlineGrid>
+          <Dice visible size={Styles.diceSizes.large} fv={7}></Dice>
+          <Dice visible size={Styles.diceSizes.large} fv={8}></Dice>
+          <Dice visible size={Styles.diceSizes.large} fv={9}></Dice>
+          <Dice visible size={Styles.diceSizes.large} fv={10}></Dice>
+        </InlineGrid>
         <TopText>
-          Welcome! This is a web game based on the tabletop game of the same name. Pick some settings and jump into a game.
+          Pick some settings and jump into a game of Liar's Dice (Perudo):
         </TopText>
         <SettingsGrid>
           <OptionGrid>

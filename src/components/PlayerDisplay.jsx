@@ -11,7 +11,7 @@ const BottomGrid = Styled.div`
   align-items: center;
   display: grid;
   background-color: ${Styles.colors.white};
-  height: 68px;
+  height: 60px;
 `
 
 
@@ -109,7 +109,7 @@ const HandGrid = Styled.div`
   display: grid;
   min-height: 38px;
   justify-content: center;
-  width: 180px;
+  width: 176px;
   grid-gap: 1px;
   justify-content: center;
   justify-items: center;

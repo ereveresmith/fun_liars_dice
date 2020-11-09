@@ -129,6 +129,45 @@ const renderedDots = (value) => {
                 <Dot row={2} column={3}></Dot>
                 <Dot row={3} column={3}></Dot>
             </DotGrid>
+
+        //T
+        case 7:
+            return <DotGrid>
+                <Dot row={1} column={1}></Dot>
+                <Dot row={1} column={2}></Dot>
+                <Dot row={1} column={3}></Dot>
+                <Dot row={2} column={2}></Dot>
+                <Dot row={3} column={2}></Dot>
+            </DotGrid>
+
+        //I
+        case 8:
+            return <DotGrid>
+                <Dot row={1} column={2}></Dot>
+                <Dot row={2} column={2}></Dot>
+                <Dot row={3} column={2}></Dot>
+            </DotGrid>
+
+        //N
+        case 9:
+            return <DotGrid>
+                <Dot row={1} column={1}></Dot>
+                <Dot row={2} column={1}></Dot>
+                <Dot row={3} column={1}></Dot>
+                <Dot row={2} column={2}></Dot>
+                <Dot row={3} column={2}></Dot>
+                <Dot row={2} column={3}></Dot>
+                <Dot row={3} column={3}></Dot>
+            </DotGrid>
+
+        //Y
+        case 10:
+            return <DotGrid>
+                <Dot row={1} column={1}></Dot>
+                <Dot row={1} column={3}></Dot>
+                <Dot row={2} column={2}></Dot>
+                <Dot row={3} column={2}></Dot>
+            </DotGrid>
         default:
             return <DotGrid>
             </DotGrid>

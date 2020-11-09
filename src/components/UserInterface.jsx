@@ -14,11 +14,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const UIOuterGrid = Styled.div`
   display: grid;
   align-self: baseline;
-  margin-left: 20%; 
+  margin-left: 24px; 
 
   ${props => props.isLeftHanded && `
     margin-left: 0%; 
-    margin-right: 20%; 
+    margin-right: 24px; 
   `}
 
   ${props => props.screenSize === "small" && `
@@ -105,7 +105,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
       {!isLeftHanded && <LogContainer
         onClickDice={handleClickDice}
         log={log}
-        isTall={!isSmall}>
+        screenSize={screenSize}>
       </LogContainer>}
       <BetSubmitter
         globalVolume={globalVolume}
@@ -118,7 +118,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
       {isLeftHanded && <LogContainer
         onClickDice={handleClickDice}
         log={log}
-        isTall={!isSmall}>
+        screenSize={screenSize}>
       </LogContainer>}
     </UIGrid>
     </UIOuterGrid>)
@@ -130,7 +130,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
         <LogContainer
           onClickDice={handleClickDice}
           log={log}
-          isTall={!isSmall}>
+          screenSize={screenSize}>
         </LogContainer>
         {renderUIControls()}
         <BetSubmitter

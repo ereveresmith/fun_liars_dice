@@ -15,10 +15,10 @@ const App = () => {
   const Nav = Styled.div`
     width: 100%;
     display: grid;
-    justify-content: center;
+    justify-content: start;
     background-color: ${Styles.colors.darkGrey};
     opacity: 0.9;
-    padding: 2px 0;
+    padding: 2px 24px;
   `
 
   const NavLink = Styled.a`

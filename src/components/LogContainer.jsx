@@ -55,8 +55,8 @@ const Wrapper = Styled.div`
   box-shadow: ${Styles.boxShadows.medium};
   height: 120px;
 
-  ${props => props.isTall && `
-    min-height: 33vh;
+  ${props => props.screenSize === 'large' && `
+    min-height: 200px;;
   `}
   width: 100%;
   min-width: 168px;
@@ -73,7 +73,7 @@ const Wrapper = Styled.div`
   align-items: start;
 `
 
-const LogContainer = ({ log, isTall, onClickDice }) => {
+const LogContainer = ({ log, screenSize, onClickDice }) => {
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const LogContainer = ({ log, isTall, onClickDice }) => {
   }
 
   return (
-    <Wrapper isTall={isTall}>
+    <Wrapper screenSize={screenSize}>
       {renderedLog()}
       <ScrollDiv ref={bottomRef}></ScrollDiv>
     </Wrapper>
