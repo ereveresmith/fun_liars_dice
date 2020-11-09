@@ -104,18 +104,18 @@ const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall, gl
   return (
     <Wrapper onKeyPress={handleKeyDown}>
       <VerticalGrid>
-        <ArrowButton isSecondary onClick={handleRaiseAmount} direction={'up'}></ArrowButton>
+        <ArrowButton onClick={handleRaiseAmount} direction={'up'}></ArrowButton>
         <HugeText>{amount}</HugeText>
-        <ArrowButton isSecondary onClick={handleLowerAmount}></ArrowButton>
+        <ArrowButton onClick={handleLowerAmount}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>
-        <ArrowButton isSecondary onClick={handleRaiseFv} direction={'up'}></ArrowButton>
+        <ArrowButton onClick={handleRaiseFv} direction={'up'}></ArrowButton>
         <Dice fv={fv} size={Styles.diceSizes.ui} visible></Dice>
-        <ArrowButton isSecondary onClick={handleLowerFv}></ArrowButton>
+        <ArrowButton onClick={handleLowerFv}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>
-        <Button label="Bet" onClick={handleSubmit}></Button>
-        <Button isSecondary label="Call" onClick={handleCall}></Button>
+        <Button label="Bet" primary onClick={handleSubmit}></Button>
+        <Button label="Call" onClick={handleCall}></Button>
       </VerticalGrid>
     </Wrapper>
   );

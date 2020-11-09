@@ -2,25 +2,23 @@ import React, {useState, useEffect} from 'react';
 import Button from './components/Button';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
-import { randomInt, mockNames, defaultSettings } from './util/Defaults';
-import useSound from 'use-sound';
-import { Sounds, Notes } from './util/Sounds';
+import { defaultSettings } from './util/Defaults';
 
 const Wrapper = Styled.div`
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: 4px;
+  margin: 4px 20%;
   `
 
   const Label = Styled.span`
-    font-size: ${Styles.fontSizes.large};
+    font-size: ${Styles.fontSizes.medium};
     align-self: center;
     text-align: left;
     font-weight: 500;
   `
 
-const GridDiv = Styled.div`
+const OptionGrid = Styled.div`
   display: grid;
   margin: 8px;
 `
@@ -32,7 +30,7 @@ const TopText = Styled.div`
 
 const StyledInput = Styled.input`
   margin: 4px 0;
-  font-size: ${Styles.fontSizes.large};
+  font-size: ${Styles.fontSizes.medium};
   font-weight: 300;
 `
 
@@ -46,6 +44,8 @@ const SettingsPage = (props) => {
   const [name, setName] = useState(defaultSettings.name);
   const [handSize, setHandSize] = useState(defaultSettings.handSize);
   const [handicap, setHandicap] = useState(defaultSettings.handicap);
+  const [randomMode, setRandomMode] = useState(defaultSettings.randomMode);
+  const [randomVariance, setRandomVariance] = useState(defaultSettings.randomVariance);
 
   const handleSubmit = () => {
     const gameSettings = {
@@ -53,13 +53,16 @@ const SettingsPage = (props) => {
       name: name,
       handSize: handSize,
       handicap: handicap,
+      randomMode: randomMode,
+      randomVariance: randomVariance,
     }
 
     localStorage['amount_of_players'] = amountOfPlayers;
     localStorage['name'] = name;
     localStorage['hand_size'] = handSize;
     localStorage['handicap'] = handicap;
-
+    localStorage['random_mode'] = randomMode;
+    localStorage['random_variance'] = randomVariance;
     props.onSubmit(gameSettings);
   }
 
@@ -85,28 +88,27 @@ const SettingsPage = (props) => {
 
   return (
     <div>
-      <Wrapper>
-        <h2>Set up a Game</h2>
+      <Wrapper> 
         <TopText>
           Welcome to Tiny Liar's Dice. Pick your settings and jump into a game of Liar's Dice (Perudo).
         </TopText>
         <SettingsGrid>
-          <GridDiv>
+          <OptionGrid>
             <Label>Your Name:</Label>
             <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
-          </GridDiv>
-          <GridDiv>
+          </OptionGrid>
+          <OptionGrid>
             <Label># of Players</Label>
             <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
-          </GridDiv>
-          <GridDiv>
+          </OptionGrid>
+          <OptionGrid>
             <Label>Dice Per Player:</Label>
             <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
-          </GridDiv>
-          <GridDiv>
+          </OptionGrid>
+          <OptionGrid>
             <Label>Player Handicap:</Label>
             <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
-          </GridDiv>
+          </OptionGrid>
         </SettingsGrid>
         
         <Button label="Start Game" primary onClick={handleSubmit}></Button>

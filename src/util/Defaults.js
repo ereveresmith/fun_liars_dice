@@ -3,8 +3,8 @@
 
 export const tinyWait = 140;
 export const shortWait = 300;
-export const mediumWait = 460;
-export const longWait = 1300;
+export const mediumWait = 440;
+export const longWait = 1100;
 export const massiveWait = 500000;
 export const WIDESCREEN_SIZE = 620;
 export const SUPER_WIDESCREEN_SIZE = 910;
@@ -13,7 +13,9 @@ export const defaultSettings = {
   handSize: localStorage['hand_size'] || 4,
   name: localStorage['name'] || "You",
   amountOfPlayers: localStorage['amount_of_players'] || 4,
-  handicap: localStorage['handicap'] || 0,
+  handicap: localStorage['handicap'] || 2,
+  randomMode: localStorage['random_mode'] || true,
+  randomVariance: localStorage['random_variance'] || 3,
 };
 
 export const mockLieMessages = [

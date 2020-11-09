@@ -4,9 +4,9 @@ import { Styles } from '../util/Styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const IconWrapper = Styled.div`
-  font-size: 44px;
-  padding: 16px;
-  opacity: 0.8;
+  font-size: 40px;
+  opacity: 0.7;
+  margin-top: 8px;
   display: grid;
   justify-content: center;
   justify-items: center;
@@ -17,6 +17,10 @@ const DoubleGrid = Styled.div`
   display: grid;
   justify-content: space-between;
   justify-items: space-between;
+`
+
+const GridSection = Styled.div`
+  grid-template-rows: auto auto;
 `
 
 const ModalText = Styled.div`
@@ -61,9 +65,14 @@ const Container = Styled.div`
   `}
 `;
 
+const TopGrid = Styled.div`
+  display: grid;
+  grid-template-columns: 70% auto;
+`
+
 const Wrapper = Styled.div`
   display: grid;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: 80% auto;
   background-color: ${Styles.colors.white};
   min-height: 160px;
   z-index: 50;
@@ -71,7 +80,7 @@ const Wrapper = Styled.div`
   box-sizing: border-box;
   justify-content: center;
   align-content: center;
-  padding: 8px 24px;
+  padding: 12px 48px;
 `;
 
 export const Modal= ({
@@ -112,9 +121,13 @@ export const Modal= ({
     <Fragment>
       <Container active={isActive}>
         <Wrapper>
-          <h2>{title}</h2>
-          <ModalText>{text}</ModalText>
-          {renderedIcon()}
+          <TopGrid>
+            <GridSection>
+              <h2>{title}</h2>
+              <ModalText>{text}</ModalText>
+            </GridSection>
+            {renderedIcon()}
+          </TopGrid>
           <DoubleGrid>
             {children}
           </DoubleGrid>

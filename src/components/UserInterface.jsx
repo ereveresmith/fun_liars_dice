@@ -98,6 +98,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
         isTall={!isSmall}>
       </LogContainer>}
       <BetSubmitter
+        globalVolume={globalVolume}
         canCall={currentTurn.fv > 0}
         disabled={!myTurn || isChallenge}
         defaultFv={defaultFv}
@@ -123,6 +124,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
         </LogContainer>
         {renderUIControls()}
         <BetSubmitter
+          globalVolume={globalVolume}
           canCall={currentTurn.fv > 0}
           disabled={!myTurn || isChallenge}
           defaultFv={defaultFv}

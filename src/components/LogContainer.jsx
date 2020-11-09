@@ -56,7 +56,7 @@ const Wrapper = Styled.div`
   height: 120px;
 
   ${props => props.isTall && `
-    min-height: 140px;
+    min-height: 33vh;
   `}
   width: 100%;
   min-width: 168px;

@@ -86,6 +86,10 @@ const GameGrid = Styled.div`
   grid-template-columns: auto auto;
   justify-self: center;
   align-self: start;
+
+  ${props => props.screenSize === 'large'&& `
+    align-self: center;
+  `}
 `
 
 
@@ -203,9 +207,15 @@ const GamePage = ({ settings, onEnd }) => {
         let newHandSize = parseInt(settings.handSize);
         let isVisible = false;
 
+        //If it's you
         if (i == 0) {
           isVisible = true;
           newHandSize = newHandSize + parseInt(settings.handicap);
+        } else {
+          if (settings.randomMode) {
+            let rand = randomInt(settings.randomVariance)
+            newHandSize = newHandSize + rand;
+          }
         }
 
         for (let k = 0; k < newHandSize; k++) {
@@ -503,6 +513,8 @@ const GamePage = ({ settings, onEnd }) => {
   const handleClickSubmit = async (amount, fv) => {
     if (isValidBet(amount, fv)) {
       submitBet(amount, fv, players[0]);
+    } else {
+      playErrorSound();
     }
   }
 
@@ -662,7 +674,7 @@ const GamePage = ({ settings, onEnd }) => {
     setIsChallenge(true);
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
-    await printLog(`${nextPlayer.name}: That's a lie!`);
+    await printLog(`${nextPlayer.name}: That's bull!!`);
     hidePlayerDice();
     await timeout(longWait);
     await revealNextDice();
