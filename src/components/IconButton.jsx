@@ -11,6 +11,8 @@ const StyledButton = Styled.button`
   color: ${Styles.colors.grey};
   text-transform: uppercase;
   border: 0;
+  align-self: center;
+  justify-self: center;
   font-weight: 700;
   cursor: pointer;
   outline: 0;

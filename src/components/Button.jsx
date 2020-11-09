@@ -5,6 +5,7 @@ import { Styles } from '../util/Styles'
 const StyledButton = Styled.button`
   padding: 2px 16px;
   border-radius: 8px;
+  margin 0 8px;
   color: ${Styles.colors.black};
   font-weight: 500;
   background-color: ${Styles.colors.white};

@@ -14,6 +14,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const UIOuterGrid = Styled.div`
   display: grid;
   align-self: baseline;
+  margin-left: 20%; 
+
+  ${props => props.isLeftHanded && `
+    margin-left: 0%; 
+    margin-right: 20%; 
+  `}
+
+  ${props => props.screenSize === "small" && `
+    margin: 0;
+  `}
 `
 
 const UIGrid = Styled.div`
@@ -89,7 +99,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
   }
 
   const smallUI = () => {
-    return (<UIOuterGrid>
+    return (<UIOuterGrid isLeftHanded={isLeftHanded} screenSize={screenSize}>
     {renderUIControls()}
     <UIGrid screenSize={screenSize}>
       {!isLeftHanded && <LogContainer
@@ -115,7 +125,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
   }
 
   const bigUI = () => {
-    return (<UIOuterGrid>
+    return (<UIOuterGrid isLeftHanded={isLeftHanded} screenSize={screenSize}>
       <UIGrid screenSize={screenSize}>
         <LogContainer
           onClickDice={handleClickDice}

@@ -7,9 +7,11 @@ outline: 0;
 margin: 0;
 padding: 0;
 position: relative;
+justify-self: center;
+align-self: center;
 display: inline-block;
 box-sizing: border-box;
-min-width: 44px;
+width: 44px;
 height: 22px;
 vertical-align: middle;
 border: ${Styles.colors.grey} solid 1px;
@@ -39,7 +41,7 @@ background-color: ${Styles.colors.grey};
 
 &:hover {
     transition: background-color 50ms ease-out;
-    background-color: ${Styles.colors.darkGrey};
+    background-color: ${Styles.colors.purple};
 }
 
 ${({isChecked}) => isChecked ? `

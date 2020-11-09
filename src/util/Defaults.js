@@ -14,7 +14,7 @@ export const defaultSettings = {
   name: localStorage['name'] || "You",
   amountOfPlayers: localStorage['amount_of_players'] || 4,
   handicap: localStorage['handicap'] || 2,
-  randomMode: localStorage['random_mode'] || true,
+  randomMode: localStorage['random_mode'] || false,
   randomVariance: localStorage['random_variance'] || 3,
 };
 

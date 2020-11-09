@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Button from './components/Button';
+import Switch from './components/Switch';
+
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
 import { defaultSettings } from './util/Defaults';
@@ -9,14 +11,14 @@ const Wrapper = Styled.div`
   justify-items: center;
   align-items: center;
   margin: 4px 20%;
-  `
+`
 
-  const Label = Styled.span`
-    font-size: ${Styles.fontSizes.medium};
-    align-self: center;
-    text-align: left;
-    font-weight: 500;
-  `
+const Label = Styled.span`
+  font-size: ${Styles.fontSizes.medium};
+  align-self: center;
+  text-align: left;
+  font-weight: 500;
+`
 
 const OptionGrid = Styled.div`
   display: grid;
@@ -25,7 +27,8 @@ const OptionGrid = Styled.div`
 
 const TopText = Styled.div`
   align-text: left;
-  margin: 0 96px;
+  margin: 12px 48px;
+  font-size: ${Styles.fontSizes.medium}
 `
 
 const StyledInput = Styled.input`
@@ -86,11 +89,24 @@ const SettingsPage = (props) => {
     setName(val);
   }
 
+  const handleChangeVariance = (e) => {
+    let val = e.target.value;
+    setRandomVariance(val);
+  }
+
+  const handleToggleRandomMode = (e) => {
+    if(randomMode) {
+      setRandomMode(false);
+    } else {
+      setRandomMode(true);
+    }
+  }
+
   return (
     <div>
       <Wrapper> 
         <TopText>
-          Welcome to Tiny Liar's Dice. Pick your settings and jump into a game of Liar's Dice (Perudo).
+          Welcome! This is a web game based on the tabletop game of the same name. Pick some settings and jump into a game.
         </TopText>
         <SettingsGrid>
           <OptionGrid>
@@ -109,6 +125,14 @@ const SettingsPage = (props) => {
             <Label>Player Handicap:</Label>
             <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
           </OptionGrid>
+          <OptionGrid>
+            <Label>Random Mode:</Label>
+            <Switch isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
+          </OptionGrid>
+          {randomMode && <OptionGrid>
+            <Label>Random Offset:</Label>
+            <StyledInput value={randomVariance} label={"Random Offset"} onChange={handleChangeVariance}></StyledInput>
+          </OptionGrid>}
         </SettingsGrid>
         
         <Button label="Start Game" primary onClick={handleSubmit}></Button>

@@ -47,32 +47,32 @@ const Wrapper = Styled.div`
 
   ${props => props.screenSize === 'medium' && `
     height: 100vh;
-    grid-template-columns: 63% 1% auto;
+    grid-template-columns: auto auto auto;
     grid-template-rows: auto;
-    justify-content: space-around;
+    justify-content: center;
     margin: 0;
   `}
 
   ${props => props.screenSize === 'medium' && props.isLeftHanded && `
-    grid-template-columns: auto 1% 63%;
+    grid-template-columns: auto auto auto;
     grid-template-rows: auto;
     margin: 0;
-    justify-content: space-around;
+    justify-content: center;
   `}
 
   ${props => props.screenSize === 'large' && `
     height: 100vh;
-    grid-template-columns: 80% 1% auto;
+    grid-template-columns: auto auto auto;
     grid-template-rows: auto;
-    justify-content: space-around;
+    justify-content: center;
     margin: 0;
   `}
 
   ${props => props.screenSize === 'large' && props.isLeftHanded && `
     height: 100vh;
-    grid-template-columns: auto 1% 80%;
+    grid-template-columns: auto auto auto;
     grid-template-rows: auto;
-    justify-content: space-around;
+    justify-content: center;
     margin: 0;
   `}
   `
