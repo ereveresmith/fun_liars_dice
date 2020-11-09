@@ -5,6 +5,8 @@ import findDiceSound from '../media/findDice.m4a';
 import loseDiceSound from '../media/loseDice.m4a';
 import clickSound from '../media/click.m4a';
 import errorSound from '../media/error.m4a';
+import clickUISound from '../media/clickUI.m4a';
+
 
 import noteD4 from '../media/notes/d4.m4a';
 import noteE4 from '../media/notes/e4.m4a';
@@ -24,6 +26,7 @@ export const Sounds = {
     findDice: findDiceSound,
     loseDice: loseDiceSound,
     errorSound: errorSound,
+    clickUI: clickUISound,
 }
 
 export const Notes = [

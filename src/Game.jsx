@@ -118,6 +118,8 @@ const GamePage = ({ settings, onEnd }) => {
   const [playNextTurnSound] = useSound(Sounds.nextTurn, { volume: globalVolume, playbackRate: turnPitch });
   const [playLoseDiceSound] = useSound(Sounds.loseDice, { volume: globalVolume });
   const [playErrorSound] = useSound(Sounds.errorSound, { volume: globalVolume });
+  const [playClickDiceSound] = useSound(Sounds.clickUI, { volume: globalVolume });
+
   const [playNote0] = useSound(Notes[0], { volume: globalVolume });
   const [playNote1] = useSound(Notes[1], { volume: globalVolume });
   const [playNote2] = useSound(Notes[2], { volume: globalVolume });
@@ -720,8 +722,10 @@ const GamePage = ({ settings, onEnd }) => {
   }
 
   const handleClickDice = (fv) => {
-    console.log("yo" + fv)
-    setDefaultFv(fv)
+    if (fv !== defaultFv) {
+      playClickDiceSound();
+      setDefaultFv(fv)
+    }
   }
 
   const calcRemainingPlayers = () => {

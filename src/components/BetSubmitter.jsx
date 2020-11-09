@@ -5,6 +5,8 @@ import Button from './Button';
 import IconButton from './IconButton';
 import ArrowButton from './ArrowButton';
 import Dice from './Dice';
+import useSound from 'use-sound';
+import { Sounds } from '../util/Sounds'
 
 const HugeText = Styled.h1`
   font-size: ${Styles.fontSizes.huge};
@@ -38,9 +40,12 @@ const VerticalGrid = Styled.div`
   justify-items: center;
 `
 
-const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall}) => {
+const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall, globalVolume}) => {
   const [fv, setFv] = useState(defaultFv);
   const [amount, setAmount] = useState(defaultAmount);
+
+  const [playClickUISound] = useSound(Sounds.clickUI, { volume: globalVolume });
+
 
   useEffect(() => {
     setFv(defaultFv);
@@ -52,24 +57,28 @@ const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall}) =
 
   const handleLowerAmount = () => {
     if(amount - 1 > 0) {
+      playClickUISound();
       setAmount(amount - 1)
     }
   }
 
   const handleRaiseAmount = () => {
     if(amount + 1 <= 99) {
+      playClickUISound();
       setAmount(c => c + 1)
     }
   }
 
   const handleLowerFv = () => {
     if(fv - 1 > 0) {
+      playClickUISound();
       setFv(c => c - 1)
     }
   }
 
   const handleRaiseFv = () => {
     if(fv + 1 <= 6) {
+      playClickUISound();
       setFv(c => c + 1)
     }
   }
