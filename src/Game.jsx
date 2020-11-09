@@ -45,7 +45,7 @@ const Wrapper = Styled.div`
   align-content: start;
   margin: 8px 0;
 
-  ${props => (props.screenSize === 'medium' || props.screenSize === 'large') && `
+  ${props => props.screenSize === 'medium' && `
     height: 100vh;
     grid-template-columns: 63% 1% auto;
     grid-template-rows: auto;
@@ -53,11 +53,27 @@ const Wrapper = Styled.div`
     margin: 0;
   `}
 
-  ${props => (props.screenSize === 'medium' || props.screenSize === 'large') && props.isLeftHanded && `
+  ${props => props.screenSize === 'medium' && props.isLeftHanded && `
     grid-template-columns: auto 1% 63%;
     grid-template-rows: auto;
     margin: 0;
-    justify-content: start;
+    justify-content: space-around;
+  `}
+
+  ${props => props.screenSize === 'large' && `
+    height: 100vh;
+    grid-template-columns: 80% 1% auto;
+    grid-template-rows: auto;
+    justify-content: space-around;
+    margin: 0;
+  `}
+
+  ${props => props.screenSize === 'large' && props.isLeftHanded && `
+    height: 100vh;
+    grid-template-columns: auto 1% 80%;
+    grid-template-rows: auto;
+    justify-content: space-around;
+    margin: 0;
   `}
   `
 
@@ -68,7 +84,7 @@ const GameGrid = Styled.div`
   justify-content: center;
   align-items: center;
   grid-template-columns: auto auto;
-  justify-self: start;
+  justify-self: center;
   align-self: start;
 `
 
@@ -79,6 +95,8 @@ const GamePage = ({ settings, onEnd }) => {
   const [turns, setTurns] = useState([]);
   const [log, setLog] = useState([]);
   const [gameSpeed, setGameSpeed] = useState(1);
+  const [defaultAmount, setDefaultAmount] = useState(1);
+  const [defaultFv, setDefaultFv] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
   const [shouldRestart, setShouldRestart] = useState(true);
   const [waitingForTurn, setWaitingForTurn] = useState(false);
@@ -356,7 +374,6 @@ const GamePage = ({ settings, onEnd }) => {
     }
 
     await printLog(`Found `, fv, amntFound, 's');
-    await timeout(longWait)
 
     if (amntFound >= amount) {
       await printLog(`It was the truth!`);
@@ -449,6 +466,7 @@ const GamePage = ({ settings, onEnd }) => {
     const nextPlayer = calcNextPlayer(currentPlayer);
     const newTurnNumber = currentTurn.number + 1;
     timeout(mediumWait);
+    setDefaultAmount(amount)
 
     const newTurn = {
       number: newTurnNumber,
@@ -656,7 +674,7 @@ const GamePage = ({ settings, onEnd }) => {
     let lyingPlayer = playersArray[nextPlayer.id - 1];
 
     const isLying = await checkIsLying();
-    await timeout(mediumWait)
+    await timeout(longWait)
 
     if (isLying === true) {
       lyingPlayer = playersArray[player.id - 1];
@@ -699,6 +717,11 @@ const GamePage = ({ settings, onEnd }) => {
     } else {
       await nextTurn(amount, fv, nextPlayer);
     }
+  }
+
+  const handleClickDice = (fv) => {
+    console.log("yo" + fv)
+    setDefaultFv(fv)
   }
 
   const calcRemainingPlayers = () => {
@@ -756,6 +779,7 @@ const GamePage = ({ settings, onEnd }) => {
 
       return (
         <PlayerDisplay
+          onClickDice={handleClickDice}
           isChallenge={isShowingChallenge}
           key={`playerDisplay${playerNumber}`}
           turn={turnToShow}
@@ -846,8 +870,11 @@ const GamePage = ({ settings, onEnd }) => {
       return;
     }
     return <UserInterface 
-      turns={turns}
+      defaultAmount={defaultAmount}
+      defaultFv={defaultFv}
+      currentTurn={turns[turns.length -1]}
       screenSize={screenSize}
+      onClickDice={handleClickDice}
       log={log}
       isLeftHanded={isLeftHanded}
       isChallenge={isChallenge}

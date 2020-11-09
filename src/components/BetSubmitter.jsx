@@ -38,14 +38,17 @@ const VerticalGrid = Styled.div`
   justify-items: center;
 `
 
-const BetSubmitter = (props) => {
-  const [fv, setFv] = useState(props.defaultFv);
-  const [amount, setAmount] = useState(props.defaultAmount);
+const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall}) => {
+  const [fv, setFv] = useState(defaultFv);
+  const [amount, setAmount] = useState(defaultAmount);
 
   useEffect(() => {
-    setFv(props.defaultFv);
-    setAmount(props.defaultAmount);
-  }, [props.defaultAmount, props.defaultFv])
+    setFv(defaultFv);
+  }, [defaultFv])
+
+  useEffect(() => {
+    setAmount(defaultAmount);
+  }, [defaultAmount])
 
   const handleLowerAmount = () => {
     if(amount - 1 > 0) {
@@ -72,14 +75,14 @@ const BetSubmitter = (props) => {
   }
 
   const handleSubmit = () => {
-    if (props.disabled === false) {
-      props.onSubmit(amount, fv);
+    if (disabled === false) {
+      onSubmit(amount, fv);
     }
   }
 
   const handleCall = () => {
-    if (props.disabled === false && props.canCall) {
-      props.onSubmit(-1, -1);
+    if (disabled === false && canCall) {
+      onSubmit(-1, -1);
     }
   }
 

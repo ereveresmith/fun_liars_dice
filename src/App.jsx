@@ -14,17 +14,23 @@ const App = () => {
 
   const Nav = Styled.div`
     width: 100%;
-    height: 24px;
+    display: grid;
+    justify-content: center;
     background-color: ${Styles.colors.darkGrey};
     opacity: 0.9;
-    padding: 1px 8px;
+    padding: 2px 0;
   `
 
   const NavLink = Styled.a`
     font-size: ${Styles.fontSizes.medium};
     color: ${Styles.colors.white};
     font-weight: 600;
+    text-transform: uppercase;
     cursor: pointer;
+
+    &:hover {
+      color: ${Styles.colors.lightGrey};
+    }
   `
 
   const handleStartGame = (settings) => {

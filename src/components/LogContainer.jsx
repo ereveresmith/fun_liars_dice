@@ -56,7 +56,7 @@ const Wrapper = Styled.div`
   height: 120px;
 
   ${props => props.isTall && `
-    min-height: 340px;
+    min-height: 140px;
   `}
   width: 100%;
   min-width: 168px;
@@ -73,7 +73,7 @@ const Wrapper = Styled.div`
   align-items: start;
 `
 
-const LogContainer = ({ log, isTall }) => {
+const LogContainer = ({ log, isTall, onClickDice }) => {
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -88,13 +88,19 @@ const LogContainer = ({ log, isTall }) => {
 
       const hasFv = (message.fv !== undefined);
 
+      const handleClickDice = () => (fv) => {
+        if (onClickDice) {
+          onClickDice(fv)
+        }
+      }
+
       const actionDisplay = () => {
         let actionDiv = null;
 
         if (hasFv) {
           actionDiv = <DiceWrapper>
             <HugeText isNewest={isNewest}>{message.amount}</HugeText>
-            <Dice fv={message.fv} size={Styles.diceSizes.small} visible></Dice>
+            <Dice onClick={handleClickDice(message.fv)} fv={message.fv} size={Styles.diceSizes.small} visible></Dice>
           </DiceWrapper>
         }
 

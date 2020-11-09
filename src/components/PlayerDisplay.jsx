@@ -124,8 +124,13 @@ const HandGrid = Styled.div`
   `}
 `;
 
-const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity}) => {
+const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity, onClickDice}) => {
   let isOut = true;
+
+  const handleClickDice = () => (fv) => {
+    console.log("BRORO")
+    onClickDice(fv)
+  }
 
   const renderedHand = player.hand.map((dice, index) => {
       const diceSize = dice.visible ? Styles.diceSizes.large : Styles.diceSizes.small;
@@ -134,9 +139,9 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
       }
 
       if (player.id === 1) {
-        return <Dice size={Styles.diceSizes.large} visible={true} disabled={dice.disabled} highlightColor={dice.highlightColor} highlight={dice.highlight} hasArrow={dice.hasArrow} key={`dice${index}`} fv={dice.fv}></Dice>
+        return <Dice onClick={handleClickDice(dice.fv)} size={Styles.diceSizes.large} visible={true} disabled={dice.disabled} highlightColor={dice.highlightColor} highlight={dice.highlight} hasArrow={dice.hasArrow} key={`dice${index}`} fv={dice.fv}></Dice>
       } else {
-        return <Dice size={diceSize} visible={dice.visible} disabled={dice.disabled} highlightColor={dice.highlightColor} highlight={dice.highlight} hasArrow={dice.hasArrow} key={`dice${index}`} fv={dice.fv}></Dice>
+        return <Dice onClick={handleClickDice(dice.fv)} size={diceSize} visible={dice.visible} disabled={dice.disabled} highlightColor={dice.highlightColor} highlight={dice.highlight} hasArrow={dice.hasArrow} key={`dice${index}`} fv={dice.fv}></Dice>
       }
   })
 
@@ -183,7 +188,15 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
     } else if (isActive) {
       activeDisplay = <TakingTurnDisplay><Arrow></Arrow>{waitingMessage}</TakingTurnDisplay>;
     } else if (showTurn && !isOut) {
-      activeDisplay = <TurnDisplay diceSize={Styles.diceSizes.large} textSize={Styles.fontSizes.huge} color={turnColor} opacity={turnOpacity} amount={turn.amount} fv={turn.fv}></TurnDisplay>
+      activeDisplay = <TurnDisplay 
+        onClickDice={handleClickDice(turn.fv)} 
+        diceSize={Styles.diceSizes.large} 
+        textSize={Styles.fontSizes.huge} 
+        color={turnColor} 
+        opacity={turnOpacity} 
+        amount={turn.amount} 
+        fv={turn.fv}>
+      </TurnDisplay>
     }
 
     return (

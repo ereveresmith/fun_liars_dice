@@ -25,8 +25,20 @@ const Wrapper = Styled.div`
     display: flex;
     border: 2px solid ${Styles.colors.darkGrey};
     border-radius: 4px;
-    background-color: ${Styles.colors.white};
     transition: all ease 250ms;
+
+
+    ${props => props.visible && `
+        background-color: ${Styles.colors.white};
+        cursor: pointer;
+
+        &:hover {
+            background-color: ${Styles.colors.lightGrey};
+        }
+    `}
+
+
+
 
     ${props => props.size && `
         width: ${props.size};
@@ -35,6 +47,10 @@ const Wrapper = Styled.div`
 
     ${props => props.visible === false && `
         background: linear-gradient(to bottom right, ${Styles.colors.grey}, ${Styles.colors.white});
+
+        &:hover {
+            background-color: ${Styles.colors.darkGrey}
+        }
     `}
 
     ${props => props.disabled === true && `
@@ -119,9 +135,15 @@ const renderedDots = (value) => {
     }
 }
 
-const Dice = ({ visible, fv, size, disabled, highlight, hasArrow, highlightColor }) => {
+const Dice = ({ visible, fv, size, disabled, highlight, hasArrow, highlightColor, onClick }) => {
+    const handleClick = () => {
+        if (onClick && !disabled && visible) {
+            onClick(fv);
+        }
+    }
+
     return (
-        <Wrapper fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight} highlightColor={highlightColor}>
+        <Wrapper onClick={handleClick} fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight} highlightColor={highlightColor}>
             {hasArrow && <Arrow></Arrow>}
             {visible && !disabled && renderedDots(fv)}
         </Wrapper>

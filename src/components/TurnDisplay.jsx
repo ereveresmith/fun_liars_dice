@@ -31,12 +31,15 @@ const StyledH1 = Styled.h1`
   align-self: center;
 `
 
-const TurnDisplay = ({ amount, fv, opacity, color, textSize, diceSize }) => {
+const TurnDisplay = ({ amount, fv, opacity, color, textSize, diceSize, onClickDice }) => {
+  const handleClickDice = () => {
+    onClickDice(fv)
+  }
 
   return (
     <FlexWrapper opacity={opacity}>
       <StyledH1 color={color} size={textSize}>{amount}</StyledH1>
-      <Dice fv={fv} size={diceSize} visible></Dice>
+      <Dice onClick={handleClickDice} fv={fv} size={diceSize} visible></Dice>
     </FlexWrapper>
   );
 }

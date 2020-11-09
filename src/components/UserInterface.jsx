@@ -57,33 +57,19 @@ const UILongSection = Styled.div`
 `
 
 
-const UserInterface = ({ turns, screenSize, log, isLeftHanded, isChallenge, onSubmit, isShowingModalButton, onShowModal, globalVolume, onMute, onSwitchView}) => {
-  const currentTurn = turns[turns.length - 1];
+const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log, isLeftHanded, isChallenge, onSubmit, isShowingModalButton, onShowModal, globalVolume, onMute, onSwitchView, onClickDice}) => {
   const nextPlayer = currentTurn.nextPlayer;
   const myTurn = (nextPlayer.id === 1);
-
-  let defaultAmount = currentTurn.amount;
-  if (defaultAmount < 1) {
-    defaultAmount++;
-  }
-
-  let defaultFv = currentTurn.fv + 1;
-  if (defaultFv < 1) {
-    defaultFv++;
-  } else if (defaultFv > 6) {
-    defaultFv = 1;
-    defaultAmount++;
-  }
   let isSmall = (screenSize === "small")
 
-const renderUIControls = () => {
-  return (
-    <UILongSection screenSize={screenSize} isLeftHanded={isLeftHanded}>
-      {isShowingModalButton && <Button label={"Finish"} onClick={handleShowModal}></Button>}
-      <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
-      <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
-    </UILongSection>
-  )
+  const renderUIControls = () => {
+    return (
+      <UILongSection screenSize={screenSize} isLeftHanded={isLeftHanded}>
+        {isShowingModalButton && <Button label={"Finish"} onClick={handleShowModal}></Button>}
+        <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
+        <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
+      </UILongSection>
+    )
   }
 
   const handleShowModal = () => {
@@ -98,11 +84,16 @@ const renderUIControls = () => {
     onSwitchView();
   }
 
+  const handleClickDice = (fv) => {
+    onClickDice(fv)
+  }
+
   const smallUI = () => {
     return (<UIOuterGrid>
     {renderUIControls()}
     <UIGrid screenSize={screenSize}>
       {!isLeftHanded && <LogContainer
+        onClickDice={handleClickDice}
         log={log}
         isTall={!isSmall}>
       </LogContainer>}
@@ -114,6 +105,7 @@ const renderUIControls = () => {
         onSubmit={onSubmit}>
       </BetSubmitter>
       {isLeftHanded && <LogContainer
+        onClickDice={handleClickDice}
         log={log}
         isTall={!isSmall}>
       </LogContainer>}
@@ -125,6 +117,7 @@ const renderUIControls = () => {
     return (<UIOuterGrid>
       <UIGrid screenSize={screenSize}>
         <LogContainer
+          onClickDice={handleClickDice}
           log={log}
           isTall={!isSmall}>
         </LogContainer>

@@ -25,11 +25,21 @@ const GridDiv = Styled.div`
   margin: 8px;
 `
 
+const TopText = Styled.div`
+  align-text: left;
+  margin: 0 96px;
+`
+
 const StyledInput = Styled.input`
   margin: 4px 0;
   font-size: ${Styles.fontSizes.large};
   font-weight: 300;
-  `
+`
+
+const SettingsGrid = Styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+`
 
 const SettingsPage = (props) => {
   const [amountOfPlayers, setAmountOfPlayers] = useState(defaultSettings.amountOfPlayers);
@@ -76,27 +86,29 @@ const SettingsPage = (props) => {
   return (
     <div>
       <Wrapper>
-        <h1>Tiny Liar's Dice</h1>
-        <GridDiv>
-          A simple Liar's Dice web game made by Ethan.
-          Beta Test (still a work in progress)
-        </GridDiv>
-        <GridDiv>
-          <Label>Your Name:</Label>
-          <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
-        </GridDiv>
-        <GridDiv>
-          <Label># of Players</Label>
-          <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
-        </GridDiv>
-        <GridDiv>
-          <Label>Dice Per Player:</Label>
-          <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
-        </GridDiv>
-        <GridDiv>
-          <Label>Player Handicap:</Label>
-          <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
-        </GridDiv>
+        <h2>Set up a Game</h2>
+        <TopText>
+          Welcome to Tiny Liar's Dice. Pick your settings and jump into a game of Liar's Dice (Perudo).
+        </TopText>
+        <SettingsGrid>
+          <GridDiv>
+            <Label>Your Name:</Label>
+            <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
+          </GridDiv>
+          <GridDiv>
+            <Label># of Players</Label>
+            <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
+          </GridDiv>
+          <GridDiv>
+            <Label>Dice Per Player:</Label>
+            <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
+          </GridDiv>
+          <GridDiv>
+            <Label>Player Handicap:</Label>
+            <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
+          </GridDiv>
+        </SettingsGrid>
+        
         <Button label="Start Game" primary onClick={handleSubmit}></Button>
       </Wrapper>
     </div>
