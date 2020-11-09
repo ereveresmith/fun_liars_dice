@@ -1,9 +1,9 @@
-## Tiny Liar's Dice
+## TINY Liar's Dice
 
 A tiny Liar's Dice (Perudo) game written in React and Styled Components. 
-You can check it out here! https://tinyliarsdice.herokuapp.com/
+You can play it here: https://tinyliarsdice.herokuapp.com/
 
-All sounds and graphics are original.
+Created by Ethan Smith
 
 # Getting Started
 `npm install`

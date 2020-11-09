@@ -38,8 +38,8 @@ const OptionGrid = Styled.div`
 `
 
 const TopText = Styled.div`
-  align-text: left;
-  margin: 12px 48px;
+  text-align: left;
+  margin: 12px 24px;
   font-size: ${Styles.fontSizes.medium}
 `
 

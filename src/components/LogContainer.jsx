@@ -30,7 +30,6 @@ const HugeText = Styled.div`
 const StyledSpan = Styled.span`
   overflow: hidden;
   align-items: center;
-  color: ${Styles.colors.black};
   opacity: 0.65;
   margin-bottom: 4px;
   font-size: ${Styles.fontSizes.medium};
@@ -48,6 +47,10 @@ const StyledSpan = Styled.span`
 
   ${props => props.hasBorder && `
     border-top: ${Styles.colors.grey} 2px solid;
+  `}
+
+  ${props => props.color && `
+    color: ${props.color};
   `}
 `
 
@@ -108,6 +111,7 @@ const LogContainer = ({ log, screenSize, onClickDice }) => {
       }
 
       let logMessage = <StyledSpan
+        color={message.color}
         hasBorder={message.firstTurn}
         isNewest={isNewest}
         key={`message${index}`}>

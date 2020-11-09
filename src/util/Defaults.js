@@ -10,11 +10,11 @@ export const WIDESCREEN_SIZE = 620;
 export const SUPER_WIDESCREEN_SIZE = 910;
 
 export const defaultSettings = {
-  handSize: localStorage['hand_size'] || 4,
+  handSize: localStorage['hand_size'] || 2,
   name: localStorage['name'] || "You",
   amountOfPlayers: localStorage['amount_of_players'] || 4,
-  handicap: localStorage['handicap'] || 2,
-  randomMode: localStorage['random_mode'] || false,
+  handicap: localStorage['handicap'] || 1,
+  randomMode: localStorage['random_mode'] || true,
   randomVariance: localStorage['random_variance'] || 3,
 };
 

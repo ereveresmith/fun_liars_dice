@@ -18,15 +18,14 @@ const App = () => {
     justify-content: start;
     background-color: ${Styles.colors.darkGrey};
     opacity: 0.9;
-    padding: 2px 24px;
   `
 
   const NavLink = Styled.a`
     font-size: ${Styles.fontSizes.medium};
     color: ${Styles.colors.white};
     font-weight: 600;
-    text-transform: uppercase;
     cursor: pointer;
+    margin-left: 24px;
 
     &:hover {
       color: ${Styles.colors.lightGrey};
@@ -77,7 +76,7 @@ const App = () => {
           <Button label={"Leave Game"} primary onClick={handleConfirmGoHome}></Button>
       </Modal>
       <Nav>
-        <NavLink onClick={handleGoHome}>Tiny Liar's Dice</NavLink>
+        <NavLink onClick={handleGoHome}>Home</NavLink>
       </Nav>
       {renderPage()}
     </div>

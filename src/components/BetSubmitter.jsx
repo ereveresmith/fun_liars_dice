@@ -43,6 +43,7 @@ const VerticalGrid = Styled.div`
 const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall, globalVolume}) => {
   const [fv, setFv] = useState(defaultFv);
   const [amount, setAmount] = useState(defaultAmount);
+  const [mode, setMode] = useState("amount");
 
   const [playClickUISound] = useSound(Sounds.clickUI, { volume: globalVolume });
 
@@ -54,6 +55,84 @@ const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall, gl
   useEffect(() => {
     setAmount(defaultAmount);
   }, [defaultAmount])
+
+
+  useEffect(() => {
+    document.body.addEventListener('keydown', function(event) {
+      console.log(event.key)
+      let key = event.key;
+      if(key === "Enter") {
+        handleSubmit()
+      } else if (key === "Backspace") {
+        setAmount(1);
+        setFv(1);
+      } else if (key === "Tab") {
+        if (mode === "amount") {
+          console.log("fv yo")
+          setMode("fv");
+        } else {
+          setMode("amount");
+        }
+      }
+      else {
+        switch(parseInt(key)) {
+        case 1:
+          if (mode === "amount") {
+            setAmount(1);
+          } else {
+            setFv(1);
+          }
+          break;
+        case 2:
+          console.log(mode)
+          if (mode === "amount") {
+            setAmount(2);
+          } else {
+            setFv(2);
+          }
+          break;
+        case 3:
+          if (mode === "amount") {
+            setAmount(3);
+          } else {
+            setFv(3);
+          }
+          break;
+        case 4: 
+          if (mode === "amount") {
+            setAmount(4);
+          } else {
+            setFv(4);
+          }          break;
+        case 5: 
+          if (mode === "amount") {
+            setAmount(5);
+          } else {
+            setFv(5);
+          }          
+          break;
+        case 6:
+          if (mode === "amount") {
+            setAmount(6);
+          } else {
+            setFv(6);
+          }          
+          break;
+          case 7:
+            setAmount(7);
+            break;
+        case 8:
+            setAmount(8);      
+            break;
+          case 9:
+            setAmount(9);      
+            break;
+        default:
+          break;
+        }
+      }
+    });
+  }, [mode])
 
   const handleLowerAmount = () => {
     if(amount - 1 > 0) {

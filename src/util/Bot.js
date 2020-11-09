@@ -47,7 +47,7 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
         }
     }
 
-    if (randomA > 3) {
+    if (randomA > 1) {
         move = 'best';
     } else {
         if (randomB > 6) {

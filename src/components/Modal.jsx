@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const IconWrapper = Styled.div`
   font-size: 40px;
-  opacity: 0.7;
+  padding: 4px;
+  opacity: 0.6;
   margin-top: 8px;
   display: grid;
   justify-content: center;

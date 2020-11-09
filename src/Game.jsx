@@ -267,8 +267,8 @@ const GamePage = ({ settings, onEnd }) => {
     startGame(settings);
   }, [settings])
 
-  const printLog = (value, fv, amount, value2) => {
-    setLog(log => [...log, { value: value, fv: fv, amount: amount, value2: value2 }]);
+  const printLog = (value, fv, amount, value2, color) => {
+    setLog(log => [...log, { value: value, fv: fv, amount: amount, value2: value2, color: color }]);
   }
 
   const nextRound = async (currentPlayer) => {
@@ -514,7 +514,7 @@ const GamePage = ({ settings, onEnd }) => {
     if (isValidBet(amount, fv)) {
       submitBet(amount, fv, players[0]);
     } else {
-      playErrorSound();
+      printLog("Invalid bet")
     }
   }
 
