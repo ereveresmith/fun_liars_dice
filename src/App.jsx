@@ -15,6 +15,7 @@ const App = () => {
   const Nav = Styled.div`
     width: 100%;
     display: grid;
+    grid-template-columns: auto;
     justify-content: start;
     background-color: ${Styles.colors.darkGrey};
     opacity: 0.9;
@@ -25,7 +26,7 @@ const App = () => {
     color: ${Styles.colors.white};
     font-weight: 600;
     cursor: pointer;
-    margin-left: 24px;
+    padding-left: 8px;
 
     &:hover {
       color: ${Styles.colors.lightGrey};
@@ -76,7 +77,7 @@ const App = () => {
           <Button label={"Leave Game"} primary onClick={handleConfirmGoHome}></Button>
       </Modal>
       <Nav>
-        <NavLink onClick={handleGoHome}>Home</NavLink>
+        <NavLink onClick={handleGoHome}>Tiny Liar's Dice</NavLink>
       </Nav>
       {renderPage()}
     </div>

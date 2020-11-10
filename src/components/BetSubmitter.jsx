@@ -68,7 +68,6 @@ const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall, gl
         setFv(1);
       } else if (key === "Tab") {
         if (mode === "amount") {
-          console.log("fv yo")
           setMode("fv");
         } else {
           setMode("amount");
