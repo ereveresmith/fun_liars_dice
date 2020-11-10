@@ -36,20 +36,22 @@ const Arrow = Styled.div`
     display: block;
     border-right: 6px solid ${Styles.colors.grey};
     border-bottom: 6px solid ${Styles.colors.grey};
+    opacity: 0.9;
     width: 22px;
     height: 22px;
     z-index: 3;
     transform: rotate(45deg) translate(-30%, -30%);
     border-color: inherit;
     transition: border 50ms ease-in;
+    transition: opacity ease 60ms;
 
     ${props => props.direction === 'up' && `
       transform: rotate(-135deg) translate(-30%, -30%);
     `}
 
     ${props => props.disabled && `
-      border-color: ${Styles.colors.lightGrey};
-      opacity: 0.6;
+      border-color: ${Styles.colors.grey};
+      opacity: 0.3;
     `}
 `
 

@@ -19,6 +19,7 @@ const StyledButton = Styled.button`
   transition: background-color 60ms ease-out;
 
   &:hover {
+    transition: background-color 60ms ease-out;
     background-color: ${Styles.colors.darkPurple};
     color: ${Styles.colors.white};
   }
@@ -36,7 +37,17 @@ const StyledButton = Styled.button`
     }
   `}
 
+  ${props => props.isRed && `
+    background: none;
+    color: ${Styles.colors.black};
+
+    &:hover {
+      background-color: ${Styles.colors.red};
+    }
+  `}
+
   ${props => props.disabled && `
+    transition: background-color 0ms ease-out;
     background-color: ${Styles.colors.grey};
     opacity: 0.4;
     color: ${Styles.colors.black};
@@ -51,9 +62,9 @@ const StyledButton = Styled.button`
 
 `;
 
-const Button = ({ onClick, primary, disabled, label }) => {
+const Button = ({ onClick, primary, disabled, label, isRed }) => {
   return (
-    <StyledButton className="Button" onClick={onClick} primary={primary} disabled={disabled}>
+    <StyledButton className="Button" onClick={onClick} primary={primary} disabled={disabled} isRed={isRed}>
       {label}
     </StyledButton>
   );

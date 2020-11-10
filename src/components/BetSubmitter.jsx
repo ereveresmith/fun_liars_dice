@@ -191,7 +191,7 @@ const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume
       </VerticalGrid>
       <VerticalGrid>
         <Button label="Bet" primary onClick={handleSubmit} disabled={isDisabled}></Button>
-        <Button label="Call" onClick={handleCall} disabled={!canCall}></Button>
+        <Button label="Call" onClick={handleCall} disabled={!canCall} isRed></Button>
       </VerticalGrid>
     </Wrapper>
   );
