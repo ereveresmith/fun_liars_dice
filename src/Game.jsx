@@ -118,7 +118,7 @@ const GamePage = ({ settings, onEnd }) => {
   const [turnPitch, setTurnPitch] = useState(1);
   const [playRerollSound] = useSound(Sounds.reroll, { volume: globalVolume });
   const [playChallengeSound] = useSound(Sounds.challenge, { volume: globalVolume });
-  const [playNextRoundSound] = useSound(Sounds.nextRound, { volume: globalVolume });
+  const [playWinSound] = useSound(Sounds.nextRound, { volume: globalVolume });
   const [playNextTurnSound] = useSound(Sounds.nextTurn, { volume: globalVolume, playbackRate: turnPitch });
   const [playLoseDiceSound] = useSound(Sounds.loseDice, { volume: globalVolume });
   const [playErrorSound] = useSound(Sounds.errorSound, { volume: globalVolume });
@@ -284,9 +284,8 @@ const GamePage = ({ settings, onEnd }) => {
       await printLog(`${winner.name} won the game!`);
       setIsWin(true);
       await timeout(longWait)
-      playNextRoundSound();
+      playWinSound();
       setIsShowingModal(true);
-
     } else {
       const newTurn = {
         number: 0,

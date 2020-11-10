@@ -81,7 +81,7 @@ const Wrapper = Styled.div`
   box-sizing: border-box;
   justify-content: center;
   align-content: center;
-  padding: 12px 48px;
+  padding: 12px 18px;
 `;
 
 export const Modal= ({
