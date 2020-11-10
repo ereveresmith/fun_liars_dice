@@ -25,6 +25,10 @@ const StyledButton = Styled.button`
   &:focus {
     outline: 1px ${Styles.colors.black} solid;
   }
+
+  ${props => props.disabled && `
+    cursor: default;
+  `}
 `;
 
 const Arrow = Styled.div`
@@ -42,12 +46,17 @@ const Arrow = Styled.div`
     ${props => props.direction === 'up' && `
       transform: rotate(-135deg) translate(-30%, -30%);
     `}
+
+    ${props => props.disabled && `
+      border-color: ${Styles.colors.lightGrey};
+      opacity: 0.6;
+    `}
 `
 
-const ArrowButton = ({ onClick, direction }) => {
+const ArrowButton = ({ onClick, direction, disabled }) => {
   return (
-    <StyledButton className="Button" onClick={onClick}>
-      <Arrow direction={direction}></Arrow>
+    <StyledButton className="Button" onClick={onClick} disabled={disabled}>
+      <Arrow direction={direction} disabled={disabled}></Arrow>
     </StyledButton>
   );
 }

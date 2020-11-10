@@ -277,6 +277,7 @@ const GamePage = ({ settings, onEnd }) => {
       nextPlayer = calcNextPlayer(currentPlayer);
     }
     setIsChallenge(false);
+    setDefaultAmount(1);
 
     const winner = checkWinner();
     if (winner !== undefined) {
@@ -348,25 +349,6 @@ const GamePage = ({ settings, onEnd }) => {
     const bet = calcBotMove(turns, amountOfActiveDice(), nextPlayer);
     await timeout(bet.timeout);
     submitBet(bet.amount, bet.fv, nextPlayer);
-  }
-
-  const isValidBet = (amount, fv) => {
-    const currentTurn = turns[turns.length - 1];
-    if (amount === -1 && fv === -1) {
-      return true;
-    }
-
-    if (amount < currentTurn.amount) {
-      return false;
-    }
-
-    if (amount === currentTurn.amount) {
-      if (fv <= currentTurn.fv) {
-        return false;
-      }
-    }
-
-    return true;
   }
 
   const checkIsLying = async () => {
@@ -478,7 +460,20 @@ const GamePage = ({ settings, onEnd }) => {
     const nextPlayer = calcNextPlayer(currentPlayer);
     const newTurnNumber = currentTurn.number + 1;
     timeout(mediumWait);
-    setDefaultAmount(amount)
+
+    if (nextPlayer.id === 1) {
+      let newDefaultAmount = amount;
+      let newDefaultFv = fv + 1;
+
+
+      if (newDefaultFv > 6) {
+        newDefaultAmount++;
+        newDefaultFv = 1;
+      }
+
+      setDefaultFv(newDefaultFv);
+      setDefaultAmount(newDefaultAmount);
+    }
 
     const newTurn = {
       number: newTurnNumber,
@@ -511,11 +506,7 @@ const GamePage = ({ settings, onEnd }) => {
   }
 
   const handleClickSubmit = async (amount, fv) => {
-    if (isValidBet(amount, fv)) {
-      submitBet(amount, fv, players[0]);
-    } else {
-      printLog("Invalid bet")
-    }
+    submitBet(amount, fv, players[0]);
   }
 
   const checkOutOfDice = (hand) => {

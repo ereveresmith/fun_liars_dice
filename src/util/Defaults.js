@@ -20,7 +20,7 @@ export const defaultSettings = {
 
 export const mockLieMessages = [
   "That's a lie!",
-  "No way...",
+  "No way...", 
   "Not in 100 years!",
   "I have to call that one",
   "Yeah, right!",

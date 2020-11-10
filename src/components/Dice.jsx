@@ -30,14 +30,15 @@ const Wrapper = Styled.div`
 
     ${props => props.visible && `
         background-color: ${Styles.colors.white};
+    `}
+
+    ${props => props.isClickable && props.visible && `
         cursor: pointer;
 
         &:hover {
             background-color: ${Styles.colors.lightGrey};
         }
     `}
-
-
 
 
     ${props => props.size && `
@@ -181,8 +182,10 @@ const Dice = ({ visible, fv, size, disabled, highlight, hasArrow, highlightColor
         }
     }
 
+    const isClickable = (onClick !== undefined);
+
     return (
-        <Wrapper onClick={handleClick} fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight} highlightColor={highlightColor}>
+        <Wrapper onClick={handleClick} isClickable={isClickable} fv={fv} size={size} visible={visible} disabled={disabled} highlight={highlight} highlightColor={highlightColor}>
             {hasArrow && <Arrow></Arrow>}
             {visible && !disabled && renderedDots(fv)}
         </Wrapper>

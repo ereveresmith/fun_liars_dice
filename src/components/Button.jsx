@@ -36,12 +36,25 @@ const StyledButton = Styled.button`
     }
   `}
 
+  ${props => props.disabled && `
+    background-color: ${Styles.colors.grey};
+    opacity: 0.4;
+    color: ${Styles.colors.black};
+
+    &:hover {
+      background-color: ${Styles.colors.grey};
+      color: ${Styles.colors.black};
+    }
+
+    cursor: default;
+  `}
+
 `;
 
-const Button = (props) => {
+const Button = ({ onClick, primary, disabled, label }) => {
   return (
-    <StyledButton className="Button" onClick={props.onClick} primary={props.primary}>
-      {props.label}
+    <StyledButton className="Button" onClick={onClick} primary={primary} disabled={disabled}>
+      {label}
     </StyledButton>
   );
 }

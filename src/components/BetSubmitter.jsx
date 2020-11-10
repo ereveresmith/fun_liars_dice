@@ -7,6 +7,7 @@ import ArrowButton from './ArrowButton';
 import Dice from './Dice';
 import useSound from 'use-sound';
 import { Sounds } from '../util/Sounds'
+import { isValidBet } from '../util/Helper';
 
 const HugeText = Styled.h1`
   font-size: ${Styles.fontSizes.huge};
@@ -40,7 +41,7 @@ const VerticalGrid = Styled.div`
   justify-items: center;
 `
 
-const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall, globalVolume}) => {
+const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume, currentAmount, currentFv, disabled}) => {
   const [fv, setFv] = useState(defaultFv);
   const [amount, setAmount] = useState(defaultAmount);
   const [mode, setMode] = useState("amount");
@@ -66,13 +67,7 @@ const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall, gl
       } else if (key === "Backspace") {
         setAmount(1);
         setFv(1);
-      } else if (key === "Tab") {
-        if (mode === "amount") {
-          setMode("fv");
-        } else {
-          setMode("amount");
-        }
-      }
+      } 
       else {
         switch(parseInt(key)) {
         case 1:
@@ -162,15 +157,11 @@ const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall, gl
   }
 
   const handleSubmit = () => {
-    if (disabled === false) {
-      onSubmit(amount, fv);
-    }
+    onSubmit(amount, fv);
   }
 
   const handleCall = () => {
-    if (disabled === false && canCall) {
       onSubmit(-1, -1);
-    }
   }
 
   const handleKeyDown = (event) => {
@@ -179,21 +170,28 @@ const BetSubmitter = ({defaultAmount, defaultFv, disabled, onSubmit, canCall, gl
     }
   }
 
+
+
+  let isDisabled = disabled;
+  if (!disabled) {
+    isDisabled = !isValidBet(amount, fv, currentAmount, currentFv);
+  }
+
   return (
     <Wrapper onKeyPress={handleKeyDown}>
       <VerticalGrid>
         <ArrowButton onClick={handleRaiseAmount} direction={'up'}></ArrowButton>
         <HugeText>{amount}</HugeText>
-        <ArrowButton onClick={handleLowerAmount}></ArrowButton>
+        <ArrowButton onClick={handleLowerAmount} disabled={amount <= defaultAmount}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>
-        <ArrowButton onClick={handleRaiseFv} direction={'up'}></ArrowButton>
+        <ArrowButton onClick={handleRaiseFv} direction={'up'} disabled={fv === 6}></ArrowButton>
         <Dice fv={fv} size={Styles.diceSizes.ui} visible></Dice>
-        <ArrowButton onClick={handleLowerFv}></ArrowButton>
+        <ArrowButton onClick={handleLowerFv} disabled={fv === 1}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>
-        <Button label="Bet" primary onClick={handleSubmit}></Button>
-        <Button label="Call" onClick={handleCall}></Button>
+        <Button label="Bet" primary onClick={handleSubmit} disabled={isDisabled}></Button>
+        <Button label="Call" onClick={handleCall} disabled={!canCall}></Button>
       </VerticalGrid>
     </Wrapper>
   );
