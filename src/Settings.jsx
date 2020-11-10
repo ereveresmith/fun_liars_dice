@@ -14,6 +14,19 @@ const InlineGrid = Styled.div`
   grid-template-columns: auto auto auto auto;
 `
 
+const ALink = Styled.a`
+  align-self: left;
+  margin-left: 4px;
+  font-size: ${Styles.fontSizes.black};
+  color: ${Styles.colors.grey};
+  font-size: ${Styles.fontSizes.small};
+  cursor: pointer;
+
+  &:hover {
+    color: ${Styles.colors.darkGrey};
+  }
+`
+
 const StyledH1 = Styled.h1`
   align-self: center;
   opacity: 0.8;
@@ -63,7 +76,7 @@ const StyledInput = Styled.input`
   margin: 4px 0;
   font-size: ${Styles.fontSizes.small};
   font-weight: 300;
-  max-width: 100px;
+  max-width: 70px;
 `
 
 const DoubleGrid = Styled.div`
@@ -75,6 +88,7 @@ const SettingsWrapper = Styled.div`
   box-shadow: ${Styles.boxShadows.medium};
   padding: 2px 24px;
   margin: 4px;
+  width: 200px;
 `
 
 const SettingsPage = (props) => {
@@ -84,6 +98,17 @@ const SettingsPage = (props) => {
   const [handicap, setHandicap] = useState(defaultSettings.handicap);
   const [randomMode, setRandomMode] = useState(defaultSettings.randomMode);
   const [randomVariance, setRandomVariance] = useState(defaultSettings.randomVariance);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
+
+  const handleShowAdvanced = () => {
+    if (showAdvanced) {
+      setShowAdvanced(false);
+    } else {
+      setShowAdvanced(true);
+    }
+  }
+
 
   const handleSubmit = () => {
     const gameSettings = {
@@ -137,6 +162,14 @@ const SettingsPage = (props) => {
     }
   }
 
+  const renderAdvanceText = () => {
+    if (showAdvanced) {
+      return "Hide";
+    } else {
+      return "Show More Settings";
+    }
+  }
+
   return (
     <div>
       <Wrapper>
@@ -164,21 +197,26 @@ const SettingsPage = (props) => {
               <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
             </OptionGrid>
           </DoubleGrid>
-          <StyledH3>Advanced</StyledH3>
-          <DoubleGrid>
-            <OptionGrid>
-              <Label>Player Handicap:</Label>
-              <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
-            </OptionGrid>
-            <OptionGrid>
-              <Label>Random Mode:</Label>
-              <Switch isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
-            </OptionGrid>
-            {randomMode && <OptionGrid>
-              <Label>Random Offset:</Label>
-              <StyledInput value={randomVariance} label={"Random Offset"} onChange={handleChangeVariance}></StyledInput>
-            </OptionGrid>}
-          </DoubleGrid>
+          {showAdvanced && 
+            <div>
+              <StyledH3>Advanced</StyledH3>
+              <DoubleGrid>
+                <OptionGrid>
+                  <Label>Player Handicap:</Label>
+                  <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
+                </OptionGrid>
+                <OptionGrid>
+                  <Label>Random Mode:</Label>
+                  <Switch isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
+                </OptionGrid>
+                {randomMode && <OptionGrid>
+                  <Label>Random Offset:</Label>
+                  <StyledInput value={randomVariance} label={"Random Offset"} onChange={handleChangeVariance}></StyledInput>
+                </OptionGrid>}
+              </DoubleGrid>
+            </div>
+          }
+        <ALink onClick={handleShowAdvanced}>{renderAdvanceText()}</ALink>
         </SettingsWrapper>
         <Button label="Start Game" primary onClick={handleSubmit}></Button>
       </Wrapper>
