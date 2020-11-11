@@ -23,7 +23,9 @@ cursor: pointer;
 }
 
 &:focus {
-    outline: ${Styles.colors.purple} solid 1px;
+  ${props => props.color && `
+    outline: ${props.color} solid 1px;
+  `}
 }
 
 &:after {
@@ -41,7 +43,12 @@ background-color: ${Styles.colors.grey};
 
 &:hover {
     transition: background-color 50ms ease-out;
-    background-color: ${Styles.colors.purple};
+
+    ${props => props.color && `
+      background-color: ${props.color};
+    `}
+
+
 }
 
 ${({isChecked}) => isChecked ? `
@@ -60,7 +67,7 @@ ${({isChecked}) => isChecked ? `
 `}
 `;
 
-const Switch = ({isDefaultChecked, onChange}) => {
+const Switch = ({isDefaultChecked, onChange, color}) => {
   const [isChecked, setIsChecked] = useState(isDefaultChecked);
 
   const handleClick = () => {
@@ -70,6 +77,7 @@ const Switch = ({isDefaultChecked, onChange}) => {
   
   return (
     <Wrapper 
+      color={color}
       isChecked={isChecked}
       onClick={handleClick}>
     </Wrapper>

@@ -19,15 +19,6 @@ const randomName = () => {
   return mockNames[int];
 }
 
-const colorsArray = [
-  Styles.colors.purple,
-  Styles.colors.orange,
-  Styles.colors.blue,
-  Styles.colors.pink,
-  Styles.colors.orange,
-  Styles.colors.blue,
-]
-
 const EmptyCell = Styled.div`
   display: grid;
   width: 100%;
@@ -46,7 +37,6 @@ const Wrapper = Styled.div`
   margin: 8px 0;
 
   ${props => props.screenSize === 'medium' && `
-    height: 100vh;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto;
     justify-content: center;
@@ -61,7 +51,6 @@ const Wrapper = Styled.div`
   `}
 
   ${props => props.screenSize === 'large' && `
-    height: 100vh;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto;
     justify-content: center;
@@ -69,7 +58,6 @@ const Wrapper = Styled.div`
   `}
 
   ${props => props.screenSize === 'large' && props.isLeftHanded && `
-    height: 100vh;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto;
     justify-content: center;
@@ -158,7 +146,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
       setTurns([initialTurn]);
       setLog([]);
       setShouldRestart(false);
-      await printLog('Starting a new game');
+      printLog('Starting a new game');
     }
 
     if (shouldRestart) {
@@ -168,22 +156,32 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
 
   useEffect(() => {
     const generatePlayers = () => {
+
+      let colorsArray = [
+        Styles.colors.purple,
+        Styles.colors.orange,
+        Styles.colors.blue,
+        Styles.colors.pink,
+        Styles.colors.orange,
+        Styles.colors.green,
+      ]
+
+
       const newPlayers = [];
       for (let i = 0; i < settings.amountOfPlayers; i++) {
         let hand = [];
 
         let newHandSize = parseInt(settings.handSize);
         let isVisible = false;
+        const isPlayer = (i == 0);
+        let randOffset = settings.randomMode ? randomInt(settings.randomVariance) : 0;
 
         //If it's you
-        if (i == 0) {
+        if (isPlayer) {
           isVisible = true;
-          newHandSize = newHandSize + parseInt(settings.handicap);
+          newHandSize = newHandSize + parseInt(settings.handicap) + randOffset;
         } else {
-          if (settings.randomMode) {
-            let rand = randomInt(settings.randomVariance)
-            newHandSize = newHandSize + rand;
-          }
+          newHandSize = newHandSize + randOffset;
         }
 
         for (let k = 0; k < newHandSize; k++) {
@@ -196,17 +194,44 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
             highlight: false,
             hasArrow: false,
             found: false,
-            highlightColor: Styles.colors.green,
+            highlightColor: Styles.colors.red,
           }
           hand.push(diceObj);
         }
 
+        let rand = randomInt(colorsArray.length)
+        let randomColor = colorsArray[rand];
+        if (isPlayer) {
+          randomColor = settings.myColor;
+        }
+
+        //Delete that color from the array now
+        // for (let z = 0; z < colorsArray.length; z++) {
+        //   if (colorsArray[z] === randomColor) {
+        //     console.log("Going to remove " + colorsArray[z]);
+        //     console.log(colorsArray);
+        //     colorsArray = colorsArray.splice(z, 1);
+        //     console.log("Removed now: ")
+        //     console.log(colorsArray);
+        //   }
+        // }
+
+        console.log(colorsArray)
+        console.log("Going to remove " + randomColor);
+        const filteredColorsArray = colorsArray.filter(color => color !== randomColor)
+        console.log("Removed now: ")
+
+        console.log(filteredColorsArray)
+        colorsArray = filteredColorsArray;
+
         newPlayers.push({
-          name: (i == 0) ? settings.name : randomName(),
+          name: isPlayer ? settings.name : randomName(),
           id: i + 1,
           hand: hand,
-          color: colorsArray[i],
+          color: randomColor,
         })
+
+        console.log(randomColor)
       }
 
       return newPlayers;
@@ -229,7 +254,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
       setTurns([initialTurn]);
       setLog([]);
       setShouldRestart(false);
-      await printLog('Starting a new game');
+      printLog('Starting a new game');
     }
 
     startGame(settings);
@@ -249,7 +274,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
 
     const winner = checkWinner();
     if (winner !== undefined) {
-      await printLog(`You won the game!`);
+      printLog(`You won the game!`);
       setIsWin(true);
       await timeout(longWait)
       playWinSound();
@@ -263,12 +288,12 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
         player: { id: 0 },
         nextPlayer: nextPlayer,
       }
-      setTurns([newTurn]);
-      rerollDice();
-      setWaitingForTurn(true);
       await timeout(longWait);
       setLog([]);
-      await printLog("Starting a new round");
+      printLog("Starting a new round");
+      rerollDice();
+      setTurns([newTurn]);
+      setWaitingForTurn(true);
     }
   }
 
@@ -333,13 +358,13 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
       })
     }
 
-    await printLog(`Found `, fv, amntFound, 's');
+    printLog(`Found `, fv, amntFound, 's');
 
     if (amntFound >= amount) {
-      await printLog(`It was the truth!`);
+      printLog(`It was the truth!`);
       return false;
     } else {
-      await printLog(`It was a lie!`);
+      printLog(`It was a lie!`);
       return true;
     }
   }
@@ -449,7 +474,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
       nextPlayer: nextPlayer,
     }
 
-    await printLog(`${newTurn.player.name}: `, newTurn.fv, newTurn.amount);
+    printLog(`${newTurn.player.name}: `, newTurn.fv, newTurn.amount);
     setTurns(turns => [...turns, newTurn]);
     setWaitingForTurn(true);
     timeout(mediumWait);
@@ -631,7 +656,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
     setIsChallenge(true);
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
-    await printLog(`${nextPlayer.name}: That's bull!!`);
+    printLog(`${nextPlayer.name}: That's bull!!`);
     hidePlayerDice();
     await timeout(longWait);
     await revealNextDice();
@@ -660,18 +685,18 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
     await timeout(shortWait);
     disableDice(lyingPlayer.hand);
     setPlayers(playersArray);
-    await printLog(`${lyingPlayer.name} lost a dice.`);
+    printLog(`${lyingPlayer.name} lost a dice.`);
     playLoseDiceSound();
 
     if (checkOutOfDice(lyingPlayer.hand)) {
       if (lyingPlayer.id === 1) {
-        await printLog(`You are out of the game!`);
+        printLog(`You are out of the game!`);
         await timeout(longWait);
         playErrorSound();
         setIsShowingModal(true);
         return;
       } else {
-        await printLog(`${lyingPlayer.name} is out of the game.`);
+        printLog(`${lyingPlayer.name} is out of the game.`);
         await timeout(mediumWait);
       }
     }
@@ -845,6 +870,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
       return;
     }
     return <UserInterface 
+      color={settings.myColor}
       defaultAmount={defaultAmount}
       defaultFv={defaultFv}
       currentTurn={turns[turns.length -1]}
@@ -920,13 +946,14 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
 
     return (
       <Modal 
+        color={settings.myColor}
         active={isShowingModal} 
         onClose={handleHideModal}   
         title={modalTitle}
         icon={activeIcon}
         text={modalText}>
-          <Button label={"Rematch"} onClick={handleRestartGame}></Button>
-          <Button label={"Leave Game"} primary onClick={handleClickSettings}></Button>
+          <Button label={"Rematch"} color={settings.myColor} onClick={handleRestartGame}></Button>
+          <Button label={"Leave Game"} color={settings.myColor} primary onClick={handleClickSettings}></Button>
       </Modal>
     )
   }

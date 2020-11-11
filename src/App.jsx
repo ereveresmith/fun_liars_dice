@@ -5,14 +5,13 @@ import Game from './Game';
 import Settings from './Settings';
 import Button from './components/Button'
 import { Modal } from './components/Modal';
-import { faCoins, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faExclamationCircle, faHome } from '@fortawesome/free-solid-svg-icons';
 import {  WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE, defaultSettings } from './util/Defaults';
-import { faCoin } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const App = () => {
   const [amountOfCoins, setAmountOfCoins] = useState(defaultSettings.coins);
   const [page, setPage] = useState('settings');
-  const [gameSettings, setGameSettings] = useState(null);
+  const [gameSettings, setGameSettings] = useState(defaultSettings);
   const [isShowingModal, setIsShowingModal] = useState(false);
   const [screenSize, setScreenSize] = useState("medium");
 
@@ -54,7 +53,8 @@ const App = () => {
     justify-content: space-between;
     align-content: center;
     background-color: ${Styles.colors.darkGrey};
-    opacity: 0.9;
+    filter: brightness(100%);
+    padding: 4px;
   `
 
   const NavLink = Styled.a`
@@ -68,7 +68,6 @@ const App = () => {
       color: ${Styles.colors.lightGrey};
     }
   `
-
 
   const CoinsDisplay = Styled.span`
     font-size: ${Styles.fontSizes.medium};
@@ -107,7 +106,7 @@ const App = () => {
   const handleConfirmGoHome = () => {
     setIsShowingModal(false);
     setPage('home');
-    setGameSettings();
+    setGameSettings(defaultSettings);
   }
 
   const renderPage = () => {
@@ -132,16 +131,19 @@ const App = () => {
   return (
     <div className="App">
       <Modal 
+        color={gameSettings.myColor}
         active={isShowingModal} 
         onClose={handleCancelModal}
         title={"Are you sure?"}
         icon={faExclamationCircle}
         text={"This will end your current game."}>
-          <Button label={"Cancel"} onClick={handleCancelModal}></Button>
-          <Button label={"Leave Game"} primary onClick={handleConfirmGoHome}></Button>
+          <Button label={"Cancel"} color={gameSettings.myColor} onClick={handleCancelModal}></Button>
+          <Button label={"Leave Game"} color={gameSettings.myColor} primary onClick={handleConfirmGoHome}></Button>
       </Modal>
       <Nav>
-        <NavLink onClick={handleGoHome}>Tiny Liar's Dice</NavLink>
+        <NavLink onClick={handleGoHome}>
+            <FontAwesomeIcon icon={faHome}></FontAwesomeIcon>
+          Tiny Liar's Dice</NavLink>
         <CoinsDisplay>{amountOfCoins}       
          <IconWrapper>
           <FontAwesomeIcon icon={faCoins}/>

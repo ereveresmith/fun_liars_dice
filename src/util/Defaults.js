@@ -1,3 +1,4 @@
+import { Styles } from "./Styles";
 
 
 
@@ -17,6 +18,7 @@ export const defaultSettings = {
   randomMode: localStorage['random_mode'] || false,
   randomVariance: localStorage['random_variance'] || 3,
   coins: localStorage['coins'] || 0,
+  myColor: Styles.colors.pink,
 };
 
 export const mockLieMessages = [

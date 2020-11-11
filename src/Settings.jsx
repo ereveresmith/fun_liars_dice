@@ -33,7 +33,10 @@ const StyledH1 = Styled.h1`
   opacity: 0.8;
   color: ${Styles.colors.black};
   font-size: ${Styles.fontSizes.large};
-  box-shadow: 0px 6px 0 0 ${Styles.colors.purple};
+  ${props => props.color && `
+    box-shadow: 0px 6px 0 0 ${props.color};
+  `}
+  font-weight: 900;
   margin: 0;
 `
 
@@ -83,6 +86,7 @@ const StyledInput = Styled.input`
 `
 
 const DoubleGrid = Styled.div`
+  min-width: 250px;
   display: grid;
   grid-template-columns: auto auto;
 `
@@ -108,6 +112,7 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
   const [handicap, setHandicap] = useState(defaultSettings.handicap);
   const [randomMode, setRandomMode] = useState(defaultSettings.randomMode);
   const [randomVariance, setRandomVariance] = useState(defaultSettings.randomVariance);
+  const [myColor, setMyColor] = useState(defaultSettings.myColor);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleShowAdvanced = () => {
@@ -127,6 +132,7 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
       handicap: handicap,
       randomMode: randomMode,
       randomVariance: randomVariance,
+      myColor: myColor,
     }
 
     localStorage['amount_of_players'] = amountOfPlayers;
@@ -175,7 +181,7 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
     if (showAdvanced) {
       return "Hide";
     } else {
-      return "Show More Settings";
+      return "Show advanced settings...";
     }
   }
 
@@ -184,7 +190,7 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
       <Wrapper screenSize={screenSize}>
         <InlineGrid>
           <Dice visible size={Styles.diceSizes.large} fv={7}></Dice>
-          <StyledH1>TINY Liar's Dice</StyledH1>
+          <StyledH1 color={myColor}>TINY Liar's Dice</StyledH1>
         </InlineGrid>
         <TopText>
           Welcome! 
@@ -217,7 +223,7 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
                   </OptionGrid>
                   <OptionGrid>
                     <Label>Random Mode:</Label>
-                    <Switch isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
+                    <Switch color={myColor} isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
                   </OptionGrid>
                   {randomMode && <OptionGrid>
                     <Label>Random Offset:</Label>
@@ -228,7 +234,7 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
             }
             </SettingsWrapper>
           <ALink onClick={handleShowAdvanced}>{renderAdvanceText()}</ALink>
-        <Button label="Start Game" primary onClick={handleSubmit}></Button>
+        <Button label="Start Game" color={myColor} primary onClick={handleSubmit}></Button>
       </Wrapper>
     </div>
   );

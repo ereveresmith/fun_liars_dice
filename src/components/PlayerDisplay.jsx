@@ -88,7 +88,6 @@ const NameText = Styled.h3`
   font-size: ${Styles.fontSizes.large};
   margin-bottom: 4px;
   font-weight: 900;
-  color: ${Styles.colors.purple};
 
   ${props => props.color && `
     color: ${props.color};
@@ -128,7 +127,6 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
   let isOut = true;
 
   const handleClickDice = () => (fv) => {
-    console.log("BRORO")
     onClickDice(fv)
   }
 
@@ -145,7 +143,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
       }
   })
 
-  const turnColor = Styles.colors.grey;
+  const turnColor = Styles.colors.darkGrey;
 
   const renderTopSection = () => {
     const isColored = isActive | isChallenge;

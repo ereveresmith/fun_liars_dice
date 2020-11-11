@@ -67,7 +67,7 @@ const UILongSection = Styled.div`
 `
 
 
-const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log, isLeftHanded, isChallenge, onSubmit, isShowingModalButton, onShowModal, globalVolume, onMute, onSwitchView, onClickDice}) => {
+const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log, isLeftHanded, isChallenge, onSubmit, isShowingModalButton, onShowModal, globalVolume, onMute, onSwitchView, onClickDice, color}) => {
   const nextPlayer = currentTurn.nextPlayer;
   const myTurn = (nextPlayer.id === 1);
   let isSmall = (screenSize === "small")
@@ -77,7 +77,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
       <UILongSection screenSize={screenSize} isLeftHanded={isLeftHanded}>
         {isShowingModalButton && <Button label={"Finish"} onClick={handleShowModal}></Button>}
         <IconButton isDefaultActive={globalVolume > 0} icon={'volume'} onClick={handleMute}></IconButton>
-        <Switch isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
+        <Switch color={color} isDefaultChecked={!isLeftHanded} onChange={handleSwitchView}></Switch>
       </UILongSection>
     )
   }
@@ -108,6 +108,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
         screenSize={screenSize}>
       </LogContainer>}
       <BetSubmitter
+        color={color}
         currentAmount={currentTurn.amount}
         currentFv={currentTurn.fv}
         globalVolume={globalVolume}
@@ -136,6 +137,7 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
         </LogContainer>
         {renderUIControls()}
         <BetSubmitter
+          color={color}
           currentAmount={currentTurn.amount}
           currentFv={currentTurn.fv}
           globalVolume={globalVolume}

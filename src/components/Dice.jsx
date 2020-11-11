@@ -10,9 +10,9 @@ const Arrow = Styled.div`
     opacity: 0.9;
     top: -12px;
     display: block;
-    border-right: 2px solid ${Styles.colors.black};
-    border-bottom: 2px solid ${Styles.colors.black};
-    box-shadow: 2px 2px 2px ${Styles.colors.black};
+    border-right: 1px solid ${Styles.colors.darkGrey};
+    border-bottom: 1px solid ${Styles.colors.darkGrey};
+    box-shadow: 2px 2px 2px ${Styles.colors.darkGrey};
     width: 16px;
     height: 16px;
     z-index: 3;
@@ -23,8 +23,8 @@ const Wrapper = Styled.div`
     position: relative;
     align-self: center;
     display: flex;
-    border: 2px solid ${Styles.colors.darkGrey};
-    border-radius: 4px;
+    border: 1px solid ${Styles.colors.black};
+    border-radius: 3px;
     transition: all ease 250ms;
 
 
@@ -75,7 +75,7 @@ const DotGrid = Styled.div`
 `
 
 const Dot = Styled.div`
-    background-color: #939796;
+    background-color: ${Styles.colors.darkGrey};
     border-radius: 50%;
     width: 97%;
     height: 97%;

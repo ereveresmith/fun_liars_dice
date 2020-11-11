@@ -33,8 +33,11 @@ const StyledSpan = Styled.span`
   opacity: 0.65;
   margin-bottom: 4px;
   font-size: ${Styles.fontSizes.medium};
+  fonnt-weight: 400;
   text-align: center;
   display: grid;
+  width: 180px;
+  text-overflow: ellipsis;
   padding: 4px 0;
   grid-template-columns: auto auto auto;
   justify-content: center;
@@ -59,11 +62,9 @@ const Wrapper = Styled.div`
   height: 120px;
 
   ${props => props.screenSize === 'large' && `
-    min-height: 200px;;
+    min-height: 200px;
   `}
   width: 100%;
-  min-width: 168px;
-  max-width: 290px;
   touch-action: manipulation;
   background-color: ${Styles.colors.white};
   justify-self: center;

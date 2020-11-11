@@ -16,47 +16,42 @@ const StyledButton = Styled.button`
   border: 1px solid ${Styles.colors.black};
   cursor: pointer;
   outline: 0;
-  transition: background-color 60ms ease-out;
+  transition: all 60ms ease-out;
+  filter: brightness(105%);
+
 
   &:hover {
-    transition: background-color 60ms ease-out;
-    background-color: ${Styles.colors.darkPurple};
+    ${props => props.color && `
+      background-color: ${props.color};
+    `}
+    filter: brightness(115%);
     color: ${Styles.colors.white};
   }
 
-  &:focus {
-    outline: 1px ${Styles.colors.purple} solid;
-  }
-
-  ${props => props.primary && `
-    background-color: ${Styles.colors.purple};
+  ${props => props.color && props.primary && `
+    background-color: ${props.color};
     color: ${Styles.colors.white};
 
     &:hover {
-      background-color: ${Styles.colors.darkPurple};
-    }
-  `}
-
-  ${props => props.isRed && `
-    background: none;
-    color: ${Styles.colors.black};
-
-    &:hover {
-      background-color: ${Styles.colors.red};
+      background-color: ${props.color};
+      color: ${Styles.colors.white};
+      filter: brightness(115%);
     }
 
     &:focus {
-      outline: 1px ${Styles.colors.red} solid;
+      outline: 1px ${props.color} solid;
     }
   `}
 
   ${props => props.disabled && `
+    filter: brightness(90%);
     transition: background-color 0ms ease-out;
     background-color: ${Styles.colors.grey};
     opacity: 0.4;
     color: ${Styles.colors.black};
 
     &:hover {
+      filter: brightness(90%);
       background-color: ${Styles.colors.grey};
       color: ${Styles.colors.black};
     }
@@ -66,9 +61,10 @@ const StyledButton = Styled.button`
 
 `;
 
-const Button = ({ onClick, primary, disabled, label, isRed }) => {
+const Button = ({ onClick, disabled, label, color, primary }) => {
+  console.log(color)
   return (
-    <StyledButton className="Button" onClick={onClick} primary={primary} disabled={disabled} isRed={isRed}>
+    <StyledButton className="Button" onClick={onClick} primary={primary} disabled={disabled} color={color}>
       {label}
     </StyledButton>
   );

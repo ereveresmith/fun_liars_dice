@@ -41,7 +41,7 @@ const VerticalGrid = Styled.div`
   justify-items: center;
 `
 
-const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume, currentAmount, currentFv, disabled}) => {
+const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume, currentAmount, currentFv, disabled, color}) => {
   const [fv, setFv] = useState(defaultFv);
   const [amount, setAmount] = useState(defaultAmount);
   const [mode, setMode] = useState("amount");
@@ -177,7 +177,6 @@ const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume
     isDisabled = !isValidBet(amount, fv, currentAmount, currentFv);
   }
 
-  console.log(currentAmount)
   let amountDisabled = true;
   if (amount > currentAmount && amount > 1) {
     amountDisabled = false;
@@ -196,8 +195,8 @@ const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume
         <ArrowButton onClick={handleLowerFv} disabled={fv === 1}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>
-        <Button label="Bet" primary onClick={handleSubmit} disabled={isDisabled}></Button>
-        <Button label="Call" onClick={handleCall} disabled={!canCall} isRed></Button>
+        <Button label="Bet" color={color} onClick={handleSubmit} primary disabled={isDisabled}></Button>
+        <Button label="Call" onClick={handleCall} disabled={!canCall} color={Styles.colors.red}></Button>
       </VerticalGrid>
     </Wrapper>
   );

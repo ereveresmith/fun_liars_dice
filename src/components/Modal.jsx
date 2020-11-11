@@ -6,11 +6,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const IconWrapper = Styled.div`
   font-size: 60px;
   padding: 4px;
-  opacity: 0.6;
+  opacity: 0.95;
   display: grid;
   justify-content: center;
   justify-items: center;
   align-content: start;
+
+  ${props => props.color && `
+    color: ${props.color};
+  `}
 `
 
 const DoubleGrid = Styled.div`
@@ -27,7 +31,7 @@ const GridSection = Styled.div`
 const ModalText = Styled.div`
   padding: 8px 0;
   align-content: center;
-  max-width: 300px;
+  max-width: 200px;
 `
 
 const Background = Styled.div`
@@ -92,6 +96,7 @@ export const Modal= ({
   children,
   icon,
   onClose,
+  color,
 }) => {
   const [isActive, setIsActive] = useState(active);
 
@@ -111,8 +116,8 @@ export const Modal= ({
   const renderedIcon = () => {
     let elem = <div></div>
     if (icon) {
-      elem = <IconWrapper>
-        <FontAwesomeIcon icon={icon}/>
+      elem = <IconWrapper color={color}>
+        <FontAwesomeIcon icon={icon} color={color}/>
       </IconWrapper>   
     }
 
