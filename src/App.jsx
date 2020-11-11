@@ -5,10 +5,12 @@ import Game from './Game';
 import Settings from './Settings';
 import Button from './components/Button'
 import { Modal } from './components/Modal';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import {  WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE } from './util/Defaults';
-
+import { faCoins, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import {  WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE, defaultSettings } from './util/Defaults';
+import { faCoin } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const App = () => {
+  const [amountOfCoins, setAmountOfCoins] = useState(defaultSettings.coins);
   const [page, setPage] = useState('settings');
   const [gameSettings, setGameSettings] = useState(null);
   const [isShowingModal, setIsShowingModal] = useState(false);
@@ -48,8 +50,8 @@ const App = () => {
   const Nav = Styled.div`
     width: 100%;
     display: grid;
-    grid-template-columns: auto;
-    justify-content: center;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
     align-content: center;
     background-color: ${Styles.colors.darkGrey};
     opacity: 0.9;
@@ -60,11 +62,26 @@ const App = () => {
     color: ${Styles.colors.white};
     font-weight: 600;
     cursor: pointer;
-    padding-left: 0 8px;
+    padding-left: 8px;
 
     &:hover {
       color: ${Styles.colors.lightGrey};
     }
+  `
+
+
+  const CoinsDisplay = Styled.span`
+    font-size: ${Styles.fontSizes.medium};
+    color: ${Styles.colors.white};
+    font-weight: 400;
+    padding-right: 0 8px;
+  `
+
+  const IconWrapper = Styled.div`
+    padding: 4px;
+    font-size: ${Styles.fontSizes.medium};
+    display: inline;
+    color: ${Styles.colors.gold};
   `
 
   const handleStartGame = (settings) => {
@@ -82,6 +99,11 @@ const App = () => {
     setIsShowingModal(false);
   }
 
+  const handleAddCoin = () => {
+    console.log("adding a coin")
+    setAmountOfCoins(c => c + 1);
+  }
+
   const handleConfirmGoHome = () => {
     setIsShowingModal(false);
     setPage('home');
@@ -94,6 +116,7 @@ const App = () => {
         return <Game 
           settings={gameSettings} 
           onEnd={handleConfirmGoHome} 
+          addCoin={handleAddCoin}
           screenSize={screenSize}>
         </Game>;
       case 'home': 
@@ -119,6 +142,11 @@ const App = () => {
       </Modal>
       <Nav>
         <NavLink onClick={handleGoHome}>Tiny Liar's Dice</NavLink>
+        <CoinsDisplay>{amountOfCoins}       
+         <IconWrapper>
+          <FontAwesomeIcon icon={faCoins}/>
+         </IconWrapper>
+        </CoinsDisplay>
       </Nav>
       {renderPage()}
     </div>

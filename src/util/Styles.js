@@ -23,6 +23,7 @@ export const Styles = {
         blue: '#668cff',
         red: ' #ff8566',
         orange: '#ff9933',
+        gold: '#ffe033',
         green: '#5cd65c',
         pink: '#d65cad',
     },

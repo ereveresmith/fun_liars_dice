@@ -16,6 +16,7 @@ export const defaultSettings = {
   handicap: localStorage['handicap'] || 0,
   randomMode: localStorage['random_mode'] || false,
   randomVariance: localStorage['random_variance'] || 3,
+  coins: localStorage['coins'] || 0,
 };
 
 export const mockLieMessages = [

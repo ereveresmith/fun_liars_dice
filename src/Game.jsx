@@ -94,7 +94,7 @@ const GameGrid = Styled.div`
 
 
 
-const GamePage = ({ settings, onEnd, screenSize }) => {
+const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
   const [players, setPlayers] = useState([]);
   const [turns, setTurns] = useState([]);
   const [log, setLog] = useState([]);
@@ -249,10 +249,11 @@ const GamePage = ({ settings, onEnd, screenSize }) => {
 
     const winner = checkWinner();
     if (winner !== undefined) {
-      await printLog(`${winner.name} won the game!`);
+      await printLog(`You won the game!`);
       setIsWin(true);
       await timeout(longWait)
       playWinSound();
+      addCoin();
       setIsShowingModal(true);
     } else {
       const newTurn = {
@@ -265,11 +266,9 @@ const GamePage = ({ settings, onEnd, screenSize }) => {
       setTurns([newTurn]);
       rerollDice();
       setWaitingForTurn(true);
-      await printLog("");
-      await printLog("");
-      await printLog("Starting a new round");
       await timeout(longWait);
-      // setLog([]);
+      setLog([]);
+      await printLog("Starting a new round");
     }
   }
 
@@ -665,13 +664,15 @@ const GamePage = ({ settings, onEnd, screenSize }) => {
     playLoseDiceSound();
 
     if (checkOutOfDice(lyingPlayer.hand)) {
-      await printLog(`${lyingPlayer.name} is out of the game.`);
-      await timeout(mediumWait);
       if (lyingPlayer.id === 1) {
+        await printLog(`You are out of the game!`);
         await timeout(longWait);
         playErrorSound();
         setIsShowingModal(true);
         return;
+      } else {
+        await printLog(`${lyingPlayer.name} is out of the game.`);
+        await timeout(mediumWait);
       }
     }
     await timeout(longWait);
