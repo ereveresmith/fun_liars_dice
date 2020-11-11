@@ -4,7 +4,7 @@ import Styled from 'styled-components';
 import { Styles } from './util/Styles';
 import PlayerDisplay from './components/PlayerDisplay';
 import { calcBotMove } from './util/Bot';
-import { tinyWait, shortWait, mediumWait, mockNames, longWait, WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE } from './util/Defaults';
+import { tinyWait, shortWait, mediumWait, mockNames, longWait } from './util/Defaults';
 import { randomInt } from './util/Helper';
 
 import useSound from 'use-sound';
@@ -94,7 +94,7 @@ const GameGrid = Styled.div`
 
 
 
-const GamePage = ({ settings, onEnd }) => {
+const GamePage = ({ settings, onEnd, screenSize }) => {
   const [players, setPlayers] = useState([]);
   const [turns, setTurns] = useState([]);
   const [log, setLog] = useState([]);
@@ -104,7 +104,6 @@ const GamePage = ({ settings, onEnd }) => {
   const [isChallenge, setIsChallenge] = useState(false);
   const [shouldRestart, setShouldRestart] = useState(true);
   const [waitingForTurn, setWaitingForTurn] = useState(false);
-  const [screenSize, setScreenSize] = useState('medium');
   const [isPaused, setIsPaused] = useState(false);
   const [isLeftHanded, setIsLeftHanded] = useState(false);
   const [isShowingModal, setIsShowingModal] = useState(false);
@@ -142,37 +141,6 @@ const GamePage = ({ settings, onEnd }) => {
     }
 
   }, [waitingForTurn]);
-
-  useEffect(() => {
-    const calcSize = (width) =>{
-      if (width > SUPER_WIDESCREEN_SIZE) {
-        console.log('large!')
-        setScreenSize('large')
-      } else if (width > WIDESCREEN_SIZE) {
-        setScreenSize('medium')
-        console.log('medium!')
-      } else {
-        setScreenSize('small')
-        console.log('small!')
-      }
-    }
-    const handleResize = (e) => {
-      let width = e.currentTarget.innerWidth;
-      calcSize(width);
-    }
-    window.addEventListener('resize', handleResize);
-    function getWidth() {
-      return Math.max(
-        document.body.scrollWidth,
-        document.documentElement.scrollWidth,
-        document.body.offsetWidth,
-        document.documentElement.offsetWidth,
-        document.documentElement.clientWidth
-      );
-    }
-    let width = getWidth();
-    calcSize(width);
-  }, [])
 
   useEffect(() => {
     const restartGame = async () => {

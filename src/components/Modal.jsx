@@ -4,13 +4,13 @@ import { Styles } from '../util/Styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const IconWrapper = Styled.div`
-  font-size: 40px;
+  font-size: 60px;
   padding: 4px;
   opacity: 0.6;
-  margin-top: 8px;
   display: grid;
   justify-content: center;
   justify-items: center;
+  align-content: start;
 `
 
 const DoubleGrid = Styled.div`
@@ -26,6 +26,7 @@ const GridSection = Styled.div`
 
 const ModalText = Styled.div`
   padding: 8px 0;
+  align-content: center;
   max-width: 300px;
 `
 
@@ -68,7 +69,7 @@ const Container = Styled.div`
 
 const TopGrid = Styled.div`
   display: grid;
-  grid-template-columns: 70% auto;
+  grid-template-columns: 80% auto;
 `
 
 const Wrapper = Styled.div`

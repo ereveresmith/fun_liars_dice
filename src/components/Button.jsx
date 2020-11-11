@@ -44,6 +44,10 @@ const StyledButton = Styled.button`
     &:hover {
       background-color: ${Styles.colors.red};
     }
+
+    &:focus {
+      outline: 1px ${Styles.colors.red} solid;
+    }
   `}
 
   ${props => props.disabled && `

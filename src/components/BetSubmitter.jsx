@@ -177,12 +177,18 @@ const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume
     isDisabled = !isValidBet(amount, fv, currentAmount, currentFv);
   }
 
+  console.log(currentAmount)
+  let amountDisabled = true;
+  if (amount > currentAmount && amount > 1) {
+    amountDisabled = false;
+  }
+
   return (
     <Wrapper onKeyPress={handleKeyDown}>
       <VerticalGrid>
         <ArrowButton onClick={handleRaiseAmount} direction={'up'}></ArrowButton>
         <HugeText>{amount}</HugeText>
-        <ArrowButton onClick={handleLowerAmount} disabled={amount <= defaultAmount}></ArrowButton>
+        <ArrowButton onClick={handleLowerAmount} disabled={amountDisabled}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>
         <ArrowButton onClick={handleRaiseFv} direction={'up'} disabled={fv === 6}></ArrowButton>
