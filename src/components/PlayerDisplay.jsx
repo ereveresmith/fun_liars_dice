@@ -106,7 +106,7 @@ const Divider = Styled.div`
 const HandGrid = Styled.div`
   padding: 2px 10px;
   display: grid;
-  min-height: 38px;
+  min-height: 48px;
   justify-content: center;
   width: 176px;
   grid-gap: 1px;

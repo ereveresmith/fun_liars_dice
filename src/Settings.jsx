@@ -4,7 +4,8 @@ import Switch from './components/Switch';
 import Dice from './components/Dice';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
-import { defaultSettings } from './util/Defaults';
+import { defaultSettings, DEFAULT_COLORS_ARRAY } from './util/Defaults';
+import ColorButton from './components/ColorButton';
 
 const InlineGrid = Styled.div`
   display: grid;
@@ -40,14 +41,9 @@ const StyledH1 = Styled.h1`
   margin: 0;
 `
 
-const StyledH3 = Styled.h3`
-  align-self: center;
-  justify-self: center;
-  text-align: center;
-  margin-left: 4px;
-  font-size: ${Styles.fontSizes.medium};
-  opacity: 0.8;
-  color: ${Styles.colors.black};
+const ColorsGrid = Styled.div`
+  display: grid;
+  grid-template-columns: auto auto auto;
 `
 
 const Wrapper = Styled.div`
@@ -185,6 +181,26 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
     }
   }
 
+  const handleChangeColor = (color) => {
+    setMyColor(color);
+  }
+
+  const renderColorButtons = () => {
+    const colorsArray = [...DEFAULT_COLORS_ARRAY];
+
+    const colorButtons = colorsArray.map((color) => {
+      const isSelected = (myColor === color);
+
+      return <ColorButton 
+        color={color} 
+        onClick={handleChangeColor}
+        selected={isSelected}></ColorButton>
+    })
+    return <ColorsGrid>
+      {colorButtons}
+    </ColorsGrid>
+  }
+
   return (
     <div>
       <Wrapper screenSize={screenSize}>
@@ -200,23 +216,28 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
             <div>
               <DoubleGrid>
                 <OptionGrid>
-                  <Label>Your Name:</Label>
+                  <Label>Name:</Label>
                   <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
                 </OptionGrid>
-                <OptionGrid>
-                  <Label># of Players</Label>
-                  <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
-                </OptionGrid>
-                <OptionGrid>
-                  <Label>Dice Per Player:</Label>
-                  <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
-                </OptionGrid>
+                <div>
+                  <Label>Color:</Label>
+                  {renderColorButtons()}
+                </div>
               </DoubleGrid>
+
             </div>
             
             {showAdvanced && 
               <div>
                 <DoubleGrid>
+                  <OptionGrid>
+                    <Label># of Players</Label>
+                    <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
+                  </OptionGrid>
+                  <OptionGrid>
+                    <Label>Dice Per Player:</Label>
+                    <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
+                  </OptionGrid>
                   <OptionGrid>
                     <Label>Player Handicap:</Label>
                     <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>

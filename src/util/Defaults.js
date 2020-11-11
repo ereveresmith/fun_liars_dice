@@ -9,6 +9,14 @@ export const longWait = 1100;
 export const massiveWait = 500000;
 export const WIDESCREEN_SIZE = 620;
 export const SUPER_WIDESCREEN_SIZE = 910;
+export const DEFAULT_COLORS_ARRAY = [
+  Styles.colors.purple,
+  Styles.colors.orange,
+  Styles.colors.blue,
+  Styles.colors.pink,
+  Styles.colors.brown,
+  Styles.colors.lightBlue,
+]
 
 export const defaultSettings = {
   handSize: localStorage['hand_size'] || 3,

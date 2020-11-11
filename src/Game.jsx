@@ -4,7 +4,7 @@ import Styled from 'styled-components';
 import { Styles } from './util/Styles';
 import PlayerDisplay from './components/PlayerDisplay';
 import { calcBotMove } from './util/Bot';
-import { tinyWait, shortWait, mediumWait, mockNames, longWait } from './util/Defaults';
+import { tinyWait, shortWait, mediumWait, mockNames, longWait, DEFAULT_COLORS_ARRAY } from './util/Defaults';
 import { randomInt } from './util/Helper';
 
 import useSound from 'use-sound';
@@ -157,15 +157,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
   useEffect(() => {
     const generatePlayers = () => {
 
-      let colorsArray = [
-        Styles.colors.purple,
-        Styles.colors.orange,
-        Styles.colors.blue,
-        Styles.colors.pink,
-        Styles.colors.orange,
-        Styles.colors.green,
-      ]
-
+      let colorsArray = [...DEFAULT_COLORS_ARRAY];
 
       const newPlayers = [];
       for (let i = 0; i < settings.amountOfPlayers; i++) {

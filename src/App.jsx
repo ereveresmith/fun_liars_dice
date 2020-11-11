@@ -80,7 +80,13 @@ const App = () => {
     padding: 4px;
     font-size: ${Styles.fontSizes.medium};
     display: inline;
+    opacity: 0.6;
     color: ${Styles.colors.gold};
+
+    &:hover {
+      opacity: 0.9;
+      cursor: pointer;
+    }
   `
 
   const handleStartGame = (settings) => {
