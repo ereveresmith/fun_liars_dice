@@ -58,11 +58,10 @@ const VerticalGrid = Styled.div`
   justify-items: center;
 `
 
-const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume, currentAmount, currentFv, disabled, color, totalAmount}) => {
+const BetSubmitter = ({exact, defaultAmount, defaultFv, onSubmit, canCall, globalVolume, currentAmount, currentFv, disabled, color, totalAmount}) => {
   const [fv, setFv] = useState(defaultFv);
   const [amount, setAmount] = useState(defaultAmount);
   const [mode, setMode] = useState("amount");
-
   const [playClickUISound] = useSound(Sounds.clickUI, { volume: globalVolume });
 
 
@@ -181,6 +180,10 @@ const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume
       onSubmit(-1, -1);
   }
 
+  const handleExact = () => {
+    onSubmit(-2, -2);
+  }
+
   const handleKeyDown = (event) => {
     if(event.key === 'Enter' || event.key === 'Space'){
       handleSubmit();
@@ -217,6 +220,7 @@ const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume
       <VerticalGrid>
         <Button label="Bet" color={color} onClick={handleSubmit} primary disabled={isDisabled}></Button>
         <Button label="Call" onClick={handleCall} disabled={!canCall} color={Styles.colors.red}></Button>
+        {exact && <Button label="Exact" onClick={handleExact} disabled={!canCall} color={Styles.colors.orange}></Button>}
       </VerticalGrid>
     </Wrapper>
   );

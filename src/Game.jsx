@@ -332,7 +332,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     submitBet(bet.amount, bet.fv, nextPlayer);
   }
 
-  const checkIsLying = async () => {
+  const checkIsLying = (exact) => {
     const currentTurn = turns[turns.length - 1];
     const fv = currentTurn.fv;
     const amount = currentTurn.amount;
@@ -350,13 +350,24 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
 
     printLog(`Found `, fv, amntFound, 's');
 
-    if (amntFound >= amount) {
-      printLog(`It was the truth!`);
-      return false;
+    if (!exact) {
+      if (amntFound >= amount) {
+        printLog(`It was the truth!`);
+        return false;
+      } else {
+        printLog(`It was a lie!`);
+        return true;
+      }
     } else {
-      printLog(`It was a lie!`);
-      return true;
+      if (amntFound == amount) {
+        printLog(`There were exactly that many!`);
+        return true;
+      } else {
+        printLog(`There weren't that many.`);
+        return false;
+      }
     }
+
   }
 
   const playNextNote = (num, isChord) => {
@@ -548,12 +559,13 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     }
   }
 
-  const loopBack = async (ms) => {
+  const loopBack = async (ms, exact) => {
     await timeout(ms);
-    await revealNextDice();
+    await revealNextDice(exact);
   }
 
-  const revealNextDice = async () => {
+  const revealNextDice = async (exact) => {
+    console.log(`exact: ` + exact)
     const currentTurn = turns[turns.length - 1];
     const fv = currentTurn.fv;
     const amount = currentTurn.amount;
@@ -622,14 +634,14 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
           }
           loopBackTime = Math.floor(loopBackTime);
 
-          await loopBack(loopBackTime);
+          await loopBack(loopBackTime, exact);
         }
 
       }
     }
 
     if (foundInvisible === false) {
-      await endChallenge();
+      await endChallenge(exact);
     }
   }
 
@@ -652,14 +664,24 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     await revealNextDice();
   }
 
-  const endChallenge = async () => {
+  const startExactChallenge = async () => {
+    playChallengeSound();
+    setIsChallenge(true);
+    const currentTurn = turns[turns.length - 1];
+    const nextPlayer = currentTurn.nextPlayer;
+    printLog(`${nextPlayer.name}: Exactamundo!!`);
+    hidePlayerDice();
+    await timeout(longWait);
+    await revealNextDice(true);
+  }
+
+  const endChallenge = async (exact) => {
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
     const playersArray = [...players];
     let lyingPlayer = playersArray[nextPlayer.id - 1];
-
-    const isLying = await checkIsLying();
+    let isLying = checkIsLying(exact);
     await timeout(longWait)
 
     if (isLying === true) {
@@ -674,8 +696,16 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     setPlayers(playersArray);
     await timeout(shortWait);
     disableDice(lyingPlayer.hand);
+    if (lyingPlayer.id !== player.id) {
+      console.log("adding dice to " + player.name)
+    } else {
+      console.log("adding dice to " + nextPlayer.name)
+    }
     setPlayers(playersArray);
     printLog(`${lyingPlayer.name} lost a dice.`);
+    if (exact) {
+      // addADice()
+    }
     playLoseDiceSound();
 
     if (checkOutOfDice(lyingPlayer.hand)) {
@@ -697,12 +727,15 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
   const submitBet = async (amount, fv) => {
     setWaitingForTurn(false);
     const isCall = (amount === -1 && fv === -1);
+    const exact = (amount === -2 && fv === -2);
     const currentTurn = turns[turns.length - 1];
-    const player = currentTurn.player;
     const nextPlayer = currentTurn.nextPlayer;
 
     if (isCall) {
-      startChallenge();
+      await startChallenge();
+    } else if (exact) {
+      console.log("STARTING EXACT")
+      await startExactChallenge();
     } else {
       await nextTurn(amount, fv, nextPlayer);
     }
@@ -877,6 +910,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       return;
     }
     return <UserInterface 
+      exact={settings.exact}
       totalAmount={calcTotalAmount()}
       color={playerSettings.color}
       defaultAmount={defaultAmount}

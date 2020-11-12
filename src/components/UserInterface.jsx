@@ -69,7 +69,7 @@ const UILongSection = Styled.div`
 `
 
 
-const UserInterface = ({ totalAmount, currentTurn, defaultAmount, defaultFv, screenSize, log, isLeftHanded, isChallenge, onSubmit, isShowingModalButton, onShowModal, globalVolume, onMute, onSwitchView, onClickDice, color}) => {
+const UserInterface = ({ exact, totalAmount, currentTurn, defaultAmount, defaultFv, screenSize, log, isLeftHanded, isChallenge, onSubmit, isShowingModalButton, onShowModal, globalVolume, onMute, onSwitchView, onClickDice, color}) => {
   const nextPlayer = currentTurn.nextPlayer;
   const myTurn = (nextPlayer.id === 1);
   let isSmall = (screenSize === "small")
@@ -105,6 +105,7 @@ const UserInterface = ({ totalAmount, currentTurn, defaultAmount, defaultFv, scr
 
   const renderBetSubmitter = () => {
     return <BetSubmitter
+      exact={exact}
       color={color}
       currentAmount={currentTurn.amount}
       totalAmount={totalAmount}

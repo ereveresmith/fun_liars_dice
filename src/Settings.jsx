@@ -63,7 +63,6 @@ const Label = Styled.span`
 
 const OptionGrid = Styled.div`
   display: grid;
-  margin: 4px;
 `
 
 const TopText = Styled.div`
@@ -109,12 +108,22 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
   const [randomMode, setRandomMode] = useState(defaultSettings.randomMode);
   const [randomVariance, setRandomVariance] = useState(defaultSettings.randomVariance);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [exact, setExact] = useState(false);
+
 
   const handleShowAdvanced = () => {
     if (showAdvanced) {
       setShowAdvanced(false);
     } else {
       setShowAdvanced(true);
+    }
+  }
+
+  const handleToggleExact = () => {
+    if (exact) {
+      setExact(false);
+    } else {
+      setExact(true);
     }
   }
 
@@ -127,6 +136,7 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
       randomMode: randomMode,
       randomVariance: randomVariance,
       maxDice: maxDice,
+      exact: exact,
     }
 
     // localStorage['amount_of_players'] = amountOfPlayers;
@@ -200,6 +210,10 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
               <OptionGrid>
                 <Label>Player Handicap:</Label>
                 <StyledInput type={'number'} value={handicap} label={"Player Handicap"} onChange={handleChangeHandicap}></StyledInput>
+              </OptionGrid>
+              <OptionGrid>
+                <Label>Exactamundo (Calza):</Label>
+                <Switch color={playerSettings.color} isDefaultChecked={exact} onChange={handleToggleExact}></Switch>
               </OptionGrid>
               <OptionGrid>
                 <Label>Random Mode:</Label>

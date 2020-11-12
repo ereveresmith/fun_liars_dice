@@ -91,7 +91,6 @@ const GreyWrapper = Styled.div`
   box-shadow: ${Styles.boxShadows.medium};
   padding: 4px 12px;
   grid-gap: 16px;
-  margin: 4px;
   display: grid;
   transition: all ease 200ms;
 `

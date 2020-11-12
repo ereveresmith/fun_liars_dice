@@ -25,6 +25,7 @@ export const defaultSettings = {
   randomMode: true,
   randomVariance: 2,
   maxDice: 4,
+  exact: true,
 };
 
 export const defaultPlayerSettings = {
