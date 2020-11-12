@@ -171,6 +171,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
         let hand = [];
 
         let newHandSize = parseInt(settings.handSize);
+        let maxDice = parseInt(settings.maxDice);
         let isVisible = false;
         const isPlayer = (i == 0);
         let randOffset = settings.randomMode ? randomInt(settings.randomVariance) : 0;
@@ -183,13 +184,19 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
           newHandSize = newHandSize + randOffset;
         }
 
-        for (let k = 0; k < newHandSize; k++) {
+        if (newHandSize >= maxDice) {
+          newHandSize = maxDice;
+        }
+
+        for (let k = 0; k < maxDice; k++) {
           const newFv = randomInt(6) + 1;
+
+          const isDisabled = (k >= newHandSize);
 
           const diceObj = {
             fv: newFv,
             visible: isVisible,
-            disabled: false,
+            disabled: isDisabled,
             highlight: false,
             hasArrow: false,
             found: false,
@@ -271,13 +278,11 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
         nextPlayer: nextPlayer,
       }
       setLog([]);
-      setTurns([newTurn]);
-      printLog("Starting a new round");
-      await timeout(shortWait);
-      await timeout(longWait);
       rerollDice();
       setDefaultAmount(1);
-
+      setTurns([newTurn]);
+      printLog("Starting a new round");
+      await timeout(longWait);
       setWaitingForTurn(true);
     }
   }

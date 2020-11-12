@@ -15,20 +15,22 @@ export const DEFAULT_COLORS_ARRAY = [
   Styles.colors.blue,
   Styles.colors.pink,
   Styles.colors.lightBlue,
+  Styles.colors.darkGreen,
 ]
 
 export const defaultSettings = {
-  handSize: localStorage['hand_size'] || 3,
-  amountOfPlayers: localStorage['amount_of_players'] || 4,
-  handicap: localStorage['handicap'] || 0,
-  randomMode: localStorage['random_mode'] || false,
-  randomVariance: localStorage['random_variance'] || 3,
-  coins: localStorage['coins'] || 0,
+  handSize: 2,
+  amountOfPlayers: 4,
+  handicap: 0,
+  randomMode: true,
+  randomVariance: 2,
+  maxDice: 4,
 };
 
 export const defaultPlayerSettings = {
   name: localStorage['name'] || "You",
   color: localStorage['color'] || Styles.colors.purple,
+  coins: localStorage['coins'] || 0,
 };
 
 export const mockLieMessages = [

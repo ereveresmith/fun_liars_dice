@@ -57,6 +57,10 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
         }
     }
 
+    if (handAmnt === 1) {
+        move = 'best';
+    }
+
 
     let amountOfFvs = handMap[newFv-1];
     let updatedAmount = currentAmount - amountOfFvs;
@@ -80,13 +84,11 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
     switch(move) {
         case 'best':
             if (randomB > 7 && currentFv !== 0) {
-                console.log("train")
                 newFv = currentFv;
                 if (newFv <= currentFv && newAmount == currentAmount) {
                     newAmount++;
                 }
             } else {
-                console.log("my hand")
                 newFv = bestOptionIndex + 1;
                 if (newFv <= currentFv && newAmount == currentAmount) {
                     newAmount++;
@@ -106,7 +108,6 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
             break;
         case 'addOne':
             let extra = randomInt(1) + 1;
-            console.log(extra)
             newFv = currentFv + extra;
             if (newFv > 6) {
                 newFv = 1;

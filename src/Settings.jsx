@@ -103,9 +103,9 @@ const SettingsWrapper = Styled.div`
 
 const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
   const [amountOfPlayers, setAmountOfPlayers] = useState(defaultSettings.amountOfPlayers);
-  const [name, setName] = useState(defaultSettings.name);
   const [handSize, setHandSize] = useState(defaultSettings.handSize);
   const [handicap, setHandicap] = useState(defaultSettings.handicap);
+  const [maxDice, setMaxDice] = useState(defaultSettings.maxDice);
   const [randomMode, setRandomMode] = useState(defaultSettings.randomMode);
   const [randomVariance, setRandomVariance] = useState(defaultSettings.randomVariance);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -126,13 +126,14 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
       handicap: handicap,
       randomMode: randomMode,
       randomVariance: randomVariance,
+      maxDice: maxDice,
     }
 
-    localStorage['amount_of_players'] = amountOfPlayers;
-    localStorage['hand_size'] = handSize;
-    localStorage['handicap'] = handicap;
-    localStorage['random_mode'] = randomMode;
-    localStorage['random_variance'] = randomVariance;
+    // localStorage['amount_of_players'] = amountOfPlayers;
+    // localStorage['hand_size'] = handSize;
+    // localStorage['handicap'] = handicap;
+    // localStorage['random_mode'] = randomMode;
+    // localStorage['random_variance'] = randomVariance;
     onSubmit(gameSettings);
   }
 
@@ -149,11 +150,6 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
   const handleChangeHandSize = (e) => {
     let val = e.target.value;
     setHandSize(val);
-  }
-
-  const handleChangeName = (e) => {
-    let val = e.target.value;
-    setName(val);
   }
 
   const handleChangeVariance = (e) => {
@@ -185,32 +181,36 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
           <StyledH1 color={playerSettings.color}>TINY Liar's Dice</StyledH1>
         </InlineGrid>
         <TopText>
-          Set up your game:
+          Game Settings:
         </TopText>
           <SettingsWrapper screenSize={screenSize}>
-              <DoubleGrid>
-                <OptionGrid>
-                  <Label># of Players</Label>
-                  <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
-                </OptionGrid>
-                <OptionGrid>
-                  <Label>Dice Per Player:</Label>
-                  <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
-                </OptionGrid>
-                <OptionGrid>
-                  <Label>Player Handicap:</Label>
-                  <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
-                </OptionGrid>
-                <OptionGrid>
-                  <Label>Random Mode:</Label>
-                  <Switch color={playerSettings.color} isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
-                </OptionGrid>
-                {randomMode && <OptionGrid>
-                  <Label>Random Offset:</Label>
-                  <StyledInput value={randomVariance} label={"Random Offset"} onChange={handleChangeVariance}></StyledInput>
-                </OptionGrid>}
-              </DoubleGrid>
-            </SettingsWrapper>
+            <DoubleGrid>
+              <OptionGrid>
+                <Label># of Players</Label>
+                <StyledInput type={'number'} value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
+              </OptionGrid>
+              <OptionGrid>
+                <Label>Hand Size:</Label>
+                <StyledInput type={'number'} value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
+              </OptionGrid>
+              <OptionGrid>
+                <Label>Max Dice:</Label>
+                <StyledInput type={'number'} value={maxDice} label={"Max Dice"} onChange={handleChangeHandicap}></StyledInput>
+              </OptionGrid>
+              <OptionGrid>
+                <Label>Player Handicap:</Label>
+                <StyledInput type={'number'} value={handicap} label={"Player Handicap"} onChange={handleChangeHandicap}></StyledInput>
+              </OptionGrid>
+              <OptionGrid>
+                <Label>Random Mode:</Label>
+                <Switch color={playerSettings.color} isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
+              </OptionGrid>
+              {randomMode && <OptionGrid>
+                <Label>Random Offset:</Label>
+                <StyledInput type={'number'} value={randomVariance} label={"Random Offset"} onChange={handleChangeVariance}></StyledInput>
+              </OptionGrid>}
+            </DoubleGrid>
+          </SettingsWrapper>
         <Button label="Start Game" color={playerSettings.color} primary onClick={handleSubmit}></Button>
       </Wrapper>
     </div>

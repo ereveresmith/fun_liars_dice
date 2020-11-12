@@ -25,7 +25,8 @@ export const Styles = {
         orange: '#ff9933',
         gold: '#ffe033',
         lightBlue: '#00ccff', 
-        green: '#5cd65c',
+        green: '#47d147',
+        darkGreen: '#999966',
         pink: '#d65cad',
     },
     boxShadows: {

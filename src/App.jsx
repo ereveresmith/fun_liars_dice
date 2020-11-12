@@ -10,13 +10,17 @@ import { faCoins, faExclamationCircle, faHome } from '@fortawesome/free-solid-sv
 import {  WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE, defaultSettings, defaultPlayerSettings } from './util/Defaults';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const App = () => {
-  const [amountOfCoins, setAmountOfCoins] = useState(defaultSettings.coins);
+  const [amountOfCoins, setAmountOfCoins] = useState(defaultPlayerSettings.coins);
   const [page, setPage] = useState('home');
   const [gameSettings, setGameSettings] = useState(defaultSettings);
   const [playerSettings, setPlayerSettings] = useState(defaultPlayerSettings);
 
   const [isShowingModal, setIsShowingModal] = useState(false);
   const [screenSize, setScreenSize] = useState("medium");
+
+  useEffect(() => {
+    setIsShowingModal(false);
+  }, [page])
 
   useEffect(() => {
     const calcSize = (width) =>{
@@ -49,6 +53,11 @@ const App = () => {
     calcSize(width);
   }, [])
 
+  const TextPadding = Styled.div`
+    padding-left: 4px;
+    align-self: center;
+  `
+
   const Nav = Styled.div`
     width: 100%;
     display: grid;
@@ -61,8 +70,10 @@ const App = () => {
   `
 
   const NavLink = Styled.a`
+    display: flex;
     font-size: ${Styles.fontSizes.medium};
     color: ${Styles.colors.white};
+    align-self: center;
 
     font-weight: 600;
     cursor: pointer;
@@ -109,14 +120,14 @@ const App = () => {
   }
 
   const handleConfirmGoHome = () => {
-    setIsShowingModal(false);
     setPage('home');
     setGameSettings(defaultSettings);
   }
 
   const handleGotoSettings = (playerSettings) => {
-    console.log(playerSettings);
-    setPlayerSettings(playerSettings);
+    if (playerSettings) {
+      setPlayerSettings(playerSettings);
+    }
     setPage('settings');
   }
 
@@ -133,7 +144,7 @@ const App = () => {
         return <Game 
           settings={gameSettings}
           playerSettings={playerSettings}
-          onEnd={handleConfirmGoHome} 
+          onEnd={handleGotoSettings} 
           addCoin={handleAddCoin}
           screenSize={screenSize}>
         </Game>;
@@ -167,7 +178,7 @@ const App = () => {
       <Nav>
         <NavLink onClick={handleGoHome} color={playerSettings.color}>
             <FontAwesomeIcon icon={faHome}></FontAwesomeIcon>
-          Tiny Liar's Dice
+          <TextPadding>Tiny Liar's Dice</TextPadding>
         </NavLink>
         <CoinsDisplay>{amountOfCoins}       
          <IconWrapper>

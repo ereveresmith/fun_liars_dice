@@ -9,13 +9,17 @@ import useSound from 'use-sound';
 import { Sounds } from '../util/Sounds'
 import { isValidBet } from '../util/Helper';
 
+const AmountWrapper = Styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  min-width: 72px;
+`
+
 const HugeText = Styled.h1`
   font-size: ${Styles.fontSizes.huge};
   color: ${Styles.colors.darkGrey};
+  justify-self: end;
   text-align: center;
-  display: grid;
-  grid-template-columns: auto auto;
-  width: 76px;
 `
 
 const AmountTotalDisplay = Styled.div`
@@ -199,10 +203,10 @@ const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume
     <Wrapper onKeyPress={handleKeyDown}>
       <VerticalGrid>
         <ArrowButton onClick={handleRaiseAmount} direction={'up'}></ArrowButton>
-        <HugeText>
-          {amount}
+        <AmountWrapper>
+          <HugeText>{amount}</HugeText>
           <AmountTotalDisplay>/{totalAmount}</AmountTotalDisplay>
-        </HugeText>
+        </AmountWrapper>
         <ArrowButton onClick={handleLowerAmount} disabled={amountDisabled}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>

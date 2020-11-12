@@ -4,7 +4,7 @@ import Switch from './components/Switch';
 import Dice from './components/Dice';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
-import { defaultPlayerSettings, defaultSettings, DEFAULT_COLORS_ARRAY } from './util/Defaults';
+import { defaultPlayerSettings, DEFAULT_COLORS_ARRAY } from './util/Defaults';
 import ColorButton from './components/ColorButton';
 
 const InlineGrid = Styled.div`
