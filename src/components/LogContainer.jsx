@@ -36,7 +36,6 @@ const StyledSpan = Styled.span`
   fonnt-weight: 400;
   text-align: center;
   display: grid;
-  width: 180px;
   text-overflow: ellipsis;
   padding: 4px 0;
   grid-template-columns: auto auto auto;
@@ -70,6 +69,7 @@ const Wrapper = Styled.div`
   justify-self: center;
   align-content: end;
   opacity: 0.8;
+  width: 100%;
   justify-content: center;
   grid-auto-rows: max-content;
   overflow: scroll;

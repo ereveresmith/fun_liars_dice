@@ -120,14 +120,22 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
 
   useEffect(() => {
     if (waitingForTurn) {
+      console.log("Waiting for a turn man")
       const nextPlayer = turns[turns.length - 1].nextPlayer;
-      if (nextPlayer.id !== 1) {
-        calcBotTurn();
+
+
+      const calcBotTurnAsync = async () => {
+        console.log("kicking this off")
+        await calcBotTurn();
       }
-      setWaitingForTurn(false);
+
+      if (nextPlayer.id !== 1) {
+        
+        calcBotTurnAsync();
+      }
     }
 
-  }, [waitingForTurn]);
+  }, [waitingForTurn, turns]);
 
   useEffect(() => {
     const restartGame = async () => {
@@ -207,7 +215,6 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
           color: randomColor,
         })
 
-        console.log(randomColor)
       }
 
       return newPlayers;
@@ -246,7 +253,6 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       nextPlayer = calcNextPlayer(currentPlayer);
     }
     setIsChallenge(false);
-    setDefaultAmount(1);
 
     const winner = checkWinner();
     if (winner !== undefined) {
@@ -268,8 +274,10 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       setTurns([newTurn]);
       printLog("Starting a new round");
       await timeout(shortWait);
-      rerollDice();
       await timeout(longWait);
+      rerollDice();
+      setDefaultAmount(1);
+
       setWaitingForTurn(true);
     }
   }
@@ -682,6 +690,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
   }
 
   const submitBet = async (amount, fv) => {
+    setWaitingForTurn(false);
     const isCall = (amount === -1 && fv === -1);
     const currentTurn = turns[turns.length - 1];
     const player = currentTurn.player;
@@ -785,6 +794,21 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     return amountFound;
   }
 
+  const calcTotalAmount = () => {
+    let amountFound = 0;
+    for (let i = 0; i < players.length; i++) {
+      let hand = players[i].hand;
+
+      for (let k = 0; k < hand.length; k++) {
+        if (hand[k].disabled === false) {
+          amountFound++;
+        }
+      }
+    }
+
+    return amountFound;
+  }
+
   const renderCells = () => {
     const amountOfPlayers = players.length;
     const renderedCells = [];
@@ -848,6 +872,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       return;
     }
     return <UserInterface 
+      totalAmount={calcTotalAmount()}
       color={playerSettings.color}
       defaultAmount={defaultAmount}
       defaultFv={defaultFv}

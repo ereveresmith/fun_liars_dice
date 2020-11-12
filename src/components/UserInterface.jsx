@@ -8,6 +8,8 @@ import IconButton from './IconButton';
 
 import LogContainer from './LogContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { render } from 'react-dom';
 
 
 
@@ -67,7 +69,7 @@ const UILongSection = Styled.div`
 `
 
 
-const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log, isLeftHanded, isChallenge, onSubmit, isShowingModalButton, onShowModal, globalVolume, onMute, onSwitchView, onClickDice, color}) => {
+const UserInterface = ({ totalAmount, currentTurn, defaultAmount, defaultFv, screenSize, log, isLeftHanded, isChallenge, onSubmit, isShowingModalButton, onShowModal, globalVolume, onMute, onSwitchView, onClickDice, color}) => {
   const nextPlayer = currentTurn.nextPlayer;
   const myTurn = (nextPlayer.id === 1);
   let isSmall = (screenSize === "small")
@@ -98,31 +100,39 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
     onClickDice(fv)
   }
 
+  const canCall = (currentTurn.fv > 0 && myTurn && !isChallenge);
+  const disabled = (!myTurn || isChallenge);
+
+  const renderBetSubmitter = () => {
+    return <BetSubmitter
+      color={color}
+      currentAmount={currentTurn.amount}
+      totalAmount={totalAmount}
+      currentFv={currentTurn.fv}
+      globalVolume={globalVolume}
+      canCall={canCall}
+      disabled={disabled}
+      defaultFv={defaultFv}
+      defaultAmount={defaultAmount}
+      onSubmit={onSubmit}>
+    </BetSubmitter>
+  }
+
+  const renderLog = () => {
+    return <LogContainer
+        onClickDice={handleClickDice}
+        log={log}
+        screenSize={screenSize}>
+      </LogContainer>
+  }
+
   const smallUI = () => {
     return (<UIOuterGrid isLeftHanded={isLeftHanded} screenSize={screenSize}>
     {renderUIControls()}
     <UIGrid screenSize={screenSize}>
-      {!isLeftHanded && <LogContainer
-        onClickDice={handleClickDice}
-        log={log}
-        screenSize={screenSize}>
-      </LogContainer>}
-      <BetSubmitter
-        color={color}
-        currentAmount={currentTurn.amount}
-        currentFv={currentTurn.fv}
-        globalVolume={globalVolume}
-        canCall={currentTurn.fv > 0 && myTurn}
-        disabled={!myTurn || isChallenge}
-        defaultFv={defaultFv}
-        defaultAmount={defaultAmount}
-        onSubmit={onSubmit}>
-      </BetSubmitter>
-      {isLeftHanded && <LogContainer
-        onClickDice={handleClickDice}
-        log={log}
-        screenSize={screenSize}>
-      </LogContainer>}
+      {!isLeftHanded && renderLog()}
+        {renderBetSubmitter()}
+      {isLeftHanded && renderLog()}
     </UIGrid>
     </UIOuterGrid>)
   }
@@ -130,23 +140,9 @@ const UserInterface = ({ currentTurn, defaultAmount, defaultFv, screenSize, log,
   const bigUI = () => {
     return (<UIOuterGrid isLeftHanded={isLeftHanded} screenSize={screenSize}>
       <UIGrid screenSize={screenSize}>
-        <LogContainer
-          onClickDice={handleClickDice}
-          log={log}
-          screenSize={screenSize}>
-        </LogContainer>
+        {renderLog()}
         {renderUIControls()}
-        <BetSubmitter
-          color={color}
-          currentAmount={currentTurn.amount}
-          currentFv={currentTurn.fv}
-          globalVolume={globalVolume}
-          canCall={currentTurn.fv > 0 && myTurn}
-          disabled={!myTurn || isChallenge}
-          defaultFv={defaultFv}
-          defaultAmount={defaultAmount}
-          onSubmit={onSubmit}>
-        </BetSubmitter>
+        {renderBetSubmitter()}
       </UIGrid>
       </UIOuterGrid>)
   }

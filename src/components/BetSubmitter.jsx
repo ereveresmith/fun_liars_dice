@@ -13,7 +13,20 @@ const HugeText = Styled.h1`
   font-size: ${Styles.fontSizes.huge};
   color: ${Styles.colors.darkGrey};
   text-align: center;
-  min-width: 12px;
+  display: grid;
+  grid-template-columns: auto auto;
+  width: 76px;
+`
+
+const AmountTotalDisplay = Styled.div`
+  font-size: 12px;
+  color: ${Styles.colors.darkGrey};
+  position: relative;
+  font-weight: 400;
+  align-self: center;
+  justify-self: end;
+  margin: 0;
+  padding: 0;
 `
 
 const Wrapper = Styled.div`
@@ -41,7 +54,7 @@ const VerticalGrid = Styled.div`
   justify-items: center;
 `
 
-const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume, currentAmount, currentFv, disabled, color}) => {
+const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume, currentAmount, currentFv, disabled, color, totalAmount}) => {
   const [fv, setFv] = useState(defaultFv);
   const [amount, setAmount] = useState(defaultAmount);
   const [mode, setMode] = useState("amount");
@@ -186,7 +199,10 @@ const BetSubmitter = ({defaultAmount, defaultFv, onSubmit, canCall, globalVolume
     <Wrapper onKeyPress={handleKeyDown}>
       <VerticalGrid>
         <ArrowButton onClick={handleRaiseAmount} direction={'up'}></ArrowButton>
-        <HugeText>{amount}</HugeText>
+        <HugeText>
+          {amount}
+          <AmountTotalDisplay>/{totalAmount}</AmountTotalDisplay>
+        </HugeText>
         <ArrowButton onClick={handleLowerAmount} disabled={amountDisabled}></ArrowButton>
       </VerticalGrid>
       <VerticalGrid>

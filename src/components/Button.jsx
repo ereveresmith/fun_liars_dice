@@ -62,7 +62,6 @@ const StyledButton = Styled.button`
 `;
 
 const Button = ({ onClick, disabled, label, color, primary }) => {
-  console.log(color)
   return (
     <StyledButton className="Button" onClick={onClick} primary={primary} disabled={disabled} color={color}>
       {label}
