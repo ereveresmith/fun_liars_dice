@@ -104,15 +104,19 @@ const Divider = Styled.div`
 `
 
 const HandGrid = Styled.div`
-  padding: 2px 10px;
+  padding: 2px 8px;
   display: grid;
   min-height: 48px;
   justify-content: center;
-  width: 176px;
+  width: 220px;
   grid-gap: 1px;
   justify-content: center;
   justify-items: center;
   align-content: center;
+
+  ${props => props.screenSize === 'small' && `
+    width: 150px;
+  `}
 
   ${props => props.rows && `
     grid-template-rows: ${props.rows};
@@ -123,7 +127,7 @@ const HandGrid = Styled.div`
   `}
 `;
 
-const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity, onClickDice}) => {
+const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity, onClickDice, screenSize}) => {
   let isOut = true;
 
   const handleClickDice = () => (fv) => {
@@ -165,7 +169,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
     return (
       <ColoredDiv color={player.color} isColored={isColored}>
         <NameText color={player.color} isColored={isColored}>{player.name}</NameText>
-        <HandGrid columns={generatedColumns} rows={generatedRows}>{renderedHand}</HandGrid>
+        <HandGrid screenSize={screenSize} columns={generatedColumns} rows={generatedRows}>{renderedHand}</HandGrid>
       </ColoredDiv>
     )
   }

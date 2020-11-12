@@ -55,7 +55,7 @@ const Wrapper = Styled.div`
     `}
 
     ${props => props.disabled === true && `
-        border: 2px dashed ${Styles.colors.red};
+        border: 1px dashed ${Styles.colors.red};
         opacity: 0.3;
     `}
 

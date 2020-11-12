@@ -101,14 +101,13 @@ const SettingsWrapper = Styled.div`
   `}
 `
 
-const SettingsPage = ({ onSubmit, screenSize }) => {
+const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
   const [amountOfPlayers, setAmountOfPlayers] = useState(defaultSettings.amountOfPlayers);
   const [name, setName] = useState(defaultSettings.name);
   const [handSize, setHandSize] = useState(defaultSettings.handSize);
   const [handicap, setHandicap] = useState(defaultSettings.handicap);
   const [randomMode, setRandomMode] = useState(defaultSettings.randomMode);
   const [randomVariance, setRandomVariance] = useState(defaultSettings.randomVariance);
-  const [myColor, setMyColor] = useState(defaultSettings.myColor);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleShowAdvanced = () => {
@@ -123,16 +122,13 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
   const handleSubmit = () => {
     const gameSettings = {
       amountOfPlayers: amountOfPlayers,
-      name: name,
       handSize: handSize,
       handicap: handicap,
       randomMode: randomMode,
       randomVariance: randomVariance,
-      myColor: myColor,
     }
 
     localStorage['amount_of_players'] = amountOfPlayers;
-    localStorage['name'] = name;
     localStorage['hand_size'] = handSize;
     localStorage['handicap'] = handicap;
     localStorage['random_mode'] = randomMode;
@@ -181,81 +177,41 @@ const SettingsPage = ({ onSubmit, screenSize }) => {
     }
   }
 
-  const handleChangeColor = (color) => {
-    setMyColor(color);
-  }
-
-  const renderColorButtons = () => {
-    const colorsArray = [...DEFAULT_COLORS_ARRAY];
-
-    const colorButtons = colorsArray.map((color) => {
-      const isSelected = (myColor === color);
-
-      return <ColorButton 
-        color={color} 
-        onClick={handleChangeColor}
-        selected={isSelected}></ColorButton>
-    })
-    return <ColorsGrid>
-      {colorButtons}
-    </ColorsGrid>
-  }
-
   return (
     <div>
       <Wrapper screenSize={screenSize}>
         <InlineGrid>
           <Dice visible size={Styles.diceSizes.large} fv={7}></Dice>
-          <StyledH1 color={myColor}>TINY Liar's Dice</StyledH1>
+          <StyledH1 color={playerSettings.color}>TINY Liar's Dice</StyledH1>
         </InlineGrid>
         <TopText>
-          Welcome! 
-          Choose your settings to start a game:
+          Set up your game:
         </TopText>
           <SettingsWrapper screenSize={screenSize}>
-            <div>
               <DoubleGrid>
                 <OptionGrid>
-                  <Label>Name:</Label>
-                  <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
+                  <Label># of Players</Label>
+                  <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
                 </OptionGrid>
-                <div>
-                  <Label>Color:</Label>
-                  {renderColorButtons()}
-                </div>
+                <OptionGrid>
+                  <Label>Dice Per Player:</Label>
+                  <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
+                </OptionGrid>
+                <OptionGrid>
+                  <Label>Player Handicap:</Label>
+                  <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
+                </OptionGrid>
+                <OptionGrid>
+                  <Label>Random Mode:</Label>
+                  <Switch color={playerSettings.color} isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
+                </OptionGrid>
+                {randomMode && <OptionGrid>
+                  <Label>Random Offset:</Label>
+                  <StyledInput value={randomVariance} label={"Random Offset"} onChange={handleChangeVariance}></StyledInput>
+                </OptionGrid>}
               </DoubleGrid>
-
-            </div>
-            
-            {showAdvanced && 
-              <div>
-                <DoubleGrid>
-                  <OptionGrid>
-                    <Label># of Players</Label>
-                    <StyledInput value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
-                  </OptionGrid>
-                  <OptionGrid>
-                    <Label>Dice Per Player:</Label>
-                    <StyledInput value={handSize} label={"Hand Size"} onChange={handleChangeHandSize}></StyledInput>
-                  </OptionGrid>
-                  <OptionGrid>
-                    <Label>Player Handicap:</Label>
-                    <StyledInput value={handicap} label={"Hand Size"} onChange={handleChangeHandicap}></StyledInput>
-                  </OptionGrid>
-                  <OptionGrid>
-                    <Label>Random Mode:</Label>
-                    <Switch color={myColor} isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
-                  </OptionGrid>
-                  {randomMode && <OptionGrid>
-                    <Label>Random Offset:</Label>
-                    <StyledInput value={randomVariance} label={"Random Offset"} onChange={handleChangeVariance}></StyledInput>
-                  </OptionGrid>}
-                </DoubleGrid>
-              </div>
-            }
             </SettingsWrapper>
-          <ALink onClick={handleShowAdvanced}>{renderAdvanceText()}</ALink>
-        <Button label="Start Game" color={myColor} primary onClick={handleSubmit}></Button>
+        <Button label="Start Game" color={playerSettings.color} primary onClick={handleSubmit}></Button>
       </Wrapper>
     </div>
   );

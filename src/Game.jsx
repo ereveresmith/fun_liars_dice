@@ -82,11 +82,10 @@ const GameGrid = Styled.div`
 
 
 
-const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
+const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
   const [players, setPlayers] = useState([]);
   const [turns, setTurns] = useState([]);
   const [log, setLog] = useState([]);
-  const [gameSpeed, setGameSpeed] = useState(1);
   const [defaultAmount, setDefaultAmount] = useState(1);
   const [defaultFv, setDefaultFv] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
@@ -186,7 +185,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
             highlight: false,
             hasArrow: false,
             found: false,
-            highlightColor: Styles.colors.red,
+            highlightColor: Styles.colors.darkRed,
           }
           hand.push(diceObj);
         }
@@ -194,30 +193,15 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
         let rand = randomInt(colorsArray.length)
         let randomColor = colorsArray[rand];
         if (isPlayer) {
-          randomColor = settings.myColor;
+          randomColor = playerSettings.color;
         }
 
-        //Delete that color from the array now
-        // for (let z = 0; z < colorsArray.length; z++) {
-        //   if (colorsArray[z] === randomColor) {
-        //     console.log("Going to remove " + colorsArray[z]);
-        //     console.log(colorsArray);
-        //     colorsArray = colorsArray.splice(z, 1);
-        //     console.log("Removed now: ")
-        //     console.log(colorsArray);
-        //   }
-        // }
-
-        console.log(colorsArray)
-        console.log("Going to remove " + randomColor);
         const filteredColorsArray = colorsArray.filter(color => color !== randomColor)
-        console.log("Removed now: ")
 
-        console.log(filteredColorsArray)
         colorsArray = filteredColorsArray;
 
         newPlayers.push({
-          name: isPlayer ? settings.name : randomName(),
+          name: isPlayer ? playerSettings.name : randomName(),
           id: i + 1,
           hand: hand,
           color: randomColor,
@@ -250,7 +234,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
     }
 
     startGame(settings);
-  }, [settings])
+  }, [settings, playerSettings])
 
   const printLog = (value, fv, amount, value2, color) => {
     setLog(log => [...log, { value: value, fv: fv, amount: amount, value2: value2, color: color }]);
@@ -280,11 +264,12 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
         player: { id: 0 },
         nextPlayer: nextPlayer,
       }
-      await timeout(longWait);
       setLog([]);
-      printLog("Starting a new round");
-      rerollDice();
       setTurns([newTurn]);
+      printLog("Starting a new round");
+      await timeout(shortWait);
+      rerollDice();
+      await timeout(longWait);
       setWaitingForTurn(true);
     }
   }
@@ -771,6 +756,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
 
       return (
         <PlayerDisplay
+          screenSize={screenSize}
           onClickDice={handleClickDice}
           isChallenge={isShowingChallenge}
           key={`playerDisplay${playerNumber}`}
@@ -862,7 +848,7 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
       return;
     }
     return <UserInterface 
-      color={settings.myColor}
+      color={playerSettings.color}
       defaultAmount={defaultAmount}
       defaultFv={defaultFv}
       currentTurn={turns[turns.length -1]}
@@ -938,14 +924,14 @@ const GamePage = ({ settings, onEnd, screenSize, addCoin }) => {
 
     return (
       <Modal 
-        color={settings.myColor}
+        color={playerSettings.color}
         active={isShowingModal} 
         onClose={handleHideModal}   
         title={modalTitle}
         icon={activeIcon}
         text={modalText}>
-          <Button label={"Rematch"} color={settings.myColor} onClick={handleRestartGame}></Button>
-          <Button label={"Leave Game"} color={settings.myColor} primary onClick={handleClickSettings}></Button>
+          <Button label={"Rematch"} color={playerSettings.color} onClick={handleRestartGame}></Button>
+          <Button label={"Leave Game"} color={playerSettings.color} primary onClick={handleClickSettings}></Button>
       </Modal>
     )
   }
