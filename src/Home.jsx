@@ -15,20 +15,6 @@ const InlineGrid = Styled.div`
   grid-template-columns: auto auto auto auto;
 `
 
-const ALink = Styled.a`
-  align-self: left;
-  margin-left: 4px;
-  font-size: ${Styles.fontSizes.black};
-  color: ${Styles.colors.grey};
-  font-size: ${Styles.fontSizes.small};
-  cursor: pointer;
-  padding: 8px;
-
-  &:hover {
-    color: ${Styles.colors.darkGrey};
-  }
-`
-
 const StyledH1 = Styled.h1`
   align-self: center;
   opacity: 0.8;
@@ -58,6 +44,7 @@ const Label = Styled.span`
   font-size: ${Styles.fontSizes.medium};
   align-self: center;
   text-align: left;
+  text-align: center;
   font-weight: 500;
 `
 
@@ -71,7 +58,7 @@ const TopText = Styled.div`
   margin: 12px 24px;
   max-width: 400px;
   text-align: center; 
-  font-size: ${Styles.fontSizes.medium}
+  font-size: ${Styles.fontSizes.medium};
 `
 
 const StyledInput = Styled.input`
@@ -79,20 +66,6 @@ const StyledInput = Styled.input`
   font-size: ${Styles.fontSizes.medium};
   font-weight: 300;
   max-width: 70px;
-`
-
-const DoubleGrid = Styled.div`
-  min-width: 250px;
-  display: grid;
-  grid-template-columns: auto auto;
-`
-
-const GreyWrapper = Styled.div`
-  box-shadow: ${Styles.boxShadows.medium};
-  padding: 4px 12px;
-  grid-gap: 16px;
-  display: grid;
-  transition: all ease 200ms;
 `
 
 const Home = ({ onSubmit, screenSize }) => {
@@ -146,18 +119,12 @@ const Home = ({ onSubmit, screenSize }) => {
           Welcome!
           Create a player:
         </TopText>
-          <GreyWrapper screenSize={screenSize}>
-              <DoubleGrid>
-                <OptionGrid>
-                  <Label>Name:</Label>
-                  <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
-                </OptionGrid>
-              </DoubleGrid>
-              <div>
-                  <Label>Color:</Label>
-                  {renderColorButtons()}
-              </div>
-            </GreyWrapper>
+          <OptionGrid>
+            <Label>Name:</Label>
+            <StyledInput value={name} label={"Your Name"} onChange={handleChangeName}></StyledInput>
+          </OptionGrid>
+          <Label>Color:</Label>
+          {renderColorButtons()}
         <Button label="Next" color={color} primary onClick={handleSubmit}></Button>
       </Wrapper>
     </div>

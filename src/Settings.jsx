@@ -63,6 +63,7 @@ const Label = Styled.span`
 
 const OptionGrid = Styled.div`
   display: grid;
+  margin: 4px;
 `
 
 const TopText = Styled.div`
