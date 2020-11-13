@@ -94,7 +94,6 @@ const BetSubmitter = ({exact, defaultAmount, defaultFv, onSubmit, canCall, globa
           }
           break;
         case 2:
-          console.log(mode)
           if (mode === "amount") {
             setAmount(2);
           } else {

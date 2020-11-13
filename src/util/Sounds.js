@@ -3,6 +3,8 @@ import challengeSound from '../media/challenge.m4a';
 import nextRoundSound from '../media/nextRound.m4a';
 import findDiceSound from '../media/findDice.m4a';
 import loseDiceSound from '../media/loseDice.m4a';
+import gainDiceSound from '../media/gainDice.m4a';
+import exactSound from '../media/exact.m4a';
 import clickSound from '../media/click.m4a';
 import errorSound from '../media/error.m4a';
 import clickUISound from '../media/clickUI.m4a';
@@ -27,6 +29,8 @@ export const Sounds = {
     loseDice: loseDiceSound,
     errorSound: errorSound,
     clickUI: clickUISound,
+    gainDice: gainDiceSound,
+    exact: exactSound,
 }
 
 export const Notes = [

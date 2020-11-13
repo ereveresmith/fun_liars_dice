@@ -79,11 +79,11 @@ export const calcBotMove = (turns, totalAmntOfDice, player) => {
     if (riskScore >= riskThreshold && currentTurn.amount > 0 && currentTurn.fv > 0) {
         move = 'call'
     }
-    console.log(`${player.name}: ${move}`)
+    // console.log(`${player.name}: ${move}`)
 
     switch(move) {
         case 'best':
-            if (randomB > 7 && currentFv !== 0) {
+            if (randomB > 8 && currentFv !== 0) {
                 newFv = currentFv;
                 if (newFv <= currentFv && newAmount == currentAmount) {
                     newAmount++;

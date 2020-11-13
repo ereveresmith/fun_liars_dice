@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import IconButton from './components/IconButton';
 import Styled from 'styled-components';
 import { Styles } from './util/Styles';
@@ -109,6 +109,8 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
   const [playLoseDiceSound] = useSound(Sounds.loseDice, { volume: globalVolume });
   const [playErrorSound] = useSound(Sounds.errorSound, { volume: globalVolume });
   const [playClickDiceSound] = useSound(Sounds.clickUI, { volume: globalVolume });
+  const [playExactSound] = useSound(Sounds.exact, { volume: globalVolume });
+  const [playGainDiceSound] = useSound(Sounds.gainDice, { volume: globalVolume });
 
   const [playNote0] = useSound(Notes[0], { volume: globalVolume });
   const [playNote1] = useSound(Notes[1], { volume: globalVolume });
@@ -120,12 +122,10 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
 
   useEffect(() => {
     if (waitingForTurn) {
-      console.log("Waiting for a turn man")
       const nextPlayer = turns[turns.length - 1].nextPlayer;
 
 
       const calcBotTurnAsync = async () => {
-        console.log("kicking this off")
         await calcBotTurn();
       }
 
@@ -277,7 +277,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
         player: { id: 0 },
         nextPlayer: nextPlayer,
       }
-      setLog([]);
+      // setLog([]);
       rerollDice();
       setDefaultAmount(1);
       setTurns([newTurn]);
@@ -365,6 +365,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       } else {
         printLog(`There weren't that many.`);
         return false;
+        
       }
     }
 
@@ -559,13 +560,23 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     }
   }
 
+  const addADice = (hand) => {
+    for (let i = 0; i < hand.length; i++) {
+      if (hand[i].disabled === true) {
+        hand[i].disabled = false;
+        hand[i].visible = true;
+        playGainDiceSound();
+        return;
+      }
+    }
+  }
+
   const loopBack = async (ms, exact) => {
     await timeout(ms);
     await revealNextDice(exact);
   }
 
   const revealNextDice = async (exact) => {
-    console.log(`exact: ` + exact)
     const currentTurn = turns[turns.length - 1];
     const fv = currentTurn.fv;
     const amount = currentTurn.amount;
@@ -605,11 +616,23 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
 
           const amountFound = calcAmountFound();
 
-          if (amountFound >= amount) {
+          let foundGoal = (amountFound >= amount);
+          if (exact) {
+            foundGoal = (amountFound == amount);
+          }
+
+          if (foundGoal) {
             for (let z = 0; z < playersArray.length; z++) {
               let playerHand = playersArray[z].hand;
               for (let p = 0; p < playerHand.length; p++) {
                 playerHand[p].highlightColor = Styles.colors.green;
+              }
+            }
+          } else {
+            for (let z = 0; z < playersArray.length; z++) {
+              let playerHand = playersArray[z].hand;
+              for (let p = 0; p < playerHand.length; p++) {
+                playerHand[p].highlightColor = Styles.colors.red;
               }
             }
           }
@@ -641,6 +664,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     }
 
     if (foundInvisible === false) {
+      console.log("kicking it off here")
       await endChallenge(exact);
     }
   }
@@ -665,7 +689,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
   }
 
   const startExactChallenge = async () => {
-    playChallengeSound();
+    playExactSound();
     setIsChallenge(true);
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
@@ -681,11 +705,14 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     const nextPlayer = currentTurn.nextPlayer;
     const playersArray = [...players];
     let lyingPlayer = playersArray[nextPlayer.id - 1];
+    let winningPlayer = playersArray[player.id - 1];
+
     let isLying = checkIsLying(exact);
     await timeout(longWait)
 
     if (isLying === true) {
       lyingPlayer = playersArray[player.id - 1];
+      winningPlayer = playersArray[nextPlayer.id - 1];
     }
 
     await timeout(longWait);
@@ -696,17 +723,17 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     setPlayers(playersArray);
     await timeout(shortWait);
     disableDice(lyingPlayer.hand);
-    if (lyingPlayer.id !== player.id) {
-      console.log("adding dice to " + player.name)
-    } else {
-      console.log("adding dice to " + nextPlayer.name)
-    }
     setPlayers(playersArray);
     printLog(`${lyingPlayer.name} lost a dice.`);
-    if (exact) {
-      // addADice()
-    }
     playLoseDiceSound();
+
+    await timeout(mediumWait);
+    if (exact) {
+      addADice(winningPlayer.hand);
+      printLog(`${winningPlayer.name} gained a dice.`);
+      setPlayers(playersArray);
+      await timeout(mediumWait);
+    }
 
     if (checkOutOfDice(lyingPlayer.hand)) {
       if (lyingPlayer.id === 1) {
@@ -734,7 +761,6 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     if (isCall) {
       await startChallenge();
     } else if (exact) {
-      console.log("STARTING EXACT")
       await startExactChallenge();
     } else {
       await nextTurn(amount, fv, nextPlayer);
