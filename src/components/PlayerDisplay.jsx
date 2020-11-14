@@ -25,10 +25,10 @@ const FadeAnimation = keyframes`
   }
 `;
 
-const LieDisplay = Styled.div`
+const MessageDisplay = Styled.div`
   font-weight: 600;
   align-self: start;
-  font-size: ${Styles.fontSizes.huge};
+  font-size: ${Styles.fontSizes.large};
   opacity: 0.65;
 `
 
@@ -127,7 +127,7 @@ const HandGrid = Styled.div`
   `}
 `;
 
-const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity, onClickDice, screenSize}) => {
+const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpacity, onClickDice, screenSize, exact}) => {
   let isOut = true;
 
   const handleClickDice = () => (fv) => {
@@ -176,9 +176,10 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
 
   const renderBottomSection = () => {
     let activeDisplay = null;  
-    let rand = randomInt(mockLieMessages.length);
-    const lieMessage = "That's bull!!"
-    // const lieMessage = mockLieMessages[rand];
+    let myMessage = player.callMessage;
+    if (exact) {
+      myMessage = player.exactMessage;
+    }
 
     let waitingMessage = ``
     if (player.id === 1) {
@@ -186,7 +187,7 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
     }
 
     if (isActive && isChallenge) {
-      activeDisplay = <LieDisplay>{lieMessage}</LieDisplay>
+      activeDisplay = <MessageDisplay>{myMessage}</MessageDisplay>
     } else if (isActive) {
       activeDisplay = <TakingTurnDisplay><Arrow></Arrow>{waitingMessage}</TakingTurnDisplay>;
     } else if (showTurn && !isOut) {

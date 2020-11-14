@@ -76,6 +76,8 @@ const Home = ({ onSubmit, screenSize }) => {
     const playerSettings = {
       name: name,
       color: color,
+      callMessage: defaultPlayerSettings.callMessage,
+      exactMessage: defaultPlayerSettings.exactMessage,
     }
 
     localStorage['color'] = color;

@@ -40,7 +40,7 @@ const Wrapper = Styled.div`
   opacity: 0.83;
   box-shadow: ${Styles.boxShadows.medium};
   grid-gap: 12px;
-  height: 120px;
+  height: 150px;
   touch-action: manipulation;
   display: grid;
   justify-content: start;

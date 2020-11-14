@@ -4,7 +4,7 @@ import Styled from 'styled-components';
 import { Styles } from './util/Styles';
 import PlayerDisplay from './components/PlayerDisplay';
 import { calcBotMove } from './util/Bot';
-import { tinyWait, shortWait, mediumWait, mockNames, longWait, DEFAULT_COLORS_ARRAY } from './util/Defaults';
+import { tinyWait, shortWait, mediumWait, mockNames, longWait, DEFAULT_COLORS_ARRAY, mockBots } from './util/Defaults';
 import { randomInt } from './util/Helper';
 
 import useSound from 'use-sound';
@@ -89,6 +89,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
   const [defaultAmount, setDefaultAmount] = useState(1);
   const [defaultFv, setDefaultFv] = useState(1);
   const [isChallenge, setIsChallenge] = useState(false);
+  const [isExact, setIsExact] = useState(false);
   const [shouldRestart, setShouldRestart] = useState(true);
   const [waitingForTurn, setWaitingForTurn] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -142,6 +143,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       setIsShowingModal(false);
       setIsWin(false);
       setIsChallenge(false);
+      setIsExact(false);
       rerollDice(true);
       const initialTurn = {
         number: 0,
@@ -165,12 +167,13 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     const generatePlayers = () => {
 
       let colorsArray = [...DEFAULT_COLORS_ARRAY];
+      let botsArray = [...mockBots];
 
       const newPlayers = [];
       for (let i = 0; i < settings.amountOfPlayers; i++) {
         let hand = [];
 
-        let newHandSize = parseInt(settings.handSize);
+        let minDice = parseInt(settings.handSize);
         let maxDice = parseInt(settings.maxDice);
         let isVisible = false;
         const isPlayer = (i == 0);
@@ -179,19 +182,19 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
         //If it's you
         if (isPlayer) {
           isVisible = true;
-          newHandSize = newHandSize + parseInt(settings.handicap) + randOffset;
+          minDice = minDice + parseInt(settings.handicap) + randOffset;
         } else {
-          newHandSize = newHandSize + randOffset;
+          minDice = minDice + randOffset;
         }
 
-        if (newHandSize >= maxDice) {
-          newHandSize = maxDice;
+        if (minDice >= maxDice) {
+          minDice = maxDice;
         }
 
         for (let k = 0; k < maxDice; k++) {
           const newFv = randomInt(6) + 1;
 
-          const isDisabled = (k >= newHandSize);
+          const isDisabled = (k >= minDice);
 
           const diceObj = {
             fv: newFv,
@@ -205,22 +208,41 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
           hand.push(diceObj);
         }
 
-        let rand = randomInt(colorsArray.length)
-        let randomColor = colorsArray[rand];
         if (isPlayer) {
-          randomColor = playerSettings.color;
+          let myColor = playerSettings.color;
+          const filteredColorsArray = colorsArray.filter(color => color !== myColor)
+          colorsArray = filteredColorsArray;
+          newPlayers.push({
+            name: playerSettings.name,
+            id: i + 1,
+            hand: hand,
+            color: myColor,
+            callMessage: playerSettings.callMessage,
+            exactMessage: playerSettings.exactMessage,
+          })
+        } else {
+          //It's a bot
+          let rand2 = randomInt(mockBots.length)
+          const bot = mockBots[rand2];
+          let rand = randomInt(colorsArray.length)
+          let myColor = colorsArray[rand];
+          const filteredColorsArray = colorsArray.filter(color => color !== myColor)
+          colorsArray = filteredColorsArray;
+
+          newPlayers.push({
+            name: bot.name,
+            id: i + 1,
+            hand: hand,
+            color: bot.color,
+            callMessage: bot.callMessage,
+            exactMessage: bot.exactMessage,
+            riskThreshold: bot.riskThreshold,
+            personality: bot.personality,
+          })
         }
 
-        const filteredColorsArray = colorsArray.filter(color => color !== randomColor)
 
-        colorsArray = filteredColorsArray;
 
-        newPlayers.push({
-          name: isPlayer ? playerSettings.name : randomName(),
-          id: i + 1,
-          hand: hand,
-          color: randomColor,
-        })
 
       }
 
@@ -232,6 +254,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       setIsShowingModal(false);
       setIsWin(false);
       setIsChallenge(false);
+      setIsExact(false);
       setPlayers(newPlayers)
 
       const initialTurn = {
@@ -260,6 +283,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       nextPlayer = calcNextPlayer(currentPlayer);
     }
     setIsChallenge(false);
+    setIsExact(false);
 
     const winner = checkWinner();
     if (winner !== undefined) {
@@ -327,7 +351,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
 
   const calcBotTurn = async () => {
     const nextPlayer = turns[turns.length - 1].nextPlayer;
-    const bet = calcBotMove(turns, amountOfActiveDice(), nextPlayer);
+    const bet = calcBotMove(turns, amountOfActiveDice(), nextPlayer, settings.exact);
     await timeout(bet.timeout);
     submitBet(bet.amount, bet.fv, nextPlayer);
   }
@@ -560,12 +584,14 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     }
   }
 
-  const addADice = (hand) => {
+  const addADice = (player) => {
+    const hand = player.hand;
     for (let i = 0; i < hand.length; i++) {
       if (hand[i].disabled === true) {
         hand[i].disabled = false;
         hand[i].visible = true;
         playGainDiceSound();
+        printLog(`${player.name} gained a dice.`);
         return;
       }
     }
@@ -682,7 +708,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     setIsChallenge(true);
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
-    printLog(`${nextPlayer.name}: That's bull!!`);
+    printLog(`${nextPlayer.name}: ${nextPlayer.callMessage}`);
     hidePlayerDice();
     await timeout(longWait);
     await revealNextDice();
@@ -691,9 +717,10 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
   const startExactChallenge = async () => {
     playExactSound();
     setIsChallenge(true);
+    setIsExact(true);
     const currentTurn = turns[turns.length - 1];
     const nextPlayer = currentTurn.nextPlayer;
-    printLog(`${nextPlayer.name}: Exactamundo!!`);
+    printLog(`${nextPlayer.name}: ${nextPlayer.exactMessage}`);
     hidePlayerDice();
     await timeout(longWait);
     await revealNextDice(true);
@@ -729,8 +756,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
 
     await timeout(mediumWait);
     if (exact) {
-      addADice(winningPlayer.hand);
-      printLog(`${winningPlayer.name} gained a dice.`);
+      addADice(winningPlayer);
       setPlayers(playersArray);
       await timeout(mediumWait);
     }
@@ -826,9 +852,9 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
 
       const isShowingTurn = (isSecondary || isTertiary || isQuad);
       const isShowingChallenge = (isChallenge && (player.id === currentTurn.player.id | player.id === currentTurn.nextPlayer.id))
-
       return (
         <PlayerDisplay
+          exact={isExact}
           screenSize={screenSize}
           onClickDice={handleClickDice}
           isChallenge={isShowingChallenge}

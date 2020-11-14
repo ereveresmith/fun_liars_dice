@@ -58,12 +58,11 @@ const StyledSpan = Styled.span`
 
 const Wrapper = Styled.div`
   box-shadow: ${Styles.boxShadows.medium};
-  height: 120px;
+  height: 150px;
 
   ${props => props.screenSize === 'large' && `
     min-height: 200px;
   `}
-  width: 100%;
   touch-action: manipulation;
   background-color: ${Styles.colors.white};
   justify-self: center;
