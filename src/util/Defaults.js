@@ -23,7 +23,7 @@ export const DEFAULT_COLORS_ARRAY = [
 ]
 
 export const defaultSettings = {
-  handSize: 3,
+  handSize: 2,
   amountOfPlayers: 4,
   handicap: 0,
   randomMode: true,
@@ -48,7 +48,7 @@ export const mockBots = [
     callMessage: "Fuck you, lil bitch!",
     exactMessage: "Exactamundo!",
     color: Styles.colors.black,
-    riskThreshold: 0.24,
+    riskThreshold: 0.2,
     personality: "ballsy",
   },
   {
@@ -56,7 +56,7 @@ export const mockBots = [
     callMessage: "Fuck you, lil bitch!",
     exactMessage: "Exactamundo!",
     color: Styles.colors.brown,
-    riskThreshold: 0.18,
+    riskThreshold: 0.14,
     personality: "ballsy",
   },
   {
