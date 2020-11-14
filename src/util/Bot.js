@@ -54,23 +54,23 @@ export const calcBotMove = (turns, totalAmntOfDice, player, exact) => {
             move = 'riskyBest';
         }
 
-        if (randomB > 8) {
+        if (randomB > 9) {
             move = 'train;'
         }
     } else {
-        if (randomB > 6) {
+        if (randomB > 7) {
             move = 'lie';
         } else {
             move = 'addOne'; 
 
-            if (personality === 'ballsy' || randomC < 3) {
+            if (personality === 'ballsy' || randomC < 5) {
                 move = 'addTwo';
             }
         }
     }
 
     if (personality == "liar") {
-        if (randomC < 5) {
+        if (randomC < 3) {
             move = 'lie';
         }
     }
@@ -78,7 +78,7 @@ export const calcBotMove = (turns, totalAmntOfDice, player, exact) => {
     if (handAmnt === 1) {
         console.log("LAST STAND BRO")
         move = 'best';
-        if (randomC < 8 && currentFv > 0) {
+        if (randomC > 8 && currentFv > 0) {
             move = 'train';
         } else if (randomB > 8) {
             move = 'lie';
@@ -87,21 +87,16 @@ export const calcBotMove = (turns, totalAmntOfDice, player, exact) => {
 
 
     let amountOfFvs = handMap[newFv-1];
-    console.log("amountofFvs: " + amountOfFvs)
     let updatedAmount = currentAmount - amountOfFvs;
     let riskScore = updatedAmount / totalAmntOfDice;
 
     let missingDice = player.hand.length - handAmnt;
 
-    let randomOffset = randomInt(50) / 300;
-    let riskThreshold = player.riskThreshold + randomOffset;
+    let randomOffset = randomInt(50) / 700;
+    let riskThreshold = player.riskThreshold - randomOffset;
 
-    
-
-
-    console.log("thresh: " + riskThreshold)
     if (riskScore >= riskThreshold && currentTurn.amount > 0 && currentTurn.fv > 0) {
-        if (exact && riskScore < riskThreshold + 0.1) {
+        if (exact && riskScore < riskThreshold + 0.03 && randomC > 6) {
             move = 'exact'
         } else {
             move = 'call';

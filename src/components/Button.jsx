@@ -10,7 +10,7 @@ const StyledButton = Styled.button`
   font-weight: 500;
   background-color: ${Styles.colors.white};
   justify-self: center;
-  max-width: 150px;
+  min-width: 120px;
   font-size: ${Styles.fontSizes.medium};
   min-width: 52px;
   border: 1px solid ${Styles.colors.black};

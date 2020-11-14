@@ -58,7 +58,7 @@ const StyledSpan = Styled.span`
 
 const Wrapper = Styled.div`
   box-shadow: ${Styles.boxShadows.medium};
-  height: 150px;
+  height: 142px;
 
   ${props => props.screenSize === 'large' && `
     min-height: 200px;

@@ -29,7 +29,7 @@ const EmptyCell = Styled.div`
 const Wrapper = Styled.div`
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: auto 24px auto;
+  grid-template-rows: auto 12px auto;
   justify-content: center;
   justify-items: center;
   align-items: center;
@@ -226,8 +226,11 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
           const bot = mockBots[rand2];
           let rand = randomInt(colorsArray.length)
           let myColor = colorsArray[rand];
-          const filteredColorsArray = colorsArray.filter(color => color !== myColor)
+          const filteredColorsArray = colorsArray.filter(color => color !== myColor);
+          const filteredBotsArray = botsArray.filter(mockBot => mockBot.name !== bot.name)
           colorsArray = filteredColorsArray;
+          botsArray = filteredBotsArray;
+
 
           newPlayers.push({
             name: bot.name,
@@ -402,6 +405,9 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
         break;
       case 1:
         playNote1();
+        if (isChord) {
+          playNote0();
+        }
         break;
       case 2:
         playNote2();
@@ -667,6 +673,9 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
 
           if (isLyingFv) {
             let isEnough = (amountFound >= amount);
+            if (exact) {
+              isEnough = (amountFound === amount);
+            }
             playNextNote(amountFound - 1, isEnough);
           }
 
@@ -690,7 +699,6 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     }
 
     if (foundInvisible === false) {
-      console.log("kicking it off here")
       await endChallenge(exact);
     }
   }

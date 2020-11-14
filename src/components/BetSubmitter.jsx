@@ -40,7 +40,7 @@ const Wrapper = Styled.div`
   opacity: 0.83;
   box-shadow: ${Styles.boxShadows.medium};
   grid-gap: 12px;
-  height: 150px;
+  height: 142px;
   touch-action: manipulation;
   display: grid;
   justify-content: start;
@@ -61,9 +61,7 @@ const VerticalGrid = Styled.div`
 const BetSubmitter = ({exact, defaultAmount, defaultFv, onSubmit, canCall, globalVolume, currentAmount, currentFv, disabled, color, totalAmount}) => {
   const [fv, setFv] = useState(defaultFv);
   const [amount, setAmount] = useState(defaultAmount);
-  const [mode, setMode] = useState("amount");
   const [playClickUISound] = useSound(Sounds.clickUI, { volume: globalVolume });
-
 
   useEffect(() => {
     setFv(defaultFv);
@@ -76,56 +74,47 @@ const BetSubmitter = ({exact, defaultAmount, defaultFv, onSubmit, canCall, globa
 
   useEffect(() => {
     document.body.addEventListener('keydown', function(event) {
-      console.log(event.key)
       let key = event.key;
-      if(key === "Enter") {
+      if(key === "Enter" || key === "Space") {
         handleSubmit()
       } else if (key === "Backspace") {
         setAmount(1);
         setFv(1);
-      } 
+      }
+      // } else if (key === "ArrowLeft") {
+      //   if (fv > 1) {
+      //     setFv(fv - 1);
+      //   }
+      // } else if (key === "ArrowRight") {
+      //   if (fv < 6) {
+      //     setFv(fv + 1);
+      //   }      
+      // } else if (key === "ArrowDown") {
+      //   if (amount < 1) {
+      //     setAmount(amount - 1);
+      //   }           
+      // } else if (key === "ArrowUp") {
+      //   setAmount(amount + 1);
+      // } 
       else {
         switch(parseInt(key)) {
         case 1:
-          if (mode === "amount") {
             setAmount(1);
-          } else {
-            setFv(1);
-          }
           break;
         case 2:
-          if (mode === "amount") {
             setAmount(2);
-          } else {
-            setFv(2);
-          }
           break;
         case 3:
-          if (mode === "amount") {
             setAmount(3);
-          } else {
-            setFv(3);
-          }
           break;
         case 4: 
-          if (mode === "amount") {
             setAmount(4);
-          } else {
-            setFv(4);
-          }          break;
+            break;
         case 5: 
-          if (mode === "amount") {
             setAmount(5);
-          } else {
-            setFv(5);
-          }          
           break;
         case 6:
-          if (mode === "amount") {
-            setAmount(6);
-          } else {
-            setFv(6);
-          }          
+            setAmount(6);      
           break;
           case 7:
             setAmount(7);
@@ -141,7 +130,7 @@ const BetSubmitter = ({exact, defaultAmount, defaultFv, onSubmit, canCall, globa
         }
       }
     });
-  }, [mode])
+  }, [fv, amount])
 
   const handleLowerAmount = () => {
     if(amount - 1 > 0) {

@@ -29,7 +29,7 @@ const StyledH1 = Styled.h1`
 
 const ColorsGrid = Styled.div`
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
 `
 
 const Wrapper = Styled.div`

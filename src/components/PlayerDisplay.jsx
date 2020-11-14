@@ -81,6 +81,7 @@ const Cell = Styled.div`
 const StyledDiv = Styled.div`
   text-align: center;
   align-items: center;
+  max-width: 260px;
   font-size: ${Styles.fontSizes.small};
 `;
 
@@ -176,9 +177,9 @@ const PlayerDisplay = ({ isActive, isChallenge, player, turn, showTurn, turnOpac
 
   const renderBottomSection = () => {
     let activeDisplay = null;  
-    let myMessage = player.callMessage;
+    let myMessage = player.callMessage + " (CALL)";
     if (exact) {
-      myMessage = player.exactMessage;
+      myMessage = player.exactMessage + " (EXACT)";
     }
 
     let waitingMessage = ``
