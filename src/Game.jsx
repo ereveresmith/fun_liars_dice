@@ -105,9 +105,9 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
   const [turnPitch, setTurnPitch] = useState(1);
   const [playRerollSound] = useSound(Sounds.reroll, { volume: globalVolume });
   const [playChallengeSound] = useSound(Sounds.challenge, { volume: globalVolume / 2 });
-  const [playWinSound] = useSound(Sounds.nextRound, { volume: globalVolume });
+  const [playWinSound] = useSound(Sounds.nextRound, { volume: globalVolume }); 
   const [playNextTurnSound] = useSound(Sounds.nextTurn, { volume: globalVolume, playbackRate: turnPitch });
-  const [playLoseDiceSound] = useSound(Sounds.loseDice, { volume: globalVolume });
+  const [playLoseDiceSound] = useSound(Sounds.loseDice, { volume: globalVolume / 3});
   const [playErrorSound] = useSound(Sounds.errorSound, { volume: globalVolume });
   const [playClickDiceSound] = useSound(Sounds.clickUI, { volume: globalVolume });
   const [playExactSound] = useSound(Sounds.exact, { volume: globalVolume });
@@ -223,25 +223,24 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
         } else {
           //It's a bot
           let rand2 = randomInt(mockBots.length)
-          const bot = mockBots[rand2];
+          const bot = botsArray[rand2];
           let rand = randomInt(colorsArray.length)
           let myColor = colorsArray[rand];
           const filteredColorsArray = colorsArray.filter(color => color !== myColor);
-          const filteredBotsArray = botsArray.filter(mockBot => mockBot.name !== bot.name)
-          colorsArray = filteredColorsArray;
-          botsArray = filteredBotsArray;
-
+          // const filteredBotsArray = botsArray.filter(mockBot => mockBot.name !== bot.name);
 
           newPlayers.push({
             name: bot.name,
             id: i + 1,
             hand: hand,
-            color: bot.color,
+            color: colorsArray[rand],
             callMessage: bot.callMessage,
             exactMessage: bot.exactMessage,
             riskThreshold: bot.riskThreshold,
             personality: bot.personality,
-          })
+          });
+          colorsArray = filteredColorsArray;
+          // botsArray = filteredBotsArray;
         }
 
 

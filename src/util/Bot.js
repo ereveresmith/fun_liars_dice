@@ -92,12 +92,16 @@ export const calcBotMove = (turns, totalAmntOfDice, player, exact) => {
 
     let missingDice = player.hand.length - handAmnt;
 
-    let randomOffset = randomInt(50) / 1000;
+    let randomOffset = randomInt(40) / 1000;
     let riskThreshold = player.riskThreshold - randomOffset;
 
     if (riskScore >= riskThreshold && currentTurn.amount > 0 && currentTurn.fv > 0) {
-        if (exact && riskScore < riskThreshold + 0.025 && randomC > 6) {
+        if (exact && (riskScore < (riskThreshold + 0.07)) && randomC > 3) {
+            console.log("PERFECTAMUNDO")
             move = 'exact'
+        } else if (exact && (riskScore < (riskThreshold + 0.2) && randomC > 6)) {
+            move = 'exact'
+            console.log("EXACT LUCKY CALL")
         } else {
             move = 'call';
         }
