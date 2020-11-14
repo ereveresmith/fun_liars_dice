@@ -98,12 +98,6 @@ const StyledInput = Styled.input`
   max-width: 70px;
 `
 
-const MainGrid = Styled.div`
-  display: grid;
-  grid-template-columns: auto auto auto;
-  width: 100%;
-`
-
 const SettingsWrapper = Styled.div`
   box-shadow: ${Styles.boxShadows.medium};
   margin: 0 24px;
@@ -291,50 +285,52 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
     return renderedPlayers;
   }
 
+  const renderSettings = () => {
+  return <SettingsWrapper>
+    <InlineGrid>
+      <Dice visible size={Styles.diceSizes.large} fv={7}></Dice>
+      <StyledH1 color={playerSettings.color}>SETTINGS</StyledH1>
+    </InlineGrid>
+    <Grid>
+      <Label># of Players</Label>
+      <StyledInput type={'number'} value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
+    </Grid>
+    <Grid>
+      <Label>Min Dice:</Label>
+      <StyledInput type={'number'} value={minDice} label={"Hand Size"} onChange={handleChangeminDice}></StyledInput>
+    </Grid>
+    <Grid>
+      <Label>Max Dice:</Label>
+      <StyledInput type={'number'} value={maxDice} label={"Max Dice"} onChange={handleChangeMaxDice}></StyledInput>
+    </Grid>
+    <Grid>
+      <Label>Spot On:</Label>
+      <Switch color={playerSettings.color} isDefaultChecked={exact} onChange={handleToggleExact}></Switch>
+    </Grid>
+    <Grid>
+      <Label>Random Mode:</Label>
+      <Switch color={playerSettings.color} isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
+    </Grid>
+    <Grid>
+      <Label>Random Offset:</Label>
+      <StyledInput type={'number'} value={randomVariance} label={"Random Offset"} onChange={handleChangeVariance}></StyledInput>
+    </Grid>
+    <Grid>
+      <Label>Handicap</Label>
+      <StyledInput type={'number'} value={handicap} label={"Player Handicap"} onChange={handleChangeHandicap}></StyledInput>
+    </Grid>
+    <Button label="Start Game" color={playerSettings.color} primary onClick={handleSubmit}></Button>
+  </SettingsWrapper>
+  }
+
   return (
     <div>
       <Wrapper screenSize={screenSize}>
-        <MainGrid>
+          {renderSettings()}
+          <div></div>
           <GameGrid>
             {renderPlayers()}
           </GameGrid>
-          <div></div>
-          <SettingsWrapper>
-            <InlineGrid>
-              <Dice visible size={Styles.diceSizes.large} fv={7}></Dice>
-              <StyledH1 color={playerSettings.color}>SETTINGS</StyledH1>
-            </InlineGrid>
-            <Grid>
-              <Label># of Players</Label>
-              <StyledInput type={'number'} value={amountOfPlayers} label={"Amount of players"} onChange={handleChangePlayers}></StyledInput>
-            </Grid>
-            <Grid>
-              <Label>Min Dice:</Label>
-              <StyledInput type={'number'} value={minDice} label={"Hand Size"} onChange={handleChangeminDice}></StyledInput>
-            </Grid>
-            <Grid>
-              <Label>Max Dice:</Label>
-              <StyledInput type={'number'} value={maxDice} label={"Max Dice"} onChange={handleChangeMaxDice}></StyledInput>
-            </Grid>
-            <Grid>
-              <Label>Spot On:</Label>
-              <Switch color={playerSettings.color} isDefaultChecked={exact} onChange={handleToggleExact}></Switch>
-            </Grid>
-            <Grid>
-              <Label>Random Mode:</Label>
-              <Switch color={playerSettings.color} isDefaultChecked={randomMode} onChange={handleToggleRandomMode}></Switch>
-            </Grid>
-            <Grid>
-              <Label>Random Offset:</Label>
-              <StyledInput type={'number'} value={randomVariance} label={"Random Offset"} onChange={handleChangeVariance}></StyledInput>
-            </Grid>
-            <Grid>
-              <Label>Handicap</Label>
-              <StyledInput type={'number'} value={handicap} label={"Player Handicap"} onChange={handleChangeHandicap}></StyledInput>
-            </Grid>
-          </SettingsWrapper>
-        </MainGrid>
-        <Button label="Start Game" color={playerSettings.color} primary onClick={handleSubmit}></Button>
       </Wrapper>
     </div>
   );
