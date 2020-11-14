@@ -92,11 +92,11 @@ export const calcBotMove = (turns, totalAmntOfDice, player, exact) => {
 
     let missingDice = player.hand.length - handAmnt;
 
-    let randomOffset = randomInt(50) / 700;
+    let randomOffset = randomInt(50) / 1000;
     let riskThreshold = player.riskThreshold - randomOffset;
 
     if (riskScore >= riskThreshold && currentTurn.amount > 0 && currentTurn.fv > 0) {
-        if (exact && riskScore < riskThreshold + 0.03 && randomC > 6) {
+        if (exact && riskScore < riskThreshold + 0.025 && randomC > 6) {
             move = 'exact'
         } else {
             move = 'call';

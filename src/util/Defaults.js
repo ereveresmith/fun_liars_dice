@@ -96,7 +96,7 @@ export const mockBots = [
     callMessage: "No way, idiot!",
     exactMessage: "Exactly!",
     color: Styles.colors.darkGreen,
-    riskThreshold: 0.16,
+    riskThreshold: 0.17,
     personality: "liar",
   },
   {
