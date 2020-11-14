@@ -7,7 +7,9 @@ import { Styles } from './util/Styles';
 import { defaultGameSettings, DEFAULT_COLORS_ARRAY, mockBots } from './util/Defaults';
 import { randomInt } from './util/Helper';
 import ColorButton from './components/ColorButton';
-import PlayerDisplay from './components/PlayerDisplay';
+import MiniPlayerDisplay from './components/MiniPlayerDisplay';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const InlineGrid = Styled.div`
   display: grid;
@@ -15,6 +17,19 @@ const InlineGrid = Styled.div`
   align-items: center;
   align-content: center;
   grid-template-columns: auto auto auto auto;
+`
+
+const IconWrapper = Styled.div`
+  display: grid;
+  font-size: ${Styles.fontSizes.large};
+  opacity: 0.6;
+  justify-content: center;
+  align-content: center;
+  padding-top: 8px;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `
 
 const ALink = Styled.a`
@@ -31,6 +46,23 @@ const ALink = Styled.a`
   }
 `
 
+const EmptyCell = Styled.div`
+  display: grid;
+  grid-template-rows: auto auto;
+  border: 1px dashed ${Styles.colors.grey};
+  margin: 4px 0;
+  min-height: 58px;
+  width: 100%;
+  background-color: ${Styles.colors.white};
+  transition: background-color 100ms ease-out;
+  cursor: pointer;
+
+  ${props => props.isOut && `
+    opacity: 0.2;
+    color: grey;
+  `}
+`
+
 const StyledH1 = Styled.h1`
   align-self: center;
   opacity: 0.8;
@@ -45,24 +77,13 @@ const StyledH1 = Styled.h1`
 
 const Wrapper = Styled.div`
   display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: auto 12px auto;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto;
   justify-content: center;
-  justify-items: center;
-  align-items: center;
-  align-content: start;
-  margin: 8px 0;
+  margin: 0;
 
   ${props => props.screenSize === 'medium' && `
-    grid-template-columns: auto;
-    grid-template-rows: auto auto;
-    justify-content: center;
-    margin: 0;
-  `}
-
-
-  ${props => props.screenSize === 'large' && `
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     grid-template-rows: auto;
     justify-content: center;
     margin: 0;
@@ -83,14 +104,6 @@ const Grid = Styled.div`
   grid-template-columns: auto auto;
 `
 
-const TopText = Styled.div`
-  text-align: left;
-  margin: 12px 24px;
-  max-width: 400px;
-  text-align: center; 
-  font-size: ${Styles.fontSizes.medium}
-`
-
 const StyledInput = Styled.input`
   margin: 2px 8px;
   font-size: ${Styles.fontSizes.medium};
@@ -100,9 +113,9 @@ const StyledInput = Styled.input`
 
 const SettingsWrapper = Styled.div`
   box-shadow: ${Styles.boxShadows.medium};
-  margin: 0 24px;
+  margin: 0 4px;
   padding: 8px;
-  max-width: 200px;
+  max-width: 400px;
 `
 
 const GameGrid = Styled.div`
@@ -133,7 +146,6 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
 
   useEffect(() => {
     const generatePlayers = () => {
-
       let colorsArray = [...DEFAULT_COLORS_ARRAY];
       let botsArray = [...mockBots];
 
@@ -218,7 +230,7 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
 
     const newPlayers = generatePlayers();
     setPlayers(newPlayers);
-  }, [amountOfPlayers, minDice, maxDice, handicap, randomMode, randomVariance])
+  }, [amountOfPlayers])
 
   const handleToggleExact = () => {
     if (exact) {
@@ -271,15 +283,34 @@ const SettingsPage = ({ onSubmit, screenSize, playerSettings }) => {
     }
   }
 
+  const handleRemovePlayer = () => {
+    if (amountOfPlayers > 0) {
+      setAmountOfPlayers(amountOfPlayers - 1);
+    }
+  }
+
+  const handleAddPlayer = () => {
+    if (amountOfPlayers < 6) {
+      setAmountOfPlayers(amountOfPlayers + 1);
+    }
+  }
+
   const renderPlayers = () => {
     let renderedPlayers = players.map((player) => {
-      return <PlayerDisplay
+      return <MiniPlayerDisplay
+      onClick={handleRemovePlayer}
       screenSize={screenSize}
       key={`player${player.id}`}
-      isActive={player.id === 1}
+      isColored={player.id === 1}
       player={player}>
-    </PlayerDisplay>
+    </MiniPlayerDisplay>
     });
+
+    renderedPlayers.push(<EmptyCell onClick={handleAddPlayer}>
+        <IconWrapper>
+          <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
+        </IconWrapper>
+      </EmptyCell>)
 
     
     return renderedPlayers;
