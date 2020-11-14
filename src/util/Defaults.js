@@ -18,8 +18,8 @@ export const DEFAULT_COLORS_ARRAY = [
   Styles.colors.coolBlue,
 ]
 
-export const defaultSettings = {
-  handSize: 2,
+export const defaultGameSettings = {
+  minDice: 2,
   amountOfPlayers: 4,
   handicap: 0,
   randomMode: true,

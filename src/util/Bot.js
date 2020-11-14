@@ -75,25 +75,28 @@ export const calcBotMove = (turns, totalAmntOfDice, player, exact) => {
         }
     }
 
-    if (handAmnt === 1) {
-        console.log("LAST STAND BRO")
-        move = 'best';
-        if (randomC > 8 && currentFv > 0) {
-            move = 'train';
-        } else if (randomB > 8) {
-            move = 'lie';
-        }
-    }
+
+
+
 
 
     let amountOfFvs = handMap[newFv-1];
     let updatedAmount = currentAmount - amountOfFvs;
     let riskScore = updatedAmount / totalAmntOfDice;
-
     let missingDice = player.hand.length - handAmnt;
-
-    let randomOffset = randomInt(40) / 1000;
+    let randomOffset = randomInt(30) / 1000;
     let riskThreshold = player.riskThreshold - randomOffset;
+
+    //LAST STAND
+    if (handAmnt === 1) {
+        move = 'best';
+        if (randomC > 9 && currentFv > 0) {
+            move = 'train';
+        } else if (randomB > 8) {
+            move = 'lie';
+        }
+        riskThreshold = (riskThreshold - 0.08);
+    }
 
     if (riskScore >= riskThreshold && currentTurn.amount > 0 && currentTurn.fv > 0) {
         if (exact && (riskScore < (riskThreshold + 0.07)) && randomC > 3) {
@@ -117,6 +120,7 @@ export const calcBotMove = (turns, totalAmntOfDice, player, exact) => {
             break;
         case 'best':
             newFv = bestOptionIndex + 1;
+            console.log("My best option is " + (bestOptionIndex + 1))
             if (newFv <= currentFv && newAmount == currentAmount) {
                 newAmount++;
             }

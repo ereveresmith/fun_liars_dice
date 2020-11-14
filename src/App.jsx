@@ -7,12 +7,12 @@ import Settings from './Settings';
 import Button from './components/Button'
 import { Modal } from './components/Modal';
 import { faCoins, faExclamationCircle, faHome } from '@fortawesome/free-solid-svg-icons';
-import {  WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE, defaultSettings, defaultPlayerSettings } from './util/Defaults';
+import {  WIDESCREEN_SIZE, SUPER_WIDESCREEN_SIZE, defaultGameSettings, defaultPlayerSettings } from './util/Defaults';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const App = () => {
   const [amountOfCoins, setAmountOfCoins] = useState(defaultPlayerSettings.coins);
   const [page, setPage] = useState('home');
-  const [gameSettings, setGameSettings] = useState(defaultSettings);
+  const [gameSettings, setGameSettings] = useState(defaultGameSettings);
   const [playerSettings, setPlayerSettings] = useState(defaultPlayerSettings);
 
   const [isShowingModal, setIsShowingModal] = useState(false);
@@ -121,19 +121,16 @@ const App = () => {
 
   const handleConfirmGoHome = () => {
     setPage('home');
-    setGameSettings(defaultSettings);
+    setGameSettings(defaultGameSettings);
   }
 
-  const handleGotoSettings = (playerSettings) => {
-    if (playerSettings) {
-      setPlayerSettings(playerSettings);
-    }
+  const handleGotoSettings = () => {
+    setGameSettings(defaultGameSettings);
     setPage('settings');
   }
 
 
   const handleStartGame = (gameSettings) => {
-    console.log(gameSettings);
     setGameSettings(gameSettings);
     setPage('game');
   }
@@ -142,7 +139,7 @@ const App = () => {
     switch(page) {
       case 'game': 
         return <Game 
-          settings={gameSettings}
+          gameSettings={gameSettings}
           playerSettings={playerSettings}
           onEnd={handleGotoSettings} 
           addCoin={handleAddCoin}
@@ -163,6 +160,11 @@ const App = () => {
     }
   }
 
+  let handleClick = handleConfirmGoHome;
+  if (page === "game") {
+    handleClick = handleGotoSettings;
+  }
+
   return (
     <div className="App">
       <Modal 
@@ -173,7 +175,7 @@ const App = () => {
         icon={faExclamationCircle}
         text={"This will end your current game."}>
           <Button label={"Cancel"} color={playerSettings.color} onClick={handleCancelModal}></Button>
-          <Button label={"Leave Game"} color={playerSettings.color} primary onClick={handleConfirmGoHome}></Button>
+          <Button label={"Leave Game"} color={playerSettings.color} primary onClick={handleClick}></Button>
       </Modal>
       <Nav>
         <NavLink onClick={handleGoHome} color={playerSettings.color}>

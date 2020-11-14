@@ -50,7 +50,7 @@ const Label = Styled.span`
 
 const OptionGrid = Styled.div`
   display: grid;
-  margin: 4px;
+  grid-gap: 8px;
 `
 
 const TopText = Styled.div`
@@ -62,7 +62,7 @@ const TopText = Styled.div`
 `
 
 const StyledInput = Styled.input`
-  margin: 4px 0;
+  margin: 4px 8px;
   font-size: ${Styles.fontSizes.medium};
   font-weight: 300;
   max-width: 70px;

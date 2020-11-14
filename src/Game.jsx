@@ -63,7 +63,7 @@ const Wrapper = Styled.div`
     justify-content: center;
     margin: 0;
   `}
-  `
+`
 
 const GameGrid = Styled.div`
   grid-gap: 4px;
@@ -82,7 +82,7 @@ const GameGrid = Styled.div`
 
 
 
-const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
+const GamePage = ({ gameSettings, playerSettings, onEnd, screenSize, addCoin }) => {
   const [players, setPlayers] = useState([]);
   const [turns, setTurns] = useState([]);
   const [log, setLog] = useState([]);
@@ -159,121 +159,39 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     }
 
     if (shouldRestart) {
-      restartGame(settings);
+      restartGame(gameSettings);
     }
   }, [shouldRestart])
 
   useEffect(() => {
-    const generatePlayers = () => {
-
-      let colorsArray = [...DEFAULT_COLORS_ARRAY];
-      let botsArray = [...mockBots];
-
-      const newPlayers = [];
-      for (let i = 0; i < settings.amountOfPlayers; i++) {
-        let hand = [];
-
-        let minDice = parseInt(settings.handSize);
-        let maxDice = parseInt(settings.maxDice);
-        let isVisible = false;
-        const isPlayer = (i == 0);
-        let randOffset = settings.randomMode ? randomInt(settings.randomVariance) : 0;
-
-        //If it's you
-        if (isPlayer) {
-          isVisible = true;
-          minDice = minDice + parseInt(settings.handicap) + randOffset;
-        } else {
-          minDice = minDice + randOffset;
-        }
-
-        if (minDice >= maxDice) {
-          minDice = maxDice;
-        }
-
-        for (let k = 0; k < maxDice; k++) {
-          const newFv = randomInt(6) + 1;
-
-          const isDisabled = (k >= minDice);
-
-          const diceObj = {
-            fv: newFv,
-            visible: isVisible,
-            disabled: isDisabled,
-            highlight: false,
-            hasArrow: false,
-            found: false,
-            highlightColor: Styles.colors.darkRed,
-          }
-          hand.push(diceObj);
-        }
-
-        if (isPlayer) {
-          let myColor = playerSettings.color;
-          const filteredColorsArray = colorsArray.filter(color => color !== myColor)
-          colorsArray = filteredColorsArray;
-          newPlayers.push({
-            name: playerSettings.name,
-            id: i + 1,
-            hand: hand,
-            color: myColor,
-            callMessage: playerSettings.callMessage,
-            exactMessage: playerSettings.exactMessage,
-          })
-        } else {
-          //It's a bot
-          let rand2 = randomInt(mockBots.length)
-          const bot = botsArray[rand2];
-          let rand = randomInt(colorsArray.length)
-          let myColor = colorsArray[rand];
-          const filteredColorsArray = colorsArray.filter(color => color !== myColor);
-          // const filteredBotsArray = botsArray.filter(mockBot => mockBot.name !== bot.name);
-
-          newPlayers.push({
-            name: bot.name,
-            id: i + 1,
-            hand: hand,
-            color: colorsArray[rand],
-            callMessage: bot.callMessage,
-            exactMessage: bot.exactMessage,
-            riskThreshold: bot.riskThreshold,
-            personality: bot.personality,
-          });
-          colorsArray = filteredColorsArray;
-          // botsArray = filteredBotsArray;
-        }
-
-
-
-
-      }
-
-      return newPlayers;
-    }
-
     const startGame = async () => {
-      const newPlayers = generatePlayers();
+      const newPlayers = [...gameSettings.players];
       setIsShowingModal(false);
       setIsWin(false);
       setIsChallenge(false);
       setIsExact(false);
-      setPlayers(newPlayers)
+      setPlayers(newPlayers);
+
+      let rand = randomInt(newPlayers.length);
+      console.log(rand)
 
       const initialTurn = {
         number: 0,
         amount: 0,
         fv: 0,
         player: { id: 0 },
-        nextPlayer: newPlayers[0],
+        nextPlayer: newPlayers[rand],
       }
       setTurns([initialTurn]);
       setLog([]);
       setShouldRestart(false);
       printLog('Starting a new game');
+      await timeout(longWait);
+      setWaitingForTurn(true);
     }
 
-    startGame(settings);
-  }, [settings, playerSettings])
+    startGame(gameSettings);
+  }, [gameSettings, playerSettings])
 
   const printLog = (value, fv, amount, value2, color) => {
     setLog(log => [...log, { value: value, fv: fv, amount: amount, value2: value2, color: color }]);
@@ -354,7 +272,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
 
   const calcBotTurn = async () => {
     const nextPlayer = turns[turns.length - 1].nextPlayer;
-    const bet = calcBotMove(turns, amountOfActiveDice(), nextPlayer, settings.exact);
+    const bet = calcBotMove(turns, amountOfActiveDice(), nextPlayer, gameSettings.exact);
     await timeout(bet.timeout);
     submitBet(bet.amount, bet.fv, nextPlayer);
   }
@@ -979,7 +897,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       return;
     }
     return <UserInterface 
-      exact={settings.exact}
+      exact={gameSettings.exact}
       totalAmount={calcTotalAmount()}
       color={playerSettings.color}
       defaultAmount={defaultAmount}

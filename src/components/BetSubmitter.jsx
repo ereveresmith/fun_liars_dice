@@ -207,8 +207,8 @@ const BetSubmitter = ({exact, defaultAmount, defaultFv, onSubmit, canCall, globa
       </VerticalGrid>
       <VerticalGrid>
         <Button label="Bet" color={color} onClick={handleSubmit} primary disabled={isDisabled}></Button>
-        <Button label="Call" onClick={handleCall} disabled={!canCall} color={Styles.colors.red}></Button>
-        {exact && <Button label="Exact" onClick={handleExact} disabled={!canCall} color={Styles.colors.orange}></Button>}
+        <Button label="Call" onClick={handleCall} disabled={!canCall} color={Styles.colors.darkRed}></Button>
+        {exact && <Button label="Exact" onClick={handleExact} disabled={!canCall} color={Styles.colors.darkRed}></Button>}
       </VerticalGrid>
     </Wrapper>
   );
