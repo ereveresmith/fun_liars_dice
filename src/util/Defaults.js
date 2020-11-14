@@ -2,10 +2,10 @@ import { Styles } from "./Styles";
 
 
 
-export const tinyWait = 140;
-export const shortWait = 300;
-export const mediumWait = 440;
-export const longWait = 1100;
+export const tinyWait = 130;
+export const shortWait = 280;
+export const mediumWait = 420;
+export const longWait = 900;
 export const massiveWait = 500000;
 export const WIDESCREEN_SIZE = 620;
 export const SUPER_WIDESCREEN_SIZE = 910;
@@ -48,7 +48,7 @@ export const mockBots = [
     callMessage: "Fuck you, lil bitch!",
     exactMessage: "Exactamundo!",
     color: Styles.colors.black,
-    riskThreshold: 0.2,
+    riskThreshold: 0.18,
     personality: "ballsy",
   },
   {
@@ -88,7 +88,7 @@ export const mockBots = [
     callMessage: "Gonna call you on that",
     exactMessage: "Exactamundo!",
     color: Styles.colors.red,
-    riskThreshold: 0.21,
+    riskThreshold: 0.2,
     personality: "normal",
   },
   {
@@ -112,7 +112,7 @@ export const mockBots = [
     callMessage: "Nope!",
     exactMessage: "Spot on.",
     color: Styles.colors.lightBlue,
-    riskThreshold: 0.2,
+    riskThreshold: 0.19,
     personality: "liar",
   },
   {
@@ -160,7 +160,7 @@ export const mockBots = [
     callMessage: "That's a lie",
     exactMessage: "Exactamundo!",
     color: Styles.colors.purple,
-    riskThreshold: 0.13,
+    riskThreshold: 0.17,
     personality: "normal",
   },
   {
@@ -208,7 +208,7 @@ export const mockBots = [
     callMessage: "That's a lie",
     exactMessage: "Exactamundo!",
     color: Styles.colors.brown,
-    riskThreshold: 0.8,
+    riskThreshold: 0.15,
     personality: "normal",
   },
   {

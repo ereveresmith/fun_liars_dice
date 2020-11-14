@@ -104,7 +104,7 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
   const [globalVolume, setGlobalVolume] = useState(1.0);
   const [turnPitch, setTurnPitch] = useState(1);
   const [playRerollSound] = useSound(Sounds.reroll, { volume: globalVolume });
-  const [playChallengeSound] = useSound(Sounds.challenge, { volume: globalVolume });
+  const [playChallengeSound] = useSound(Sounds.challenge, { volume: globalVolume / 2 });
   const [playWinSound] = useSound(Sounds.nextRound, { volume: globalVolume });
   const [playNextTurnSound] = useSound(Sounds.nextTurn, { volume: globalVolume, playbackRate: turnPitch });
   const [playLoseDiceSound] = useSound(Sounds.loseDice, { volume: globalVolume });
@@ -743,14 +743,19 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
     let winningPlayer = playersArray[player.id - 1];
 
     let isLying = checkIsLying(exact);
-    await timeout(longWait)
+
+    if (player.id === 1 || nextPlayer.id === 1) {
+      await timeout(longWait)
+    }
 
     if (isLying === true) {
       lyingPlayer = playersArray[player.id - 1];
       winningPlayer = playersArray[nextPlayer.id - 1];
     }
 
-    await timeout(longWait);
+    if (player.id === 1 || nextPlayer.id === 1) {
+      await timeout(longWait)
+    }
     resetHighlight(playersArray);
     setPlayers(playersArray);
     await timeout(shortWait);
