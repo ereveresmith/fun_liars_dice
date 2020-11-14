@@ -4,7 +4,7 @@ import { Styles } from "./Styles";
 
 export const tinyWait = 130;
 export const shortWait = 280;
-export const mediumWait = 420;
+export const mediumWait = 450;
 export const longWait = 900;
 export const massiveWait = 500000;
 export const WIDESCREEN_SIZE = 620;

@@ -309,8 +309,9 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
       setDefaultAmount(1);
       setTurns([newTurn]);
       printLog("Starting a new round");
-      await timeout(longWait);
-      setWaitingForTurn(true);
+      if (currentPlayer.id === 1 || nextPlayer.id === 1) {
+        await timeout(longWait)
+      }      setWaitingForTurn(true);
     }
   }
 
@@ -786,7 +787,11 @@ const GamePage = ({ settings, playerSettings, onEnd, screenSize, addCoin }) => {
         await timeout(mediumWait);
       }
     }
-    await timeout(longWait);
+    if (player.id === 1 || nextPlayer.id === 1) {
+      await timeout(longWait)
+    } else {
+      await timeout(mediumWait)
+    }
     await nextRound(lyingPlayer);
   }
 

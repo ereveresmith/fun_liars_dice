@@ -166,7 +166,7 @@ export const calcBotMove = (turns, totalAmntOfDice, player, exact) => {
             break; 
     }
 
-    let newTimeout = randomInt(longWait) + mediumWait;;
+    let newTimeout = randomInt(mediumWait) + mediumWait;;
 
     return {
         amount: newAmount, 
